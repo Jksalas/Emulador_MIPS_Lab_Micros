@@ -5,6 +5,8 @@ section .text
 
 _start:
 
+
+;----------------------------Decodificación----------------------------
 .decode:
   mov r13, r14                        ;Se copia la instrucción a otro registro
   sar r13, 26                         ;y se mueve a la derecha para dejar solo el código de operación
@@ -65,3 +67,5 @@ _start:
                                       ;maneja el procesador
                                       ;se ejecuta una rutina que
                                       ;lo informa en pantalla
+
+;--------------------Error de instruccíon no encontrada-----------------
