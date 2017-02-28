@@ -3,19 +3,20 @@
 ;EL4313 - Laboratorio de Estructura de Microprocesadores
 ;#################################################
 
+	
 
 ;--------------------Segmentos de datos----------------------
 section .data
-	uno: db '************************** Bienvenido al Emulador MIPS *************************', 0xa
+	uno: db "************************** Bienvenido al Emulador MIPS *************************", 0xa, 0xa
 	uno_tamano: equ $-uno
 
-	dos: db 'EL-4313 - Lab Estructura de Microprocesadores', 0xa
+	dos: db 0x1b,"[96m", "        EL-4313 - Lab Estructura de Microprocesadores", 0xa
 	dos_tamano: equ $-dos
 	
-	tres: db 'IS - 2017', 0xa
+	tres: db 0x1b,"[96m", "        IS - 2017", 0xa
 	tres_tamano: equ $-tres
 
-	cuatro: db 'Buscando archivo ROM.txt', 0xa
+	cuatro: db 0x1b,"[96m","        Buscando archivo ROM.txt", 0xa
 	cuatro_tamano: equ $-cuatro
 
 ;------------------------- Segmento de codigo ---------------------
