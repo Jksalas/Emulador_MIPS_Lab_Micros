@@ -6,17 +6,21 @@
 	
 
 ;--------------------Segmentos de datos----------------------
+
 section .data
-	uno: db "************************** Bienvenido al Emulador MIPS *************************", 0xa, 0xa
+
+;NOTA: en caso de querer cambiar el color se modifica el #m. 
+
+	uno: db  0x1b,"[38;5;183m","************************** Bienvenido al Emulador MIPS *************************", 0xa, 0xa
 	uno_tamano: equ $-uno
 
-	dos: db 0x1b,"[96m", "        EL-4313 - Lab Estructura de Microprocesadores", 0xa
+	dos: db 0x1b,"[38;5;86m", "        EL-4313 - Lab Estructura de Microprocesadores", 0xa
 	dos_tamano: equ $-dos
 	
-	tres: db 0x1b,"[96m", "        IS - 2017", 0xa
+	tres: db 0x1b,"[38;5;86m", "        IS - 2017", 0xa
 	tres_tamano: equ $-tres
 
-	cuatro: db 0x1b,"[96m","        Buscando archivo ROM.txt", 0xa
+	cuatro: db 0x1b,"[38;5;86m","        Buscando archivo ROM.txt", 0xa
 	cuatro_tamano: equ $-cuatro
 
 ;------------------------- Segmento de codigo ---------------------
