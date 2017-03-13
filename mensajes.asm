@@ -3,7 +3,7 @@
 ;EL4313 - Laboratorio de Estructura de Microprocesadores
 ;#################################################
 
-	
+%include "linux64.inc"	
 
 ;--------------------Segmentos de datos----------------------
 
@@ -27,39 +27,12 @@ section .data
 
 section .text
 	global _start
-	global _segunda
-	global _tercera
-
+	
 _start:
-	mov rax,1
-	mov rdi,1
-	mov rsi,uno
-	mov rdx,uno_tamano
-	syscall
-
-	mov rax,1
-	mov rdi,1
-	mov rsi,dos
-	mov rdx,dos_tamano
-	syscall
-
-	mov rax,1
-	mov rdi,1
-	mov rsi,tres
-	mov rdx,tres_tamano
-	syscall
-
-	mov rax,1
-	mov rdi,1
-	mov rsi,cuatro
-	mov rdx,cuatro_tamano
+	print uno ;Llamado al macro
+	print dos
+	print tres
+	print cuatro 
 	
 
-_segunda:
-	syscall
-	mov rax,60
-	mov rdi,0
-
-_tercera: 
-	syscall
 
