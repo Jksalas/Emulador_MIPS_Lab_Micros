@@ -135,7 +135,7 @@ section .data
 	steven: db 0x1b, "[38;5;86m","      	  Steven León Domínguez 2014138025", 0xa
 	andre: db 0x1b, "[38;5;86m","     	  André Martínez Arana 2014068625", 0xa
 	camila: db 0x1b, "[38;5;86m","     	  Camila Gómez Molina 2014089559", 0xa
-	
+
 	; -------------------- LECTURA ROM.TXT --------------------
 	file db "./ROM.txt", 0
 	len equ 2048
@@ -250,7 +250,11 @@ loop2:
 	jmp loop1
 
 end:
-	mov r14, [trama+3]
+	mov r14, [trama+3] ; En r14 se guarda el byte donde esta el OP Code.
+	and r14, 11111100b
+	shr r14, 2
+
+	mov r14, [trama+3] ; En r14 se guarda el byte donde esta el OP Code.
 	and r14, 11111100b
 	shr r14, 2
 
