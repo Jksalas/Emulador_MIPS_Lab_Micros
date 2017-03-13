@@ -19,6 +19,10 @@ section .bss
 	mov rsi, [printSpace]
 	mov rdx, rbx
 	syscall
+	mov rax, SYS_EXIT
+	mov rdi, 0
+	syscall
+
 %endmacro
 
 %macro printVal 1
