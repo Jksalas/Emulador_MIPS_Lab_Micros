@@ -12,16 +12,16 @@ section .data
 ;NOTA: en caso de querer cambiar el color se modifica el #m. 
 
 	bienvenido: db  0x1b,"[38;5;183m","************************** Bienvenido al Emulador MIPS *************************", 0xa, 0xa
-	uno_tamano: equ $-uno
+	bienvenido_tamano: equ $-bienvenido
 
 	lab: db 0x1b,"[38;5;86m", "        EL-4313 - Lab Estructura de Microprocesadores", 0xa
-	dos_tamano: equ $-dos
+	lab_tamano: equ $-lab
 	
 	sem: db 0x1b,"[38;5;86m", "        IS - 2017", 0xa
-	tres_tamano: equ $-tres
+	sem_tamano: equ $-sem
 
 	buscando: db 0x1b,"[38;5;86m","        Buscando archivo ROM.txt", 0xa
-	cuatro_tamano: equ $-cuatro
+	buscando_tamano: equ $-buscando
 
 ;------------------------- Segmento de codigo ---------------------
 
@@ -32,7 +32,4 @@ _start:
 	print bienvenido ;Llamado al macro
 	print lab
 	print sem
-	print buscando 
-	
-
-
+	print buscando
