@@ -19,49 +19,6 @@
 	mov [trama+%3], %1
 %endmacro
 
-%macro printValue 1
-	mov rax, %1 ;Al registro rax se le asigna el parámetro de entrada
-	%%printRAX:
-		mov rcx, digitSpace
-		mov [digitSpacePos], rcx
-	%%printRAXLoop:
-		mov rdx, 0
-		mov rbx, 10
-		div rbx
-		push rax
-		add rdx, 48
-
-		mov rcx, [digitSpacePos]
-		mov [rcx], dl
-		inc rcx
-		mov [digitSpacePos], rcx
-
-		pop rax
-		cmp rax, 0
-		jne %%printRAXLoop
-	%%printRAXLoop2:
-		mov rcx, [digitSpacePos]
-
-		mov rax, 1
-		mov rdi, 1
-		mov rsi, rcx
-		mov rdx, 1
-		syscall
-
-		mov rcx, [digitSpacePos]
-		dec rcx
-		mov [digitSpacePos], rcx
-
-		cmp rcx, digitSpace
-
-		jge %%printRAXLoop2
-		mov rax, SYS_CLOSE
-		pop rdi
-		syscall
-
-		print text
-		exit
-%endmacro
 
 %macro alu 1 ; 1 parámetro como "señal de ctrl".
 	mov rsi, %1 ; "OP Code" de ALU. Se guarda en rsi.
@@ -389,4 +346,4 @@ _exit:
 
 
 ; -------------------- Imprimir registros --------------------
-printValue r8 ; Imprime registro del resultado.
+printVal r8 ; Imprime registro del resultado.
