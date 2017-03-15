@@ -480,6 +480,17 @@ decode:
 	reg_mips r11
 	mov [rsi], rbx ; Mueve resultado a registro mips rd.
 .sw:
+	sign_ext r8															;Se toma el inmediato y se extiende el signo
+	reg_mips r13														;se utiliza la macro para obtener el valor y dirección de Rs
+	add r13, r8															;se suman ambos valores para calcular la dirección de memoria
+	cmp r13, 100
+	ja memoverflow
+	mov rax, 4															;se multiplica por 4 ya que la memoria se divide en bytes (palabras de 4*8bits)
+	mul r13
+	add rax, datos 													;se suma a datos ya que es el valor inicial de memoria de datos en el computador real
+	reg_mips r12
+	mov [rax], rdi													;se toma el valor de rt y se guarda en la dirección calculada en rax
+
 
 memoverflow:
 	printString memmax, lmemmax
