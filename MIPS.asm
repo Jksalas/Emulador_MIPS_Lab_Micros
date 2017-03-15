@@ -122,7 +122,6 @@ section .bss
 	; -------------------- LECTURA ROM.TXT --------------------
 	buffer: resb 2048
 	trama: resb 1
-	ok_andre: resb 4
 
 	; -------------------- Reservación en memoria para registros MIPS --------------------
 	; De 4 bytes = 32 bits.
@@ -158,6 +157,9 @@ section .bss
 	reg29: resb 4
 	reg30: resb 4
 	reg31: resb 4
+
+	; -------------------- Reservación en memoria para memoria de datos MIPS --------------------
+	datos: resb 400
 
 	; -------------------- Imprimir registros --------------------
 	text resw 100 ;Reserva un espacio en memoria
@@ -429,6 +431,15 @@ decode:
 .jr:
 
 .lw:
+	sign_ext r8															;Se toma el inmediato y se extiende el signo
+	reg_mips r13														;se utiliza la macro para obtener el valor y dirección de Rs
+	add r13, r8															;se suman ambos valores para calcular la dirección de memoria
+	mov rax, 4															;se multiplica por 4 ya que la memoria se divide en bytes (palabras de 4*8bits)
+	mul r13
+	add rax, datos 													;se suma a datos ya que es el valor inicial de memoria de datos en el computador real
+	mov rax, [rax]													;se toma ese valor de memoria y se guarda de nuevo en rax
+	reg_mips r12
+	mov [rsi], rax													;se guarda el valor sacado de memoria de datos al registro destino Rt
 
 .mult:
 	alu 6
