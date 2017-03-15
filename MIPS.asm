@@ -19,54 +19,53 @@
 	mov [trama+%3], %1
 %endmacro
 
-
 %macro alu 1 ; 1 parámetro como "señal de ctrl".
-	mov rsi, %1 ; "OP Code" de ALU. Se guarda en rsi.
+	mov rdx, %1 ; "OP Code" de ALU. Se guarda en rdx.
 %%and:
-	cmp rsi, 0 ; 0d = AND.
+	cmp rdx, 0 ; 0 = AND.
 	jne %%or ; Si no es, pasa a siguiente opción.
 	and rax, rcx ; rax (rs) AND rcx (rt).
 	jmp %%result ; Concluida la operación, pasa a resultado.
 %%or:
-	cmp rsi, 1 ; 1d = OR.
+	cmp rdx, 1 ; 1 = OR.
 	jne %%add ; Si no es, pasa a siguiente opción.
 	or rax, rcx ; rax (rs) OR rcx (rt).
 	jmp %%result ; Concluida la operación, pasa a resultado.
 %%add:
-	cmp rsi, 2 ; 2d = ADD.
+	cmp rdx, 2 ; 2 = ADD.
 	jne %%substract ; Si no es, pasa a siguiente opción.
 	add rax, rcx ; rax (rs) + rcx (rt).
 	jmp %%result ; Concluida la operación, pasa a resultado.
 %%substract:
-	cmp rsi, 3; 3d = SUB.
+	cmp rdx, 3; 3 = SUB.
 	jne %%set_on_less_than ; Si no es, pasa a siguiente opción.
 	sub rax, rcx ; rax (rs) - rcx (rt).
 	jmp %%result ; Concluida la operación, pasa a resultado.
 %%set_on_less_than:
-	cmp rsi, 4; 4d = SLTU.
+	cmp rdx, 4; 4 = SLTU.
 	jne %%nor ; Si no es, pasa a siguiente opción.
 	cmp rcx, rax
 	jg %%true  ; Si rcx (rt) > rax(rs).
 	jmp %%false ; Si no.
 	%%true:
-		mov rbp, 1b ; Un 1 en rbp (rd).
+		mov rbx, 1b ; Un 1 en rbx (rd).
 		jmp %%end ; Se pasa a fin porque ya resultado está en rd.
 	%%false:
-		mov rbp, 0b ; Un 0 en rbp (rd).
+		mov rbx, 0b ; Un 0 en rbx (rd).
 		jmp %%end ; Se pasa a fin porque ya resultado está en rd.
 %%nor:
-	cmp rsi, 5; 5d = NOR.
+	cmp rdx, 5; 5 = NOR.
 	jne %%multiply ; Si no es, pasa a siguiente opción.
 	or rax, rcx ; rax (rs) OR rcx (rt).
 	not rax ; NOT rax (rs).
 	jmp %%result ; Concluida la operación, pasa a resultado.
 %%multiply:
-	cmp rsi, 6 ; 6d = MULT.
+	cmp rdx, 6 ; 6 = MULT.
 	jne %%end ; Si no es, pasa a resultal sin hacer nada.
 	mul rcx ; rax (rs) * rcx (rt).
 	jmp %%result ; Concluida la operación, pasa a resultado.
 %%result: ; Las operaciones realizadas ponen su resultado en rax.
-	mov rbp, rax ; Mueve resultado de operación a rbp (rd).
+	mov rbx, rax ; Mueve resultado de operación a rbx (rd).
 %%end: ; Etiqueta para casos de no hacer nada.
 %endmacro
 
@@ -261,19 +260,23 @@ end:
 	and r14, 11111100b
 	shr r14, 2
 
+	; ------ para tipo R (rs,rt,rd,shamt,funct) ------
+
 	mov r10, [trama+3]
+	and r10, 11111111b
 	mov r11, [trama+2]
+	and r11, 11111111b
 
 	mov r12, r11
-	and r12, 00011111b ; En r12 está 'rt'.
+	and r12, 00011111b ; En r12 está la dirección de 'rt'.
 
 	shl r10, 6
 	shr r11, 2
 	or r11, r10
 	mov r13, r11
-	shr r13, 3 ; En r13 está 'rs'.
+	shr r13, 3 ; En r13 está la dirección de 'rs'.
 
-	mov r11, [trama+1] ; En r11 está 'rd'
+	mov r11, [trama+1] ; En r11 está la dirección de 'rd'
 	and r11, 11111000b
 	shr r11, 3
 
@@ -281,12 +284,50 @@ end:
 	and r9, 00111111b ; En r9 está 'funct'
 
 	mov r7, [trama+1]
+	and r7, 11111111b
 	mov r8, [trama]
+	and r8, 11111111b
 	shl r7, 5
 	shr r8, 3
 	or r8, r7
 	mov r10, r8
 	shr r10, 3 ; En r10 está 'shamt'.
+
+	; ------ para tipo I (rs,rt,imm) ------
+	; se usa el mismo rs y rt
+
+	mov r8, [trama+1]
+	and r8, 11111111b
+	shl r8, 8
+	mov r7, [trama]
+	and r7, 11111111b
+	or r8, r7 ; En r8 está immediate.
+
+	; ------ para tipo J (address) ------
+
+	mov r7, [trama+3]
+	and r7, 11111111b
+	shl r7, 24
+	mov r6, [trama+2]
+	and r6, 11111111b
+	shl r6, 16
+	mov r5, [trama+1]
+	and r5, 11111111b
+	shl r5, 8
+	mov r4, [trama]
+	and r4, 11111111b
+	or r5, r4
+	or r6, r5
+	or r7, r6
+	and r7, 0x0000000003ffffff ; En r7 está address.
+
+	; ------- not sure -------
+	'''
+	reg_mips r13
+	mov rax, rdi ; rax es rs en la alu.
+	reg_mips r12
+	mov rcx, rdi ; rcx es rt en la alu.
+	'''
 
 	jmp decode
 
@@ -359,16 +400,19 @@ decode:
 
 ; -------------------- Rutinas correspondientes a cada inst --------------------
 .suma:
-	alu 2
+
 .sumau:
-
-
+	alu 2 ; suma rax y rcx. resultado en rbx.
+	;reg_mips r11
+	;mov [rsi], rbx ; Mueve resultado a registro mips rd.
 .sumai:
 
 .sumaiu:
 
 .y:
-
+	alu 0
+	;reg_mips r11
+	;mov [rsi], rbx ; Mueve resultado a registro mips rd.
 .yi:
 
 .beq:
@@ -385,28 +429,38 @@ decode:
 
 .mult:
 	alu 6
+	;reg_mips r11
+	;mov [rsi], rbx ; Mueve resultado a registro mips rd.
 .nor:
 	alu 5
+	;reg_mips r11
+	;mov [rsi], rbx ; Mueve resultado a registro mips rd.
 .o:
 	alu 1
+	;reg_mips r11
+	;mov [rsi], rbx ; Mueve resultado a registro mips rd.
 .ori:
 
 .slt:
-	alu 4
+
 .slti:
 
 .sltiu:
 
 .sltu:
-
+	alu 4
+	;reg_mips r11
+	;mov [rsi], rbx ; Mueve resultado a registro mips rd.
 .sll:
 
 .srl:
 
 .resta:
-	alu 3
-.restau:
 
+.restau:
+	alu 3
+	;reg_mips r11
+	;mov [rsi], rbx ; Mueve resultado a registro mips rd.
 .sw:
 
 
