@@ -108,6 +108,8 @@ section .data
 	lcamila: equ $-camila
 	nfound: db 0x1b, "[38;5;86m","	La instrucción no ha sido encontrada", 0xa
 	lnfound: equ $-nfound
+	memmax: db 0x1b, "[38;5;41m","	Error: La dirección es mayor a la capacidad de memoria", 0xa
+	lmemmax: equ $-memmax
 
 	; -------------------- LECTURA ROM.TXsT --------------------
 	file db "./ROM.txt", 0
@@ -434,6 +436,8 @@ decode:
 	sign_ext r8															;Se toma el inmediato y se extiende el signo
 	reg_mips r13														;se utiliza la macro para obtener el valor y dirección de Rs
 	add r13, r8															;se suman ambos valores para calcular la dirección de memoria
+	cmp r13, 100
+	ja memoverflow
 	mov rax, 4															;se multiplica por 4 ya que la memoria se divide en bytes (palabras de 4*8bits)
 	mul r13
 	add rax, datos 													;se suma a datos ya que es el valor inicial de memoria de datos en el computador real
@@ -476,6 +480,9 @@ decode:
 	;reg_mips r11
 	;mov [rsi], rbx ; Mueve resultado a registro mips rd.
 .sw:
+
+memoverflow:
+	printString memmax, lmemmax
 
 
 .nextinst:
