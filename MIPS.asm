@@ -1,4 +1,5 @@
 %include "linux64.inc"
+%include "macros.inc"
 
 ;							/* MACROS */
 
@@ -287,48 +288,47 @@ end:
 	and r11, 11111000b
 	shr r11, 3
 
-	mov r9, [trama]
-	and r9, 00111111b ; En r9 está 'funct'
+	;mov r9, [trama]
+	;and r9, 00111111b ; En r9 está 'funct'
 
-	mov r7, [trama+1]
-	and r7, 11111111b
-	mov r8, [trama]
-	and r8, 11111111b
-	shl r7, 5
-	shr r8, 3
-	or r8, r7
-	mov r10, r8
-	shr r10, 3 ; En r10 está 'shamt'.
+	;mov r7, [trama+1]
+	;and r7, 11111111b
+	;mov r8, [trama]
+	;and r8, 11111111b
+	;shl r7, 5
+	;shr r8, 3
+	;or r8, r7
+	;mov r10, r8
+	;shr r10, 3 ; En r10 está 'shamt'.
 
 	; ------ para tipo I (rs,rt,imm) ------
 	; se usa el mismo rs y rt
 
-	mov r8, [trama+1]
-	and r8, 11111111b
-	shl r8, 8
-	mov r7, [trama]
-	and r7, 11111111b
-	or r8, r7 ; En r8 está immediate.
+	;mov r8, [trama+1]
+	;and r8, 11111111b
+	;shl r8, 8
+	;mov r7, [trama]
+	;and r7, 11111111b
+	;or r8, r7 ; En r8 está immediate.
 
 	; ------ para tipo J (address) ------
 
-	mov r7, [trama+3]
-	and r7, 11111111b
-	shl r7, 24
-	mov r6, [trama+2]
-	and r6, 11111111b
-	shl r6, 16
-	mov r5, [trama+1]
-	and r5, 11111111b
-	shl r5, 8
-	mov r4, [trama]
-	and r4, 11111111b
-	or r5, r4
-	or r6, r5
-	or r7, r6
-	and r7, 0x0000000003ffffff ; En r7 está address.
+	;mov r7, [trama+3]
+	;and r7, 11111111b
+	;shl r7, 24
+	;mov r6, [trama+2]
+	;and r6, 11111111b
+	;shl r6, 16
+	;mov r5, [trama+1]
+	;and r5, 11111111b
+	;shl r5, 8
+	;mov r4, [trama]
+	;and r4, 11111111b
+	;or r5, r4
+	;or r6, r5
+	;or r7, r6
+	;and r7, 0x0000000003ffffff ; En r7 está address.
 
-	; ------- not sure -------
 
 	reg_mips r13
 	mov rax, rdi ; rax es rs en la alu.
