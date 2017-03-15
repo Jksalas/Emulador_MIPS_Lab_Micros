@@ -333,9 +333,9 @@ beq:
 
 	separarI rax
 	reg_mips r13
-	mov rax, rdi													  ;Guarda en rax el contenido de rs
+	mov r13, rdi													  ;Guarda en rax el contenido de rs
 	reg_mips r12
-	mov rcx, rdi 													  ;Guarda en rcx el contenido de rt
+	mov r12, rdi 													  ;Guarda en rcx el contenido de rt
 	cmp r13, r12													  ;Compara si rs y rt son iguales
 	je branch_new_addr
 	jmp nextinst
@@ -343,9 +343,9 @@ beq:
 bne:
 	separarI rax
 	reg_mips r13
-	mov rax, rdi													  ;Guarda en rax el contenido de rs
+	mov r13, rdi													  ;Guarda en rax el contenido de rs
 	reg_mips r12
-	mov rcx, rdi 													  ;Guarda en rcx el contenido de rt
+	mov r12, rdi 													  ;Guarda en rcx el contenido de rt
 	cmp r13, r12													  ;Compara si rs y rt son iguales
 	jne branch_new_addr
 	jmp nextinst
