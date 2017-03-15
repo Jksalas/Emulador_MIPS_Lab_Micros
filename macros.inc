@@ -273,7 +273,7 @@ and rdi, 0x0000000011111111
 
 
 %macro sign_ext 1
-; realiza la extensión de signo y la guarda en rbp.
+; realiza la extensión de signo y la guarda en r11.
   mov rdx, %1
   mov rsi, %1
   shr rdx, 15 ; se corre para analizar bit 15.
@@ -287,11 +287,12 @@ and rdi, 0x0000000011111111
 
 %%see:
   or rbp, rsi ; Se agrega inmediato en la parte baja de rbp.
+	mov r11, rbp
 %endmacro
 
 
 %macro branch_add 1
-; calcula la branch address y la guarda en rbp.
+; calcula la branch address y la guarda en r11.
   mov rdx, %1
   mov rsi, %1
   shr rdx, 15 ; se corre para analizar bit 15.
@@ -306,6 +307,7 @@ and rdi, 0x0000000011111111
 %%see:
   shl rsi, 2
   or rbp, rsi ; Se agrega inmediato con dos 0's al final.
+	mov r11, rbp
 %endmacro
 
 

@@ -322,8 +322,22 @@ yi:
 	mov [rsi], rbx ; Mueve resultado a registro mips rt
 
 beq:
+	;Compararacion para saber si se cumple el branch
+	;brinca a calculo de nueva direccion branch
+	;branch_new_addr
+		; si no se cumple, pc+4
 
 bne:
+
+	;Compararacion para saber si se cumple el branch
+	;brinca a calculo de nueva direccion branch
+	;branch_new_addr:
+
+branch_new_addr:
+	SepararI rax
+	branch_add r11;
+	mov ebx, 0;
+	mov ebx,r11
 
 j:
 
