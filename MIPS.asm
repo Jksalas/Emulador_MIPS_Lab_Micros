@@ -237,6 +237,7 @@ end:
 	or r11, r10
 	mov r13, r11
 	shr r13, 3 ; En r13 está 'rs'.
+	jmp decode
 
 _exit:
   mov eax, 1
@@ -244,7 +245,7 @@ _exit:
   int 80h
 
 ; -------------------- Decodificación --------------------
-.decode:
+decode:
 	;mov r13, r14                        ;Se copia la instrucción a otro registro
 	;sar r13, 26                         ;y se mueve a la derecha para dejar solo el código de operación
 
@@ -361,4 +362,4 @@ _exit:
 
 
 ; -------------------- Imprimir registros --------------------
-printVal r8 ; Imprime registro del resultado.
+;printVal r8 ; Imprime registro del resultado.
