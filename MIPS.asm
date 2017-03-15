@@ -273,7 +273,7 @@ R:
 	cmp r9, 0x22                        ;compara con sub
 	je resta                            ;salta a .resta
 
-	jmp instnotfound                   ;si la instrucción no se
+	jmp instnotfound                    ;si la instrucción no se
 		                                      ;encuentra en el set que
 		                                      ;maneja el procesador
 		                                      ;se ejecuta una rutina que
@@ -283,7 +283,7 @@ R:
 suma:
 	alu 2
 	reg_mips r11
-	mov [rsi], rbx ; Mueve resultado a registro mips rd.
+	mov [rsi], rbx 											; Mueve resultado a registro mips rd.
 
 sumau:
 	alu 2 ; suma rax y rcx. resultado en rbx.
