@@ -3,7 +3,7 @@ section .bss
 	digitSpacePos resb 8
 	printSpace resb 8
 	
-%macro printString
+%macro printString 2
     mov rax, 1
     mov rdi, 1
     mov rsi, %1
