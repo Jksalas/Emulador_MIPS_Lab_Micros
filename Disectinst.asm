@@ -31,6 +31,8 @@
 %endmacro
 
 %macro separarJ 1                   ;Recibe un parametro donde vendrá la instrucción
+  mov r14, %1                       ;en r14 está el OP Code.
+  and r14, 0xfc00000000000000
   mov r13, %1                       ;en r13 se tendrá address
   and r13, 0x0000000003ffffff
 %endmacro
