@@ -466,10 +466,11 @@ sw:
 	reg_mips r12
 	mov [rax], rdi													;se toma el valor de rt y se guarda en la dirección calculada en rax
 
-
+; -------------------- Error de dirección de memoria no encontrada --------------------
 memoverflow:
 	printString memmax, lmemmax
 
+; -------------------- PC + 4 --------------------
 nextinst:
 
 
