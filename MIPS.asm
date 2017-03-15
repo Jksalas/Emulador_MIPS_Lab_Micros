@@ -251,7 +251,7 @@ decode:
 
   cmp r14, 100000b                    ;compara con op code, en este caso de add
 	je .suma                            ;salta a la etiqueta correspondiente, en este caso .suma
-	cmp r14, 100001b                    ;compara con addu
+	cmp r14, 000000b                    ;compara con addu
 	je .sumau                           ;salta a .sumau
 	cmp r14, 001000b                    ;compara con addi
 	je .sumai                           ;salta a .sumai
@@ -306,13 +306,11 @@ decode:
 		                                      ;se ejecuta una rutina que
 		                                      ;lo informa en pantalla
 
-; -------------------- Error de instruccíon no encontrada --------------------
-.instnotfound:
-
 ; -------------------- Rutinas correspondientes a cada inst --------------------
 .suma:
 	alu 2
 .sumau:
+
 
 .sumai:
 
@@ -360,6 +358,12 @@ decode:
 
 .sw:
 
+
+.nextinst:
+	
+
+; -------------------- Error de instruccíon no encontrada --------------------
+.instnotfound:
 
 ; -------------------- Imprimir registros --------------------
 ;printVal r8 ; Imprime registro del resultado.
