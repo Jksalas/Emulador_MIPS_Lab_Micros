@@ -2,7 +2,7 @@
 %include "macros.inc"
 
 
-;							/* Código */
+;							/* Sección de variables inicializadas */
 
 section .data
 
@@ -52,6 +52,8 @@ section .data
 	; -------------------- Imprimir registros --------------------
 	filename: db "myfile.txt",0
 
+;							/* Sección de variables sin inicializar */
+
 section .bss
 
 	; -------------------- LECTURA ROM.TXT --------------------
@@ -98,6 +100,8 @@ section .bss
 
 	; -------------------- Imprimir registros --------------------
 	text resw 100 ;Reserva un espacio en memoria
+
+;							/* Sección de código principal */
 
 section .text
 
@@ -185,7 +189,7 @@ loop2:
 	inc rax
 	jmp loop2
 
-	esEnter:
+esEnter:
 	inc rax
 	mov r8, [buffer+rax]
 	and r8, 11111111b
@@ -466,7 +470,6 @@ sw:
 memoverflow:
 	printString memmax, lmemmax
 
-
 nextinst:
 
 
@@ -475,4 +478,3 @@ instnotfound:
 							printString nfound, lnfound
 
 ; -------------------- Imprimir registros --------------------
-;printVal r8 ; Imprime registro del resultado.
