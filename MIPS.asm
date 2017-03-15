@@ -350,12 +350,20 @@ sumau:
 
 sumai:
 	separarI rax
+	reg_mips r13
+	mov rax, rdi ; rax es rs en la alu.
+	reg_mips r11
+	mov rcx, rdi ; rcx es rt en la alu.
 	alu 2
 	reg_mips r12
 	mov[rsi], rbx
 
 sumaiu:
 	separarI rax
+	reg_mips r13
+	mov rax, rdi ; rax es rs en la alu.
+	reg_mips r11
+	mov rcx, rdi ; rcx es rt en la alu.
 	alu 2
 	reg_mips r12
 	mov[rsi], rbx
@@ -367,6 +375,10 @@ y:
 
 yi:
 	separarI rax ;
+	reg_mips r13
+	mov rax, rdi ; rax es rs en la alu.
+	reg_mips r11
+	mov rcx, rdi ; rcx es rt en la alu.
 	alu 0 ; and rax y rcx
 	reg_mips r12 ; r12 es rt
 	mov [rsi], rbx ; Mueve resultado a registro mips rt
@@ -382,9 +394,10 @@ jandl:
 jr:
 
 lw:
-	sign_ext r8															;Se toma el inmediato y se extiende el signo
+	separarI rax
+	sign_ext r11														;Se toma el inmediato y se extiende el signo
 	reg_mips r13														;se utiliza la macro para obtener el valor y dirección de Rs
-	add r13, r8															;se suman ambos valores para calcular la dirección de memoria
+	add r13, r11														;se suman ambos valores para calcular la dirección de memoria
 	cmp r13, 100
 	ja memoverflow
 	mov rax, 4															;se multiplica por 4 ya que la memoria se divide en bytes (palabras de 4*8bits)
@@ -408,6 +421,10 @@ o:
 	mov [rsi], rbx ; Mueve resultado a registro mips rd.
 ori:
 	separarI rax
+	reg_mips r13
+	mov rax, rdi ; rax es rs en la alu.
+	reg_mips r11
+	mov rcx, rdi ; rcx es rt en la alu.
 	alu 1 ; or entre rax y rcx
 	reg_mips r12 ; r12 es rt
 	mov [rsi], rbx ; Mueve resultado a registro mips rt
@@ -424,12 +441,20 @@ sltu:
 
 slti:
 	separarI rax
+	reg_mips r13
+	mov rax, rdi ; rax es rs en la alu.
+	reg_mips r11
+	mov rcx, rdi ; rcx es rt en la alu.
 	alu 4
 	reg_mips r11
 	mov [rsi], rbx ; Mueve resultado a registro mips rd.
 
 sltiu:
 	separarI rax
+	reg_mips r13
+	mov rax, rdi ; rax es rs en la alu.
+	reg_mips r11
+	mov rcx, rdi ; rcx es rt en la alu.
 	alu 4
 	reg_mips r11
 	mov [rsi], rbx ; Mueve resultado a registro mips rd.
@@ -456,9 +481,10 @@ restau:
 	mov [rsi], rbx ; Mueve resultado a registro mips rd.
 
 sw:
-	sign_ext r8															;Se toma el inmediato y se extiende el signo
+	separarI rax
+	sign_ext r11														;Se toma el inmediato y se extiende el signo
 	reg_mips r13														;se utiliza la macro para obtener el valor y dirección de Rs
-	add r13, r8															;se suman ambos valores para calcular la dirección de memoria
+	add r13, r11  													;se suman ambos valores para calcular la dirección de memoria
 	cmp r13, 100
 	ja memoverflow
 	mov rax, 4															;se multiplica por 4 ya que la memoria se divide en bytes (palabras de 4*8bits)
