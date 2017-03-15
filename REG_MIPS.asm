@@ -200,3 +200,55 @@
 %%listo:
 and rdi, 0x0000000011111111
 %endmacro
+
+section .bss
+; -------------------- Reservación en memoria para registros MIPS --------------------
+; De 4 bytes = 32 bits.
+reg0: resb 4
+reg1: resb 4
+reg2: resb 4
+reg3: resb 4
+reg4: resb 4
+reg5: resb 4
+reg6: resb 4
+reg7: resb 4
+reg8: resb 4
+reg9: resb 4
+reg10: resb 4
+reg11: resb 4
+reg12: resb 4
+reg13: resb 4
+reg14: resb 4
+reg15: resb 4
+reg16: resb 4
+reg17: resb 4
+reg18: resb 4
+reg19: resb 4
+reg20: resb 4
+reg21: resb 4
+reg22: resb 4
+reg23: resb 4
+reg24: resb 4
+reg25: resb 4
+reg26: resb 4
+reg27: resb 4
+reg28: resb 4
+reg29: resb 4
+reg30: resb 4
+reg31: resb 4
+
+section .text
+
+	global _start
+
+_start:
+
+	mov r8, 0xf7f7f7f7f7f7f7f7
+	mov [reg12], r8
+
+	mov rdx, 0x000000000000000c
+	reg_mips rdx
+
+	mov rax, 60	; Se carga la llamada 60d (sys_exit) en rax.
+	mov rdi, 0	; En rdi se carga un 0.
+	syscall
