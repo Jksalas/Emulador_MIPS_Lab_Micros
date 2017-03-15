@@ -329,12 +329,12 @@ end:
 	and r7, 0x0000000003ffffff ; En r7 está address.
 
 	; ------- not sure -------
-	'''
+
 	reg_mips r13
 	mov rax, rdi ; rax es rs en la alu.
 	reg_mips r12
 	mov rcx, rdi ; rcx es rt en la alu.
-	'''
+
 
 	jmp decode
 
@@ -410,16 +410,16 @@ decode:
 
 .sumau:
 	alu 2 ; suma rax y rcx. resultado en rbx.
-	;reg_mips r11
-	;mov [rsi], rbx ; Mueve resultado a registro mips rd.
+	reg_mips r11
+	mov [rsi], rbx ; Mueve resultado a registro mips rd.
 .sumai:
 
 .sumaiu:
 
 .y:
 	alu 0
-	;reg_mips r11
-	;mov [rsi], rbx ; Mueve resultado a registro mips rd.
+	reg_mips r11
+	mov [rsi], rbx ; Mueve resultado a registro mips rd.
 .yi:
 
 .beq:
@@ -447,16 +447,16 @@ decode:
 
 .mult:
 	alu 6
-	;reg_mips r11
-	;mov [rsi], rbx ; Mueve resultado a registro mips rd.
+	reg_mips r11
+	mov [rsi], rbx ; Mueve resultado a registro mips rd.
 .nor:
 	alu 5
-	;reg_mips r11
-	;mov [rsi], rbx ; Mueve resultado a registro mips rd.
+	reg_mips r11
+	mov [rsi], rbx ; Mueve resultado a registro mips rd.
 .o:
 	alu 1
-	;reg_mips r11
-	;mov [rsi], rbx ; Mueve resultado a registro mips rd.
+	reg_mips r11
+	mov [rsi], rbx ; Mueve resultado a registro mips rd.
 .ori:
 
 .slt:
@@ -467,8 +467,8 @@ decode:
 
 .sltu:
 	alu 4
-	;reg_mips r11
-	;mov [rsi], rbx ; Mueve resultado a registro mips rd.
+	reg_mips r11
+	mov [rsi], rbx ; Mueve resultado a registro mips rd.
 .sll:
 
 .srl:
@@ -477,8 +477,8 @@ decode:
 
 .restau:
 	alu 3
-	;reg_mips r11
-	;mov [rsi], rbx ; Mueve resultado a registro mips rd.
+	reg_mips r11
+	mov [rsi], rbx ; Mueve resultado a registro mips rd.
 .sw:
 
 memoverflow:
