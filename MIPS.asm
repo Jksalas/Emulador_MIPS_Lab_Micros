@@ -322,8 +322,21 @@ yi:
 	mov [rsi], rbx ; Mueve resultado a registro mips rt
 
 beq:
+	separarI rax
+	reg_mips r13
+	mov rax, rdi													  ;Guarda en rax el contenido de rs
+	reg_mips r11
+	mov rcx, rdi 													  ;Guarda en rcx el contenido de rt
+	cmp r13, r11													  ;Compara si rs y rt son iguales
+
 
 bne:
+	separarI rax
+	reg_mips r13
+	mov rax, rdi													  ;Guarda en rax el contenido de rs
+	reg_mips r11
+	mov rcx, rdi 													  ;Guarda en rcx el contenido de rt
+	cmp r13, r11													  ;Compara si rs y rt son iguales
 
 j:
 
