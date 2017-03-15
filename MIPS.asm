@@ -1,6 +1,6 @@
 %include "linux64.inc"
 %include "macros.inc"
-%include "Disectinst.asm"
+
 
 ;							/* Código */
 
@@ -196,74 +196,8 @@ loop2:
 	jmp loop1
 
 end:
-	mov r14, [trama+3] ; En r14 se guarda el byte donde esta el OP Code.
-	and r14, 11111100b
-	shr r14, 2
-
-	; ------ para tipo R (rs,rt,rd,shamt,funct) ------
-
-	mov r10, [trama+3]
-	and r10, 11111111b
-	mov r11, [trama+2]
-	and r11, 11111111b
-
-	mov r12, r11
-	and r12, 00011111b ; En r12 está la dirección de 'rt'.
-
-	shl r10, 6
-	shr r11, 2
-	or r11, r10
-	mov r13, r11
-	shr r13, 3 ; En r13 está la dirección de 'rs'.
-
-	mov r11, [trama+1] ; En r11 está la dirección de 'rd'
-	and r11, 11111000b
-	shr r11, 3
-
-	;mov r9, [trama]
-	;and r9, 00111111b ; En r9 está 'funct'
-
-	;mov r7, [trama+1]
-	;and r7, 11111111b
-	;mov r8, [trama]
-	;and r8, 11111111b
-	;shl r7, 5
-	;shr r8, 3
-	;or r8, r7
-	;mov r10, r8
-	;shr r10, 3 ; En r10 está 'shamt'.
-
-	; ------ para tipo I (rs,rt,imm) ------
-	; se usa el mismo rs y rt
-
-	;mov r8, [trama+1]
-	;and r8, 11111111b
-	;shl r8, 8
-	;mov r7, [trama]
-	;and r7, 11111111b
-	;or r8, r7 ; En r8 está immediate.
-
-	; ------ para tipo J (address) ------
-
-	;mov r7, [trama+3]
-	;and r7, 11111111b
-	;shl r7, 24
-	;mov r6, [trama+2]
-	;and r6, 11111111b
-	;shl r6, 16
-	;mov r5, [trama+1]
-	;and r5, 11111111b
-	;shl r5, 8
-	;mov r4, [trama]
-	;and r4, 11111111b
-	;or r5, r4
-	;or r6, r5
-	;or r7, r6
-	;and r7, 0x0000000003ffffff ; En r7 está address.
-
-
-
 	mov rax, eax
+	separarJ rax
 	jmp decode
 
 _exit:
