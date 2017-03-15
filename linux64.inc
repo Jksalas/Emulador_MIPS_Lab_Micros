@@ -2,6 +2,16 @@ section .bss
 	digitSpace resb 100
 	digitSpacePos resb 8
 	printSpace resb 8
+	
+%macro printString
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, %1
+    mov rdx, %2
+    syscall
+%endmacro
+	
+	
 %macro print 1
 	mov rax, %1
 	mov [printSpace], rax
