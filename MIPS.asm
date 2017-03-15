@@ -308,6 +308,12 @@ decode:
 	cmp r14, 101011b                    ;compara con sw
 	je sw                               ;salta a .sw
 
+	jmp instnotfound                   ;si la instrucción no se
+		                                      ;encuentra en el set que
+		                                      ;maneja el procesador
+		                                      ;se ejecuta una rutina que
+		                                      ;lo informa en pantalla
+
 R:
 	separarR rax
 	cmp r9, 0x20          		          ;compara con op code, en este caso de add
@@ -328,8 +334,6 @@ R:
 	je srl                              ;salta a .srl
 	cmp r9, 0x22                        ;compara con sub
 	je resta                            ;salta a .resta
-
-
 
 	jmp instnotfound                   ;si la instrucción no se
 		                                      ;encuentra en el set que
