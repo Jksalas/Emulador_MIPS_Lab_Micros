@@ -122,6 +122,41 @@ section .bss
 	buffer: resb 2048
 	trama: resb 1
 
+	; -------------------- Reservación en memoria para registros MIPS --------------------
+	; De 4 bytes = 32 bits.
+	reg0: resb 4
+	reg1: resb 4
+	reg2: resb 4
+	reg3: resb 4
+	reg4: resb 4
+	reg5: resb 4
+	reg6: resb 4
+	reg7: resb 4
+	reg8: resb 4
+	reg9: resb 4
+	reg10: resb 4
+	reg11: resb 4
+	reg12: resb 4
+	reg13: resb 4
+	reg14: resb 4
+	reg15: resb 4
+	reg16: resb 4
+	reg17: resb 4
+	reg18: resb 4
+	reg19: resb 4
+	reg20: resb 4
+	reg21: resb 4
+	reg22: resb 4
+	reg23: resb 4
+	reg24: resb 4
+	reg25: resb 4
+	reg26: resb 4
+	reg27: resb 4
+	reg28: resb 4
+	reg29: resb 4
+	reg30: resb 4
+	reg31: resb 4
+
 	; -------------------- Imprimir registros --------------------
 	text resw 100 ;Reserva un espacio en memoria
 
@@ -237,6 +272,22 @@ end:
 	or r11, r10
 	mov r13, r11
 	shr r13, 3 ; En r13 está 'rs'.
+
+	mov r11, [trama+1] ; En r11 está 'rd'
+	and r11, 11111000b
+	shr r11, 3
+
+	mov r9, [trama]
+	and r9, 00111111b ; En r9 está 'funct'
+
+	mov r7, [trama+1]
+	mov r8, [trama]
+	shl r7, 5
+	shr r8, 3
+	or r8, r7
+	mov r10, r8
+	shr r10, 3 ; En r10 está 'shamt'.
+
 	jmp decode
 
 _exit:
@@ -360,7 +411,7 @@ decode:
 
 
 .nextinst:
-	
+
 
 ; -------------------- Error de instruccíon no encontrada --------------------
 .instnotfound:
