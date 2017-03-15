@@ -1,75 +1,6 @@
 %include "linux64.inc"
 %include "macros.inc"
 
-;							/* MACROS */
-
-%macro ASCIIaENTERO 1
-	and %1, 11111111b ; Guardar solo ultimos 8 bits
-	cmp %1, 96
-	ja %%elseL1
-	sub %1, 48
-	jmp %%end
-%%elseL1:
-	sub %1, 87
-%%end:
-%endmacro
-
-%macro HexMemoria 3
-	shl %1, 4
-	add %1, %2
-	mov [trama+%3], %1
-%endmacro
-
-%macro alu 1 ; 1 parámetro como "señal de ctrl".
-	mov rdx, %1 ; "OP Code" de ALU. Se guarda en rdx.
-%%and:
-	cmp rdx, 0 ; 0 = AND.
-	jne %%or ; Si no es, pasa a siguiente opción.
-	and rax, rcx ; rax (rs) AND rcx (rt).
-	jmp %%result ; Concluida la operación, pasa a resultado.
-%%or:
-	cmp rdx, 1 ; 1 = OR.
-	jne %%add ; Si no es, pasa a siguiente opción.
-	or rax, rcx ; rax (rs) OR rcx (rt).
-	jmp %%result ; Concluida la operación, pasa a resultado.
-%%add:
-	cmp rdx, 2 ; 2 = ADD.
-	jne %%substract ; Si no es, pasa a siguiente opción.
-	add rax, rcx ; rax (rs) + rcx (rt).
-	jmp %%result ; Concluida la operación, pasa a resultado.
-%%substract:
-	cmp rdx, 3; 3 = SUB.
-	jne %%set_on_less_than ; Si no es, pasa a siguiente opción.
-	sub rax, rcx ; rax (rs) - rcx (rt).
-	jmp %%result ; Concluida la operación, pasa a resultado.
-%%set_on_less_than:
-	cmp rdx, 4; 4 = SLTU.
-	jne %%nor ; Si no es, pasa a siguiente opción.
-	cmp rcx, rax
-	jg %%true  ; Si rcx (rt) > rax(rs).
-	jmp %%false ; Si no.
-	%%true:
-		mov rbx, 1b ; Un 1 en rbx (rd).
-		jmp %%end ; Se pasa a fin porque ya resultado está en rd.
-	%%false:
-		mov rbx, 0b ; Un 0 en rbx (rd).
-		jmp %%end ; Se pasa a fin porque ya resultado está en rd.
-%%nor:
-	cmp rdx, 5; 5 = NOR.
-	jne %%multiply ; Si no es, pasa a siguiente opción.
-	or rax, rcx ; rax (rs) OR rcx (rt).
-	not rax ; NOT rax (rs).
-	jmp %%result ; Concluida la operación, pasa a resultado.
-%%multiply:
-	cmp rdx, 6 ; 6 = MULT.
-	jne %%end ; Si no es, pasa a resultal sin hacer nada.
-	mul rcx ; rax (rs) * rcx (rt).
-	jmp %%result ; Concluida la operación, pasa a resultado.
-%%result: ; Las operaciones realizadas ponen su resultado en rax.
-	mov rbx, rax ; Mueve resultado de operación a rbx (rd).
-%%end: ; Etiqueta para casos de no hacer nada.
-%endmacro
-
 ;							/* Código */
 
 section .data
@@ -349,90 +280,90 @@ decode:
 	;sar r13, 26                         ;y se mueve a la derecha para dejar solo el código de operación
 
   cmp r14, 100000b                    ;compara con op code, en este caso de add
-	je .suma                            ;salta a la etiqueta correspondiente, en este caso .suma
+	je suma                            ;salta a la etiqueta correspondiente, en este caso .suma
 	cmp r14, 000000b                    ;compara con addu
-	je .sumau                           ;salta a .sumau
+	je sumau                           ;salta a .sumau
 	cmp r14, 001000b                    ;compara con addi
-	je .sumai                           ;salta a .sumai
+	je sumai                           ;salta a .sumai
 	cmp r14, 001001b                    ;compara con addiu
-	je .sumaiu                          ;salta a .sumaiu
+	je sumaiu                          ;salta a .sumaiu
 	cmp r14, 100100b                   ;compara con and
-	je .y                               ;salta a .y
+	je y                               ;salta a .y
 	cmp r14, 001100b                    ;compara con andi
-	je .yi                              ;salta a .y
+	je yi                              ;salta a .y
 	cmp r14, 000100b                   ;compara con beq
-	je .beq                             ;salta a .beq
+	je beq                             ;salta a .beq
 	cmp r14, 000101b                    ;compara con bne
-	je .bne                             ;salta a .bne
+	je bne                             ;salta a .bne
 	cmp r14, 000010b                    ;compara con j
-	je .j                               ;salta a .j
+	je j                               ;salta a .j
 	cmp r14, 000011b                    ;compara con jal
-	je .jandl                           ;salta a .jandl
+	je jandl                           ;salta a .jandl
 	cmp r14, 001000b                    ;compara con jr
-	je .jr                              ;salta a .jr
+	je jr                              ;salta a .jr
 	cmp r14, 100011b                    ;compara con lw
-	je .lw                              ;salta a .lw
+	je lw                              ;salta a .lw
 	cmp r14, 011000b                    ;compara con mult
-	je .mult                            ;salta a .mult
+	je mult                            ;salta a .mult
 	cmp r14, 100111b                    ;compara con nor
-	je .nor                             ;salta a .nor
+	je nor                             ;salta a .nor
 	cmp r14, 100101b                    ;compara con or
-	je .o                               ;salta a .o
+	je o                               ;salta a .o
 	cmp r14, 001101b                    ;compara con ori
-	je .ori                             ;salta a .ori
+	je ori                             ;salta a .ori
 	cmp r14, 101010b                    ;compara con slt
-	je .slt                             ;salta a .slt
+	je slt                             ;salta a .slt
 	cmp r14, 001010b                    ;compara con slti
-	je .slti                            ;salta a .slti
+	je slti                            ;salta a .slti
 	cmp r14, 001001b                    ;compara con sltiu
-	je .sltiu                           ;salta a .sltiu
+	je sltiu                           ;salta a .sltiu
 	cmp r14, 101001b                    ;compara con sltu
-	je .sltu                            ;salta a .sltu
+	je sltu                            ;salta a .sltu
 	cmp r14, 000000b                    ;compara con sll
-	je .sll                             ;salta a .sll
+	je sll                             ;salta a .sll
 	cmp r14, 000010b                    ;compara con srl
-	je .srl                             ;salta a .srl
+	je srl                             ;salta a .srl
 	cmp r14, 100010b                    ;compara con sub
-	je .resta                           ;salta a .resta
+	je resta                           ;salta a .resta
 	cmp r14, 100011b                    ;compara con subu
-	je .restau                          ;salta a .restau
+	je restau                          ;salta a .restau
 	cmp r14, 101011b                    ;compara con sw
-	je .sw                              ;salta a .sw
+	je sw                              ;salta a .sw
 
-	jmp .instnotfound                   ;si la instrucción no se
+	jmp instnotfound                   ;si la instrucción no se
 		                                      ;encuentra en el set que
 		                                      ;maneja el procesador
 		                                      ;se ejecuta una rutina que
 		                                      ;lo informa en pantalla
 
 ; -------------------- Rutinas correspondientes a cada inst --------------------
-.suma:
+suma:
 
-.sumau:
+sumau:
 	alu 2 ; suma rax y rcx. resultado en rbx.
 	reg_mips r11
 	mov [rsi], rbx ; Mueve resultado a registro mips rd.
-.sumai:
+sumai:
 
-.sumaiu:
+sumaiu:
 
-.y:
+y:
 	alu 0
 	reg_mips r11
 	mov [rsi], rbx ; Mueve resultado a registro mips rd.
-.yi:
+yi:
 
-.beq:
+beq:
 
-.bne:
+bne:
 
-.j:
+j:
 
-.jandl:
+jandl:
 
-.jr:
+jr:
 
-.lw:
+lw:
 	sign_ext r8															;Se toma el inmediato y se extiende el signo
 	reg_mips r13														;se utiliza la macro para obtener el valor y dirección de Rs
 	add r13, r8															;se suman ambos valores para calcular la dirección de memoria
@@ -445,41 +376,41 @@ decode:
 	reg_mips r12
 	mov [rsi], rax													;se guarda el valor sacado de memoria de datos al registro destino Rt
 
-.mult:
+mult:
 	alu 6
 	reg_mips r11
 	mov [rsi], rbx ; Mueve resultado a registro mips rd.
-.nor:
+nor:
 	alu 5
 	reg_mips r11
 	mov [rsi], rbx ; Mueve resultado a registro mips rd.
-.o:
+o:
 	alu 1
 	reg_mips r11
 	mov [rsi], rbx ; Mueve resultado a registro mips rd.
-.ori:
+ori:
 
-.slt:
+slt:
 
-.slti:
+slti:
 
-.sltiu:
+sltiu:
 
-.sltu:
+sltu:
 	alu 4
 	reg_mips r11
 	mov [rsi], rbx ; Mueve resultado a registro mips rd.
-.sll:
+sll:
 
-.srl:
+srl:
 
-.resta:
+resta:
 
-.restau:
+restau:
 	alu 3
 	reg_mips r11
 	mov [rsi], rbx ; Mueve resultado a registro mips rd.
-.sw:
+sw:
 	sign_ext r8															;Se toma el inmediato y se extiende el signo
 	reg_mips r13														;se utiliza la macro para obtener el valor y dirección de Rs
 	add r13, r8															;se suman ambos valores para calcular la dirección de memoria
@@ -496,11 +427,11 @@ memoverflow:
 	printString memmax, lmemmax
 
 
-.nextinst:
+nextinst:
 
 
 ; -------------------- Error de instruccíon no encontrada --------------------
-.instnotfound:
+instnotfound:
 							printString nfound, lnfound
 
 ; -------------------- Imprimir registros --------------------
