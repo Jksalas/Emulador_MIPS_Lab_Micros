@@ -306,12 +306,15 @@ suma:
 	alu 2
 	reg_mips r11
 	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
+	mov ebx, 0
+	jmp determinarPC
 
 sumau:
 	alu 2 																	; suma rax y rcx. resultado en rbx.
 	reg_mips r11
 	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
-
+	mov ebx, 0
+	jmp determinarPC
 sumai:
 	separarI rax
 	reg_mips r13
@@ -321,7 +324,8 @@ sumai:
 	alu 2
 	reg_mips r12
 	mov[rsi], rbx
-
+	mov ebx, 0
+	jmp determinarPC
 sumaiu:
 	separarI rax
 	reg_mips r13
@@ -331,12 +335,14 @@ sumaiu:
 	alu 2
 	reg_mips r12
 	mov[rsi], rbx
-
+	mov ebx, 0
+	jmp determinarPC
 y:
 	alu 0
 	reg_mips r11
 	mov [rsi], rbx										 			; Mueve resultado a registro mips rd.
-
+	mov ebx, 0
+	jmp determinarPC
 yi:
 	separarI rax
 	reg_mips r13
@@ -346,7 +352,8 @@ yi:
 	alu 0 														 			; and rax y rcx
 	reg_mips r12 														; r12 es rt
 	mov [rsi], rbx  									 			; Mueve resultado a registro mips rt
-
+	mov ebx, 0
+	jmp determinarPC
 beq:
 																			 	  ;Compararacion para saber si se cumple el branch
 																				  ;brinca a calculo de nueva direccion branch
@@ -360,8 +367,8 @@ beq:
 	mov r12, rdi 														;Guarda en rcx el contenido de rt
 	cmp r13, r12											 			;Compara si rs y rt son iguales
 	je branch_new_addr
-	jmp nextinst
-
+	mov ebx, 0
+	jmp determinarPC
 bne:
 	separarI rax
 	reg_mips r13
@@ -370,8 +377,8 @@ bne:
 	mov r12, rdi 													  ;Guarda en rcx el contenido de rt
 	cmp r13, r12													  ;Compara si rs y rt son iguales
 	jne branch_new_addr
-	jmp nextinst
-
+	mov ebx, 0
+	jmp determinarPC
 	;Compararacion para saber si se cumple el branch
 	;brinca a calculo de nueva direccion branch
 	;branch_new_addr:
@@ -381,13 +388,38 @@ branch_new_addr:
 	branch_add r11;
 	mov ebx, 0;
 	mov ebx,r11
-
+	mov ebx, 0
+	jmp determinarPC
 j:
-
+	mov ebx,0x00000000
+	mov r14, [pc+r15+4]
+	and r14d,0xF0000000;
+	mov ebx,r14d; ebx nuevo PC
+	shr ebx,2;newPC=PC+4[31:28]
+	and eax,0x03FFFFFF;
+	add ebx,eax
+	shl ebx,2;
+	jmp determinarPC
 jandl:
-
+	mov ebx,0
+	mov r14, [pc+r15+4]
+	and r14d,0xF0000000;
+	mov ebx,r14d; ebx nuevo PC
+	shl ebx,26; newPC=PC+4[31:28]
+	and eax,0x03FFFFFF;
+	add ebx,eax;
+	shl ebx,2;
+	jmp determinarPC
 jr:
-
+	mov ebx,0
+	mov r14, [pc+r15+4]
+	and r14d,0xF0000000;
+	mov ebx,r14d; ebx nuevo PC
+	shl ebx,26; newPC=PC+4[31:28]
+	and eax,0x03FFFFFF;
+	add ebx,eax;
+	shl ebx,2;
+	jmp determinarPC
 lw:
 	separarI rax
 	sign_ext r11														;Se toma el inmediato y se extiende el signo
@@ -402,19 +434,26 @@ lw:
 	mov rax, [rax]													;se toma ese valor de memoria y se guarda de nuevo en rax
 	reg_mips r12
 	mov [rsi], rax													;se guarda el valor sacado de memoria de datos al registro destino Rt
-
+	mov ebx, 0
+	jmp determinarPC
 mult:
 	alu 6
 	reg_mips r11
 	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
+	mov ebx, 0
+	jmp determinarPC
 nor:
 	alu 5
 	reg_mips r11
 	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
+	mov ebx, 0
+	jmp determinarPC
 o:
 	alu 1
 	reg_mips r11
 	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
+	mov ebx, 0
+	jmp determinarPC
 ori:
 	separarI rax
 	reg_mips r13
@@ -424,17 +463,20 @@ ori:
 	alu 1 																	; or entre rax y rcx
 	reg_mips r12 														; r12 es rt
 	mov [rsi], rbx 													; Mueve resultado a registro mips rt
-
+	mov ebx, 0
+	jmp determinarPC
 slt:
 	alu 4
 	reg_mips r11
 	mov [rsi], rbx												  ; Mueve resultado a registro mips rd.
-
+	mov ebx, 0
+	jmp determinarPC
 sltu:
-		alu 4
-		reg_mips r11
-		mov [rsi], rbx 												; Mueve resultado a registro mips rd.
-
+	alu 4
+	reg_mips r11
+	mov [rsi], rbx 												; Mueve resultado a registro mips rd.
+	mov ebx, 0
+	jmp determinarPC
 slti:
 	separarI rax
 	reg_mips r13
@@ -444,7 +486,8 @@ slti:
 	alu 4
 	reg_mips r11
 	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
-
+	mov ebx, 0
+	jmp determinarPC
 sltiu:
 	separarI rax
 	reg_mips r13
@@ -454,7 +497,8 @@ sltiu:
 	alu 4
 	reg_mips r11
 	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
-
+	mov ebx, 0
+	jmp determinarPC
 
 sll:
 	reg_mips r12
@@ -462,24 +506,28 @@ sll:
 	shl r8, r10
 	reg_mips r11
 	mov [rsi], r8
-
+	mov ebx, 0
+	jmp determinarPC
 srl:
 	reg_mips r12
 	mov r8, rdi
 	shr r8, r10
 	reg_mips r11
 	mov [rsi], r8
-
+	mov ebx, 0
+	jmp determinarPC
 resta:
 	alu 3
 	reg_mips r11
 	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
-
+	mov ebx, 0
+	jmp determinarPC
 restau:
 	alu 3
 	reg_mips r11
 	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
-
+	mov ebx, 0
+	jmp determinarPC
 sw:
 	separarI rax
 	sign_ext r11														;Se toma el inmediato y se extiende el signo
@@ -493,7 +541,8 @@ sw:
 	add rax, datos 													;se suma a datos ya que es el valor inicial de memoria de datos en el computador real
 	reg_mips r12
 	mov [rax], rdi													;se toma el valor de rt y se guarda en la dirección calculada en rax
-
+	mov ebx, 0
+	jmp determinarPC
 ; -------------------- Error de dirección de memoria no encontrada --------------------
 memoverflow:
 	printString memmax, lmemmax
