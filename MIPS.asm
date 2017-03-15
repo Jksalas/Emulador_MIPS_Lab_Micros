@@ -263,7 +263,7 @@ end:
 
 
 
-
+	mov rax, eax
 	jmp decode
 
 _exit:
@@ -309,7 +309,7 @@ decode:
 	je sw                               ;salta a .sw
 
 R:
-	separarR eax
+	separarR rax
 	cmp r9, 0x20          		          ;compara con op code, en este caso de add
 	je suma                             ;salta a la etiqueta correspondiente, en este caso .suma
 	cmp r9, 0x24      		              ;compara con and
@@ -339,20 +339,37 @@ R:
 
 ; -------------------- Rutinas correspondientes a cada inst --------------------
 suma:
+	alu 2
+	reg_mips r11
+	mov [rsi], rbx ; Mueve resultado a registro mips rd.
 
 sumau:
 	alu 2 ; suma rax y rcx. resultado en rbx.
 	reg_mips r11
 	mov [rsi], rbx ; Mueve resultado a registro mips rd.
+
 sumai:
+	separarI rax
+	alu 2
+	reg_mips r12
+	mov[rsi], rbx
 
 sumaiu:
+	separarI rax
+	alu 2
+	reg_mips r12
+	mov[rsi], rbx
 
 y:
 	alu 0
 	reg_mips r11
 	mov [rsi], rbx ; Mueve resultado a registro mips rd.
+
 yi:
+	separarI rax ;
+	alu 0 ; and rax y rcx
+	reg_mips r12 ; r12 es rt
+	mov [rsi], rbx ; Mueve resultado a registro mips rt
 
 beq:
 
@@ -390,27 +407,54 @@ o:
 	reg_mips r11
 	mov [rsi], rbx ; Mueve resultado a registro mips rd.
 ori:
+	separarI rax
+	alu 1 ; or entre rax y rcx
+	reg_mips r12 ; r12 es rt
+	mov [rsi], rbx ; Mueve resultado a registro mips rt
 
 slt:
-
-slti:
-
-sltiu:
-
-sltu:
 	alu 4
 	reg_mips r11
 	mov [rsi], rbx ; Mueve resultado a registro mips rd.
-sll:
 
-srl:
+sltu:
+		alu 4
+		reg_mips r11
+		mov [rsi], rbx ; Mueve resultado a registro mips rd.
+
+slti:
+	separarI rax
+	alu 4
+	reg_mips r11
+	mov [rsi], rbx ; Mueve resultado a registro mips rd.
+
+sltiu:
+	separarI rax
+	alu 4
+	reg_mips r11
+	mov [rsi], rbx ; Mueve resultado a registro mips rd.
+
+
+sll: ;SeparaR me da rax = rs y rcx = immediate
+	shl  rax, rcx
+	reg_mips r11
+	mov [rsi], rax
+
+srl: ;SeparaR me da rax = rs y rcx = immediate
+	shr  rax, rcx
+	reg_mips r11
+	mov [rsi], rax
 
 resta:
+	alu 3
+	reg_mips r11
+	mov [rsi], rbx ; Mueve resultado a registro mips rd.
 
 restau:
 	alu 3
 	reg_mips r11
 	mov [rsi], rbx ; Mueve resultado a registro mips rd.
+
 sw:
 	sign_ext r8															;Se toma el inmediato y se extiende el signo
 	reg_mips r13														;se utiliza la macro para obtener el valor y dirección de Rs
