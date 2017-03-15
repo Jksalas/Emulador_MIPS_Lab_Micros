@@ -333,6 +333,8 @@ beq:
 	reg_mips r11
 	mov rcx, rdi 													  ;Guarda en rcx el contenido de rt
 	cmp r13, r11													  ;Compara si rs y rt son iguales
+	je branch_new_addr
+	jmp nextinst
 
 bne:
 	separarI rax
@@ -341,6 +343,8 @@ bne:
 	reg_mips r11
 	mov rcx, rdi 													  ;Guarda en rcx el contenido de rt
 	cmp r13, r11													  ;Compara si rs y rt son iguales
+	jne branch_new_addr
+	jmp nextinst
 
 	;Compararacion para saber si se cumple el branch
 	;brinca a calculo de nueva direccion branch
