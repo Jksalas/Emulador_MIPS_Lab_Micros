@@ -262,10 +262,6 @@ end:
 	;and r7, 0x0000000003ffffff ; En r7 está address.
 
 
-	reg_mips r13
-	mov rax, rdi ; rax es rs en la alu.
-	reg_mips r12
-	mov rcx, rdi ; rcx es rt en la alu.
 
 
 	jmp decode
@@ -277,59 +273,63 @@ _exit:
 
 ; -------------------- Decodificación --------------------
 decode:
-	;mov r13, r14                        ;Se copia la instrucción a otro registro
-	;sar r13, 26                         ;y se mueve a la derecha para dejar solo el código de operación
 
-  cmp r14, 100000b                    ;compara con op code, en este caso de add
-	je suma                            ;salta a la etiqueta correspondiente, en este caso .suma
-	cmp r14, 000000b                    ;compara con addu
-	je sumau                           ;salta a .sumau
+	cmp r14, 000000b                    ;compara con 0 para ver si es una instrucción tipo R
+	je R			                          ;en caso de serlo, salta a R
+
 	cmp r14, 001000b                    ;compara con addi
-	je sumai                           ;salta a .sumai
+	je sumai                            ;salta a .sumai
 	cmp r14, 001001b                    ;compara con addiu
-	je sumaiu                          ;salta a .sumaiu
-	cmp r14, 100100b                   ;compara con and
-	je y                               ;salta a .y
+	je sumaiu                           ;salta a .sumaiu
 	cmp r14, 001100b                    ;compara con andi
-	je yi                              ;salta a .y
-	cmp r14, 000100b                   ;compara con beq
-	je beq                             ;salta a .beq
+	je yi                               ;salta a .y
+	cmp r14, 000100b                    ;compara con beq
+	je beq                              ;salta a .beq
 	cmp r14, 000101b                    ;compara con bne
-	je bne                             ;salta a .bne
+	je bne                              ;salta a .bne
 	cmp r14, 000010b                    ;compara con j
-	je j                               ;salta a .j
+	je j                                ;salta a .j
 	cmp r14, 000011b                    ;compara con jal
-	je jandl                           ;salta a .jandl
+	je jandl                            ;salta a .jandl
 	cmp r14, 001000b                    ;compara con jr
-	je jr                              ;salta a .jr
+	je jr                               ;salta a .jr
 	cmp r14, 100011b                    ;compara con lw
-	je lw                              ;salta a .lw
-	cmp r14, 011000b                    ;compara con mult
-	je mult                            ;salta a .mult
-	cmp r14, 100111b                    ;compara con nor
-	je nor                             ;salta a .nor
-	cmp r14, 100101b                    ;compara con or
-	je o                               ;salta a .o
+	je lw                               ;salta a .lw
 	cmp r14, 001101b                    ;compara con ori
-	je ori                             ;salta a .ori
-	cmp r14, 101010b                    ;compara con slt
-	je slt                             ;salta a .slt
+	je ori                              ;salta a .ori
 	cmp r14, 001010b                    ;compara con slti
-	je slti                            ;salta a .slti
+	je slti                             ;salta a .slti
 	cmp r14, 001001b                    ;compara con sltiu
-	je sltiu                           ;salta a .sltiu
+	je sltiu                            ;salta a .sltiu
 	cmp r14, 101001b                    ;compara con sltu
-	je sltu                            ;salta a .sltu
-	cmp r14, 000000b                    ;compara con sll
-	je sll                             ;salta a .sll
-	cmp r14, 000010b                    ;compara con srl
-	je srl                             ;salta a .srl
-	cmp r14, 100010b                    ;compara con sub
-	je resta                           ;salta a .resta
+	je sltu                             ;salta a .sltu
 	cmp r14, 100011b                    ;compara con subu
-	je restau                          ;salta a .restau
+	je restau                           ;salta a .restau
 	cmp r14, 101011b                    ;compara con sw
-	je sw                              ;salta a .sw
+	je sw                               ;salta a .sw
+
+R:
+	separarR eax
+	cmp r9, 0x20          		          ;compara con op code, en este caso de add
+	je suma                             ;salta a la etiqueta correspondiente, en este caso .suma
+	cmp r9, 0x24      		              ;compara con and
+	je y                                ;salta a .y
+	cmp r9, 0x18  	                    ;compara con mult
+	je mult                             ;salta a .mult
+	cmp r9, 0x27	                      ;compara con nor
+	je nor                              ;salta a .nor
+	cmp r9, 0x25                        ;compara con or
+	je o                                ;salta a .o
+	cmp r9, 0x2a                        ;compara con slt
+	je slt                              ;salta a .slt
+	cmp r9, 0x00                        ;compara con sll
+	je sll                              ;salta a .sll
+	cmp r9, 0x02                        ;compara con srl
+	je srl                              ;salta a .srl
+	cmp r9, 0x22                        ;compara con sub
+	je resta                            ;salta a .resta
+
+
 
 	jmp instnotfound                   ;si la instrucción no se
 		                                      ;encuentra en el set que
