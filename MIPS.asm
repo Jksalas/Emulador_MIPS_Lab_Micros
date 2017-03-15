@@ -369,7 +369,8 @@ jr:
 lw:
 	separarI rax
 	sign_ext r11														;Se toma el inmediato y se extiende el signo
-	reg_mips r13														;se utiliza la macro para obtener el valor y dirección de Rs
+	reg_mips r13
+	mov r13, rdi														;se utiliza la macro para obtener el valor y dirección de Rs
 	add r13, r11														;se suman ambos valores para calcular la dirección de memoria
 	cmp r13, 100
 	ja memoverflow
@@ -434,14 +435,18 @@ sltiu:
 
 
 sll: ;SeparaR me da rax = rs y rcx = immediate
-	shl  rax, rcx
+	reg_mips r12
+	mov r8, rdi
+	shl r8, r10
 	reg_mips r11
-	mov [rsi], rax
+	mov [rsi], r8
 
 srl: ;SeparaR me da rax = rs y rcx = immediate
-	shr  rax, rcx
+	reg_mips r12
+	mov r8, rdi
+	shr r8, r10
 	reg_mips r11
-	mov [rsi], rax
+	mov [rsi], r8
 
 resta:
 	alu 3
@@ -456,7 +461,8 @@ restau:
 sw:
 	separarI rax
 	sign_ext r11														;Se toma el inmediato y se extiende el signo
-	reg_mips r13														;se utiliza la macro para obtener el valor y dirección de Rs
+	reg_mips r13
+	mov r13, rdi														;se utiliza la macro para obtener el valor y dirección de Rs
 	add r13, r11  													;se suman ambos valores para calcular la dirección de memoria
 	cmp r13, 100
 	ja memoverflow
