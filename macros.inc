@@ -4,16 +4,24 @@
 	ja %%elseL1
 	sub %1, 48
 	jmp %%end
-%%elseL1:
+	%%elseL1:
 	sub %1, 87
-%%end:
+	%%end:
 %endmacro
 
-
 %macro HexMemoria 3
+
 	shl %1, 4
 	add %1, %2
 	mov [trama+%3], %1
+
+%endmacro
+%macro HexPC 3
+
+	shl %1, 4
+	add %1, %2
+	mov [pc+%3], %1
+
 %endmacro
 
 
