@@ -272,7 +272,7 @@ and rdi, 0x0000000011111111
 ; realiza la extensión de signo y la guarda en rbp.
   mov rdx, %1
   mov rsi, %1
-  shr rdx, 14 ; se corre para analizar bit 15.
+  shr rdx, 15 ; se corre para analizar bit 15.
   cmp rdx, 0x0000000000000001
   jne %%cerillo
   mov rbp, 0x00000000ffff0000 ; Si es 1 el bit 15.
