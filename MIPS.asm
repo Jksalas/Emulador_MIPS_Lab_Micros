@@ -1,5 +1,6 @@
 %include "linux64.inc"
 %include "macros.inc"
+%include "Disectinst.asm"
 
 ;							/* Código */
 
