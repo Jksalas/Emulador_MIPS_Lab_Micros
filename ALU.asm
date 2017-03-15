@@ -67,7 +67,7 @@ section .text
 _start:
 	mov rax, 3
 	mov rcx, 4
-	alu 6 ; mult.
+	alu 6	 ; mult.
 
 	mov rax, 60	; Se carga la llamada 60d (sys_exit) en rax.
 	mov rdi, 0	; En rdi se carga un 0.
