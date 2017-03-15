@@ -1,42 +1,36 @@
-%macro ASCIIaENTERO 1
-	and %1, 11111111b ; Guardar solo ultimos 8 bits
-	cmp %1, 96
+%macro ASCIIaDECIMAL 1
+	and %1, 11111111b	; Guardar solo ultimos 8 bits
+	cmp %1, 96		; Comparar con 96
 	ja %%elseL1
-	sub %1, 48
+	sub %1, 48		; Si es decimal restar 48 (al codigo ASCII)
 	jmp %%end
 	%%elseL1:
-	sub %1, 87
+	sub %1, 87		; Si es hex restar 87 
 	%%end:
 %endmacro
 
 %macro HexMemoria 3
-
-	shl %1, 4
-	add %1, %2
-	mov [trama+%3], %1
-
+	shl %1, 4		; Hacer shift al registro 1
+	add %1, %2		; Sumar al registro 1 el registro 2 para guardar en memoria un byte
+	mov [trama+%3], %1	; Guardar en memoria la instruccion en la direccion dada
 %endmacro
-%macro HexPC 3
 
+%macro HexPC 3
 	shl %1, 4
 	add %1, %2
 	mov [pc+%3], %1
-
 %endmacro
 ;------------------LECTURA ROM.TXT--------------------------------
 section .data
-
 	file db "./ROM.txt", 0
 	len equ 10000
 
 section .bss 
-
 	buffer: resb 2048
 	trama: resb 2048
 	pc: resb 2048
 
 section .text
-
 global _start
 
 _start:
@@ -51,39 +45,38 @@ _start:
 	mov ecx, buffer 
 	mov edx, len    
 	int 80h 
-
 ;-----------PASAR DE ASCII A ENTERO----------------
 	mov r8, [buffer]
 	mov rax, 0
 	mov rbx, 0
 
 loop1:
-
 	inc rax
 
+;----------------LECTURA PC------------------------
 	mov r8, [buffer+rax]
-	ASCIIaENTERO r8
+	ASCIIaDECIMAL r8
 	inc rax
 	mov r9, [buffer+rax]
-	ASCIIaENTERO r9
+	ASCIIaDECIMAL r9
 	inc rax
 	mov r10, [buffer+rax]
-	ASCIIaENTERO r10
+	ASCIIaDECIMAL r10
 	inc rax
 	mov r11, [buffer+rax]
-	ASCIIaENTERO r11
+	ASCIIaDECIMAL r11
 	inc rax
 	mov r12, [buffer+rax]
-	ASCIIaENTERO r12
+	ASCIIaDECIMAL r12
 	inc rax
 	mov r13, [buffer+rax]
-	ASCIIaENTERO r13
+	ASCIIaDECIMAL r13
 	inc rax
 	mov r14, [buffer+rax]
-	ASCIIaENTERO r14
+	ASCIIaDECIMAL r14
 	inc rax
 	mov r15, [buffer+rax]
-	ASCIIaENTERO r15
+	ASCIIaDECIMAL r15
 	inc rax
 ;-------------GUARDAR PC EN MEMORIA------------------
 	HexPC r14,r15,rbx
@@ -97,32 +90,32 @@ loop1:
 
 	SUB rbx, 4
 	add rax, 2
-
+;------------------LECTURA INSTRUCCION---------------
 	mov r8, [buffer+rax]
-	ASCIIaENTERO r8
+	ASCIIaDECIMAL r8
 	inc rax
 	mov r9, [buffer+rax]
-	ASCIIaENTERO r9
+	ASCIIaDECIMAL r9
 	inc rax
 	mov r10, [buffer+rax]
-	ASCIIaENTERO r10
+	ASCIIaDECIMAL r10
 	inc rax
 	mov r11, [buffer+rax]
-	ASCIIaENTERO r11
+	ASCIIaDECIMAL r11
 	inc rax
 	mov r12, [buffer+rax]
-	ASCIIaENTERO r12
+	ASCIIaDECIMAL r12
 	inc rax
 	mov r13, [buffer+rax]
-	ASCIIaENTERO r13
+	ASCIIaDECIMAL r13
 	inc rax
 	mov r14, [buffer+rax]
-	ASCIIaENTERO r14
+	ASCIIaDECIMAL r14
 	inc rax
 	mov r15, [buffer+rax]
-	ASCIIaENTERO r15
+	ASCIIaDECIMAL r15
 	inc rax
-;-------------GUARDAR EN MEMORIA------------------
+;-------------GUARDAR INSTRUCCION EN MEMORIA------------------
 	HexMemoria r14,r15,rbx
 	inc rbx
 	HexMemoria r12,r13,rbx
