@@ -106,8 +106,10 @@ section .data
 	landre: equ $-andre
 	camila: db 0x1b, "[38;5;86m","     	  Camila Gómez Molina 2014089559", 0xa
 	lcamila: equ $-camila
+	nfound: db 0x1b, "[38;5;86m","	La instrucción no ha sido encontrada", 0xa
+	lnfound: equ $-nfound
 
-	; -------------------- LECTURA ROM.TXT --------------------
+	; -------------------- LECTURA ROM.TXsT --------------------
 	file db "./ROM.txt", 0
 	len equ 2048
 	n db 0
@@ -469,6 +471,7 @@ decode:
 
 ; -------------------- Error de instruccíon no encontrada --------------------
 .instnotfound:
+							printString nfound, lnfound
 
 ; -------------------- Imprimir registros --------------------
 ;printVal r8 ; Imprime registro del resultado.
