@@ -2,56 +2,6 @@
 %include "macros.inc"
 
 
-;							/* Sección de variables inicializadas */
-
-section .data
-
-	; -------------------- Mensajes --------------------
-	;NOTA: en caso de querer cambiar el color se modifica el #m.
-
-	bienvenido: db  0x1b,"[38;5;183m","************************** Bienvenido al Emulador MIPS *************************", 0xa, 0xa
-	lbienvenido: equ $-bienvenido
-	lab: db 0x1b,"[38;5;86m", "        EL-4313 - Lab Estructura de Microprocesadores", 0xa
-	llab: equ $-lab
-	sem: db 0x1b,"[38;5;86m", "        IS - 2017", 0xa
-	lsem: equ $-sem
-	buscando: db 0x1b,"[38;5;86m","        Buscando archivo ROM.txt", 0xa
-	lbuscando: equ $-buscando
-	encuentra: db 0x1b,"[38;5;86m","        Archivo ROM.txt encontrado", 0xa
-	lencuentra: equ $-encuentra
-	noencuentra: db 0x1b, "[38;5;86m","        Archivo ROM.txt no encontrado", 0xa
-	lnoencuentra: equ $-noencuentra
-	inicio:  db 0x1b, "[38;5;86m","        Presione enter para continuar", 0xa
-	linicio: equ $-inicio
-	exito: db 0x1b, "[38;5;86m","        Ejecución exitosa", 0xa
-	lexito: equ $-exito
-	fallo: db 0x1b, "[38;5;86m","        Ejecución fallida", 0xa
-	lfallo: equ $-fallo
-	final: db 0x1b, "[38;5;86m","        Realizado por:", 0xa
-	lfinal: equ $-final
-	juan: db 0x1b, "[38;5;86m","      	  Juan José Vásquez ", 0xa
-	ljuan: equ $-juan
-	joao: db 0x1b, "[38;5;86m","     	  Joao Kmil Salas Ramirez 2014096609", 0xa
-	ljoao: equ $-joao
-	steven: db 0x1b, "[38;5;86m","      	  Steven León Domínguez 2014138025", 0xa
-	lsteven: equ $-steven
-	andre: db 0x1b, "[38;5;86m","     	  André Martínez Arana 2014068625", 0xa
-	landre: equ $-andre
-	camila: db 0x1b, "[38;5;86m","     	  Camila Gómez Molina 2014089559", 0xa
-	lcamila: equ $-camila
-	nfound: db 0x1b, "[38;5;86m","	La instrucción no ha sido encontrada", 0xa
-	lnfound: equ $-nfound
-	memmax: db 0x1b, "[38;5;41m","	Error: La dirección es mayor a la capacidad de memoria", 0xa
-	lmemmax: equ $-memmax
-
-	; -------------------- LECTURA ROM.TXsT --------------------
-	file db "./ROM.txt", 0
-	len equ 2048
-	n db 0
-
-	; -------------------- Imprimir registros --------------------
-	filename: db "myfile.txt",0
-
 ;							/* Sección de variables sin inicializar */
 
 section .bss
@@ -212,41 +162,41 @@ _exit:
 ; -------------------- Decodificación --------------------
 decode:
 
-	cmp r14, 000000b                    ;compara con 0 para ver si es una instrucción tipo R
-	je R			                          ;en caso de serlo, salta a R
+	cmp r14, 000000b                        ;compara con 0 para ver si es una instrucción tipo R
+	je R			                              ;en caso de serlo, salta a R
 
-	cmp r14, 001000b                    ;compara con addi
-	je sumai                            ;salta a .sumai
-	cmp r14, 001001b                    ;compara con addiu
-	je sumaiu                           ;salta a .sumaiu
-	cmp r14, 001100b                    ;compara con andi
-	je yi                               ;salta a .y
-	cmp r14, 000100b                    ;compara con beq
-	je beq                              ;salta a .beq
-	cmp r14, 000101b                    ;compara con bne
-	je bne                              ;salta a .bne
-	cmp r14, 000010b                    ;compara con j
-	je j                                ;salta a .j
-	cmp r14, 000011b                    ;compara con jal
-	je jandl                            ;salta a .jandl
-	cmp r14, 001000b                    ;compara con jr
-	je jr                               ;salta a .jr
-	cmp r14, 100011b                    ;compara con lw
-	je lw                               ;salta a .lw
-	cmp r14, 001101b                    ;compara con ori
-	je ori                              ;salta a .ori
-	cmp r14, 001010b                    ;compara con slti
-	je slti                             ;salta a .slti
-	cmp r14, 001001b                    ;compara con sltiu
-	je sltiu                            ;salta a .sltiu
-	cmp r14, 101001b                    ;compara con sltu
-	je sltu                             ;salta a .sltu
-	cmp r14, 100011b                    ;compara con subu
-	je restau                           ;salta a .restau
-	cmp r14, 101011b                    ;compara con sw
-	je sw                               ;salta a .sw
+	cmp r14, 001000b                        ;compara con addi
+	je sumai                                ;salta a .sumai
+	cmp r14, 001001b                        ;compara con addiu
+	je sumaiu               	              ;salta a .sumaiu
+	cmp r14, 001100b    		                ;compara con andi
+	je yi            		                    ;salta a .y
+	cmp r14, 000100b                		    ;compara con beq
+	je beq                      		        ;salta a .beq
+	cmp r14, 000101b        		            ;compara con bne
+	je bne              		                ;salta a .bne
+	cmp r14, 000010b 		                    ;compara con j
+	je j                		                ;salta a .j
+	cmp r14, 000011b                		    ;compara con jal
+	je jandl                    		        ;salta a .jandl
+	cmp r14, 001000b        		            ;compara con jr
+	je jr               		                ;salta a .jr
+	cmp r14, 100011b 		                    ;compara con lw
+	je lw                             		  ;salta a .lw
+	cmp r14, 001101b              		      ;compara con ori
+	je ori                    		          ;salta a .ori
+	cmp r14, 001010b                  		  ;compara con slti
+	je slti                       		      ;salta a .slti
+	cmp r14, 001001b          		          ;compara con sltiu
+	je sltiu              		              ;salta a .sltiu
+	cmp r14, 101001b  		                  ;compara con sltu
+	je sltu        		                      ;salta a .sltu
+	cmp r14, 100011b                  		  ;compara con subu
+	je restau                     		      ;salta a .restau
+	cmp r14, 101011b          		          ;compara con sw
+	je sw                 		              ;salta a .sw
 
-	jmp instnotfound                   ;si la instrucción no se
+	jmp instnotfound 			                  ;si la instrucción no se
 		                                      ;encuentra en el set que
 		                                      ;maneja el procesador
 		                                      ;se ejecuta una rutina que
@@ -254,26 +204,26 @@ decode:
 
 R:
 	separarR rax
-	cmp r9, 0x20          		          ;compara con op code, en este caso de add
-	je suma                             ;salta a la etiqueta correspondiente, en este caso .suma
-	cmp r9, 0x24      		              ;compara con and
-	je y                                ;salta a .y
-	cmp r9, 0x18  	                    ;compara con mult
-	je mult                             ;salta a .mult
-	cmp r9, 0x27	                      ;compara con nor
-	je nor                              ;salta a .nor
-	cmp r9, 0x25                        ;compara con or
-	je o                                ;salta a .o
-	cmp r9, 0x2a                        ;compara con slt
-	je slt                              ;salta a .slt
-	cmp r9, 0x00                        ;compara con sll
-	je sll                              ;salta a .sll
-	cmp r9, 0x02                        ;compara con srl
-	je srl                              ;salta a .srl
-	cmp r9, 0x22                        ;compara con sub
-	je resta                            ;salta a .resta
+	cmp r9, 0x20  	 		       		          ;compara con op code, en este caso de add
+	je suma     		                        ;salta a la etiqueta correspondiente, en este caso .suma
+	cmp r9, 0x24      		              		;compara con and
+	je y                            		    ;salta a .y
+	cmp r9, 0x18  	            		        ;compara con mult
+	je mult                 		            ;salta a .mult
+	cmp r9, 0x27	      		                ;compara con nor
+	je nor          		                    ;salta a .nor
+	cmp r9, 0x25 		                        ;compara con or
+	je o                          		      ;salta a .o
+	cmp r9, 0x2a              		          ;compara con slt
+	je slt                		              ;salta a .slt
+	cmp r9, 0x00         	             		  ;compara con sll
+	je sll                            		  ;salta a .sll
+	cmp r9, 0x02                        		;compara con srl
+	je srl                              		;salta a .srl
+	cmp r9, 0x22                        		;compara con sub
+	je resta                          		  ;salta a .resta
 
-	jmp instnotfound                    ;si la instrucción no se
+	jmp instnotfound                    		;si la instrucción no se
 		                                      ;encuentra en el set que
 		                                      ;maneja el procesador
 		                                      ;se ejecuta una rutina que
@@ -283,19 +233,19 @@ R:
 suma:
 	alu 2
 	reg_mips r11
-	mov [rsi], rbx 											; Mueve resultado a registro mips rd.
+	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
 
 sumau:
-	alu 2 ; suma rax y rcx. resultado en rbx.
+	alu 2 																	; suma rax y rcx. resultado en rbx.
 	reg_mips r11
-	mov [rsi], rbx ; Mueve resultado a registro mips rd.
+	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
 
 sumai:
 	separarI rax
 	reg_mips r13
-	mov rax, rdi ; rax es rs en la alu.
+	mov rax, rdi 														; rax es rs en la alu.
 	reg_mips r11
-	mov rcx, rdi ; rcx es rt en la alu.
+	mov rcx, rdi 														; rcx es rt en la alu.
 	alu 2
 	reg_mips r12
 	mov[rsi], rbx
@@ -303,9 +253,9 @@ sumai:
 sumaiu:
 	separarI rax
 	reg_mips r13
-	mov rax, rdi ; rax es rs en la alu.
+	mov rax, rdi													  ; rax es rs en la alu.
 	reg_mips r11
-	mov rcx, rdi ; rcx es rt en la alu.
+	mov rcx, rdi 														; rcx es rt en la alu.
 	alu 2
 	reg_mips r12
 	mov[rsi], rbx
@@ -313,30 +263,30 @@ sumaiu:
 y:
 	alu 0
 	reg_mips r11
-	mov [rsi], rbx ; Mueve resultado a registro mips rd.
+	mov [rsi], rbx										 			; Mueve resultado a registro mips rd.
 
 yi:
-	separarI rax ;
+	separarI rax
 	reg_mips r13
-	mov rax, rdi ; rax es rs en la alu.
+	mov rax, rdi 											 			; rax es rs en la alu.
 	reg_mips r11
-	mov rcx, rdi ; rcx es rt en la alu.
-	alu 0 ; and rax y rcx
-	reg_mips r12 ; r12 es rt
-	mov [rsi], rbx ; Mueve resultado a registro mips rt
+	mov rcx, rdi														; rcx es rt en la alu.
+	alu 0 														 			; and rax y rcx
+	reg_mips r12 														; r12 es rt
+	mov [rsi], rbx  									 			; Mueve resultado a registro mips rt
 
 beq:
-	;Compararacion para saber si se cumple el branch
-	;brinca a calculo de nueva direccion branch
-	;branch_new_addr
-		; si no se cumple, pc+4
+																			 	  ;Compararacion para saber si se cumple el branch
+																				  ;brinca a calculo de nueva direccion branch
+																				  ;branch_new_addr
+																					 ; si no se cumple, pc+4
 
 	separarI rax
 	reg_mips r13
-	mov r13, rdi													  ;Guarda en rax el contenido de rs
+	mov r13, rdi														;Guarda en rax el contenido de rs
 	reg_mips r12
-	mov r12, rdi 													  ;Guarda en rcx el contenido de rt
-	cmp r13, r12													  ;Compara si rs y rt son iguales
+	mov r12, rdi 														;Guarda en rcx el contenido de rt
+	cmp r13, r12											 			;Compara si rs y rt son iguales
 	je branch_new_addr
 	jmp nextinst
 
@@ -384,64 +334,64 @@ lw:
 mult:
 	alu 6
 	reg_mips r11
-	mov [rsi], rbx ; Mueve resultado a registro mips rd.
+	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
 nor:
 	alu 5
 	reg_mips r11
-	mov [rsi], rbx ; Mueve resultado a registro mips rd.
+	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
 o:
 	alu 1
 	reg_mips r11
-	mov [rsi], rbx ; Mueve resultado a registro mips rd.
+	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
 ori:
 	separarI rax
 	reg_mips r13
-	mov rax, rdi ; rax es rs en la alu.
+	mov rax, rdi 														; rax es rs en la alu.
 	reg_mips r11
-	mov rcx, rdi ; rcx es rt en la alu.
-	alu 1 ; or entre rax y rcx
-	reg_mips r12 ; r12 es rt
-	mov [rsi], rbx ; Mueve resultado a registro mips rt
+	mov rcx, rdi 														; rcx es rt en la alu.
+	alu 1 																	; or entre rax y rcx
+	reg_mips r12 														; r12 es rt
+	mov [rsi], rbx 													; Mueve resultado a registro mips rt
 
 slt:
 	alu 4
 	reg_mips r11
-	mov [rsi], rbx ; Mueve resultado a registro mips rd.
+	mov [rsi], rbx												  ; Mueve resultado a registro mips rd.
 
 sltu:
 		alu 4
 		reg_mips r11
-		mov [rsi], rbx ; Mueve resultado a registro mips rd.
+		mov [rsi], rbx 												; Mueve resultado a registro mips rd.
 
 slti:
 	separarI rax
 	reg_mips r13
-	mov rax, rdi ; rax es rs en la alu.
+	mov rax, rdi 														; rax es rs en la alu.
 	reg_mips r11
-	mov rcx, rdi ; rcx es rt en la alu.
+	mov rcx, rdi 														; rcx es rt en la alu.
 	alu 4
 	reg_mips r11
-	mov [rsi], rbx ; Mueve resultado a registro mips rd.
+	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
 
 sltiu:
 	separarI rax
 	reg_mips r13
-	mov rax, rdi ; rax es rs en la alu.
+	mov rax, rdi 														; rax es rs en la alu.
 	reg_mips r11
-	mov rcx, rdi ; rcx es rt en la alu.
+	mov rcx, rdi 														; rcx es rt en la alu.
 	alu 4
 	reg_mips r11
-	mov [rsi], rbx ; Mueve resultado a registro mips rd.
+	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
 
 
-sll: ;SeparaR me da rax = rs y rcx = immediate
+sll:
 	reg_mips r12
 	mov r8, rdi
 	shl r8, r10
 	reg_mips r11
 	mov [rsi], r8
 
-srl: ;SeparaR me da rax = rs y rcx = immediate
+srl:
 	reg_mips r12
 	mov r8, rdi
 	shr r8, r10
@@ -451,12 +401,12 @@ srl: ;SeparaR me da rax = rs y rcx = immediate
 resta:
 	alu 3
 	reg_mips r11
-	mov [rsi], rbx ; Mueve resultado a registro mips rd.
+	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
 
 restau:
 	alu 3
 	reg_mips r11
-	mov [rsi], rbx ; Mueve resultado a registro mips rd.
+	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
 
 sw:
 	separarI rax
