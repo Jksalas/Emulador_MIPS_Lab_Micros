@@ -46,14 +46,13 @@ section .data
 	lsumariu: equ $-sumariu
 	sumaru: db 0x1b, "[38;5;41m","      	  Ejecutando addu $"
 	lsumaru: equ $-sumaru
-	and: db 0x1b, "[38;5;41m","      	  Ejecutando and $"
-	land: equ $-sumaru
+	lalaland: db 0x1b, "[38;5;41m","      	  Ejecutando and $"
+	lalalaland: equ $-sumaru
 	restar: db 0x1b, "[38;5;41m","      	  Ejecutando sub $"
 	lrestar: equ $-restar
 	multiplicar: db 0x1b, "[38;5;41m","      	  Ejecutando mult $"
 	lmultiplicar: equ $-multiplicar
-	multiplicar: db 0x1b, "[38;5;41m","      	  Ejecutando mult $"
-	lmultiplicar: equ $-multiplicar
+
 		; -------------------- LECTURA ROM.TXsT --------------------
 		file db "./ROM.txt", 0
 		len equ 2048
