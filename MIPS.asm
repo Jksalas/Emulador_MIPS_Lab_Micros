@@ -122,6 +122,7 @@ section .bss
 	; -------------------- LECTURA ROM.TXT --------------------
 	buffer: resb 2048
 	trama: resb 1
+	ok_andre: resb 4
 
 	; -------------------- Reservación en memoria para registros MIPS --------------------
 	; De 4 bytes = 32 bits.
