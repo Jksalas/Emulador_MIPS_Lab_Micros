@@ -124,7 +124,7 @@ loop1:
 	inc rbx
 	HexMemoria r8,r9,rbx
 	inc rbx
-
+;-------LOOP PARA BUSQUEDA DE ENTER O NULL (FIN ROM.TXT)------
 loop2:
 
 	mov r8, [buffer+rax]
