@@ -16,8 +16,8 @@ section .data
 	lencuentra: equ $-encuentra
 	noencuentra: db 0x1b, "[38;5;86m","        Archivo ROM.txt no encontrado", 0xa
 	lnoencuentra: equ $-noencuentra
-	mensajeinicio:  db 0x1b, "[38;5;86m","        Presione enter para continuar", 0xa
-	lmensajeinicio: equ $-mensajeinicio
+	inicio:  db 0x1b, "[38;5;86m","        Presione enter para continuar", 0xa
+	linicio: equ $-inicio
 	exito: db 0x1b, "[38;5;86m","        Ejecución exitosa", 0xa
 	lexito: equ $-exito
 	fallo: db 0x1b, "[38;5;86m","        Ejecución fallida", 0xa
@@ -47,7 +47,7 @@ section .data
 	sumaru: db 0x1b, "[38;5;41m","      	  Ejecutando addu $"
 	lsumaru: equ $-sumaru
 	lalaland: db 0x1b, "[38;5;41m","      	  Ejecutando and $"
-	lalalaland: equ $-sumaru
+	lalalaland: equ $-lalaland
 	restar: db 0x1b, "[38;5;41m","      	  Ejecutando sub $"
 	lrestar: equ $-restar
 	multiplicar: db 0x1b, "[38;5;41m","      	  Ejecutando mult $"
