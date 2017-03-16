@@ -38,20 +38,66 @@ section .data
 	lnfound: equ $-nfound
 	memmax: db 0x1b, "[38;5;41m","	Error: La dirección es mayor a la capacidad de memoria", 0xa
 	lmemmax: equ $-memmax
+
 	sumar: db 0x1b, "[38;5;41m","      	  Ejecutando add $"
 	lsumar: equ $-sumar
+	sumaru: db 0x1b, "[38;5;41m","      	  Ejecutando addu $"
+	lsumaru: equ $-sumaru
 	sumari: db 0x1b, "[38;5;41m","      	  Ejecutando addi $"
 	lsumari: equ $-sumari
 	sumariu: db 0x1b, "[38;5;41m","      	  Ejecutando addiu $"
 	lsumariu: equ $-sumariu
-	sumaru: db 0x1b, "[38;5;41m","      	  Ejecutando addu $"
-	lsumaru: equ $-sumaru
+
 	lalaland: db 0x1b, "[38;5;41m","      	  Ejecutando and $"
 	lalalaland: equ $-lalaland
-	restar: db 0x1b, "[38;5;41m","      	  Ejecutando sub $"
-	lrestar: equ $-restar
+	lalalandi: db 0x1b, "[38;5;41m","      	  Ejecutando andi $"
+	lalalalandi: equ $-lalalandi
+
+	branchequal: db 0x1b, "[38;5;41m","      	  Ejecutando beq $"
+	lbranchequal: equ $-branchequal
+	branchnequal: db 0x1b, "[38;5;41m","      	  Ejecutando bne $"
+	lbranchnequal: equ $-branchnequal
+
+	jump: db 0x1b, "[38;5;41m","      	  Ejecutando j $"
+	ljump: equ $-jump
+	jumpal: db 0x1b, "[38;5;41m","      	  Ejecutando jal $"
+	ljumpal: equ $-jumpal
+	jumpreg: db 0x1b, "[38;5;41m","      	  Ejecutando jr $"
+	ljumpreg: equ $-jumpreg
+
+	storew: db 0x1b, "[38;5;41m","      	  Ejecutando sw $"
+	lstorew: equ $-storew
+	loadw: db 0x1b, "[38;5;41m","      	  Ejecutando lw $"
+	lloadw: equ $-loadw
+
 	multiplicar: db 0x1b, "[38;5;41m","      	  Ejecutando mult $"
 	lmultiplicar: equ $-multiplicar
+
+	nordico: db 0x1b, "[38;5;41m","      	  Ejecutando nor $"
+	lnordico: equ $-nordico
+	orcito: db 0x1b, "[38;5;41m","      	  Ejecutando or $"
+	lorcito: equ $-orcito
+	oricito: db 0x1b, "[38;5;41m","      	  Ejecutando ori $"
+	loricito: equ $-oricito
+
+	slthan: db 0x1b, "[38;5;41m","      	  Ejecutando slt $"
+	lslthan: equ $-slthan
+	slthani: db 0x1b, "[38;5;41m","      	  Ejecutando slti $"
+	lslthani: equ $-slthani
+	slthanu: db 0x1b, "[38;5;41m","      	  Ejecutando sltu $"
+	lslthanu: equ $-slthanu
+	slthaniu: db 0x1b, "[38;5;41m","      	  Ejecutando sltiu $"
+	lslthaniu: equ $-slthaniu
+
+	shiftl: db 0x1b, "[38;5;41m","      	  Ejecutando sll $"
+	lshiftl: equ $-shiftl
+	shiftr: db 0x1b, "[38;5;41m","      	  Ejecutando srl $"
+	lshiftr: equ $-shiftr
+
+	restar: db 0x1b, "[38;5;41m","      	  Ejecutando sub $"
+	lrestar: equ $-restar
+	restaru: db 0x1b, "[38;5;41m","      	  Ejecutando subu $"
+	lrestaru: equ $-restaru
 
 		; -------------------- LECTURA ROM.TXsT --------------------
 		file db "./ROM.txt", 0

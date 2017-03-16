@@ -304,6 +304,7 @@ R:
 
 ; -------------------- Rutinas correspondientes a cada inst --------------------
 suma:
+	printString sumar, lsumar
 	alu 2
 	reg_mips r11
 	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
@@ -311,12 +312,15 @@ suma:
 	jmp determinarPC
 
 sumau:
+	printString sumaru, lsumaru
 	alu 2 																	; suma rax y rcx. resultado en rbx.
 	reg_mips r11
 	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
 	mov ebx, 0
 	jmp determinarPC
+
 sumai:
+	printString sumari, lsumari
 	separarI rax
 	reg_mips r13
 	mov rax, rdi 														; rax es rs en la alu.
@@ -327,7 +331,9 @@ sumai:
 	mov[rsi], rbx
 	mov ebx, 0
 	jmp determinarPC
+
 sumaiu:
+	printString sumariu, lsumariu
 	separarI rax
 	reg_mips r13
 	mov rax, rdi													  ; rax es rs en la alu.
@@ -338,13 +344,17 @@ sumaiu:
 	mov[rsi], rbx
 	mov ebx, 0
 	jmp determinarPC
+
 y:
+	printString lalaland, lalalaland
 	alu 0
 	reg_mips r11
 	mov [rsi], rbx										 			; Mueve resultado a registro mips rd.
 	mov ebx, 0
 	jmp determinarPC
+
 yi:
+	printString lalalandi, lalalalandi
 	separarI rax
 	reg_mips r13
 	mov rax, rdi 											 			; rax es rs en la alu.
@@ -355,12 +365,12 @@ yi:
 	mov [rsi], rbx  									 			; Mueve resultado a registro mips rt
 	mov ebx, 0
 	jmp determinarPC
-beq:
+
 																			 	  ;Compararacion para saber si se cumple el branch
 																				  ;brinca a calculo de nueva direccion branch
 																				  ;branch_new_addr
-																					 ; si no se cumple, pc+4
-
+beq:
+	printString 	branchequal, lbranchequal																			; si no se cumple, pc+4
 	separarI rax
 	reg_mips r13
 	mov r13, rdi														;Guarda en rax el contenido de rs
@@ -370,7 +380,9 @@ beq:
 	je branch_new_addr
 	mov ebx, 0
 	jmp determinarPC
+
 bne:
+	printString branchnequal, lbranchnequal
 	separarI rax
 	reg_mips r13
 	mov r13, rdi													  ;Guarda en rax el contenido de rs
@@ -391,7 +403,9 @@ branch_new_addr:
 	mov ebx,r11d
 	mov ebx, 0
 	jmp determinarPC
+
 j:
+	printString jump, ljump
 	mov ebx,0x00000000
 	mov r14, [pc+r15+4]
 	and r14d,0xF0000000;
@@ -401,7 +415,9 @@ j:
 	add ebx,eax
 	shl ebx,2;
 	jmp determinarPC
+
 jandl:
+	printString jumpal, ljumpal
 	mov ebx,0
 	mov r14, [pc+r15+4]
 	and r14d,0xF0000000;
@@ -411,7 +427,9 @@ jandl:
 	add ebx,eax;
 	shl ebx,2;
 	jmp determinarPC
+
 jr:
+	printString jumpreg, ljumpreg
 	mov ebx,0
 	mov r14, [pc+r15+4]
 	and r14d,0xF0000000;
@@ -421,7 +439,9 @@ jr:
 	add ebx,eax;
 	shl ebx,2;
 	jmp determinarPC
+
 lw:
+	printString loadw, lloadw
 	separarI rax
 	sign_ext r11														;Se toma el inmediato y se extiende el signo
 	reg_mips r13
@@ -437,25 +457,33 @@ lw:
 	mov [rsi], rax													;se guarda el valor sacado de memoria de datos al registro destino Rt
 	mov ebx, 0
 	jmp determinarPC
+
 mult:
+	printString multiplicar, lmultiplicar
 	alu 6
 	reg_mips r11
 	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
 	mov ebx, 0
 	jmp determinarPC
+
 nor:
+	printString nordico, lnordico
 	alu 5
 	reg_mips r11
 	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
 	mov ebx, 0
 	jmp determinarPC
+
 o:
+	printString orcito, lorcito
 	alu 1
 	reg_mips r11
 	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
 	mov ebx, 0
 	jmp determinarPC
+
 ori:
+	printString oricito, loricito
 	separarI rax
 	reg_mips r13
 	mov rax, rdi 														; rax es rs en la alu.
@@ -466,19 +494,25 @@ ori:
 	mov [rsi], rbx 													; Mueve resultado a registro mips rt
 	mov ebx, 0
 	jmp determinarPC
+
 slt:
+	printString slthan, lslthan
 	alu 4
 	reg_mips r11
 	mov [rsi], rbx												  ; Mueve resultado a registro mips rd.
 	mov ebx, 0
 	jmp determinarPC
+
 sltu:
+	printString slthanu, lslthanu
 	alu 4
 	reg_mips r11
 	mov [rsi], rbx 												; Mueve resultado a registro mips rd.
 	mov ebx, 0
 	jmp determinarPC
+
 slti:
+	printString slthani, lslthani
 	separarI rax
 	reg_mips r13
 	mov rax, rdi 														; rax es rs en la alu.
@@ -489,7 +523,9 @@ slti:
 	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
 	mov ebx, 0
 	jmp determinarPC
+
 sltiu:
+	printString slthaniu, lslthaniu
 	separarI rax
 	reg_mips r13
 	mov rax, rdi 														; rax es rs en la alu.
@@ -502,6 +538,7 @@ sltiu:
 	jmp determinarPC
 
 sll:
+	printString shiftl, lshiftl
 	reg_mips r12
 	mov r8, rdi
 	;shl r8, r10
@@ -509,7 +546,9 @@ sll:
 	mov [rsi], r8
 	mov ebx, 0
 	jmp determinarPC
+
 srl:
+	printString shiftr, lshiftr
 	reg_mips r12
 	mov r8, rdi
 ;	shr r8, r10
@@ -517,19 +556,25 @@ srl:
 	mov [rsi], r8
 	mov ebx, 0
 	jmp determinarPC
+
 resta:
+	printString restar, lrestar
 	alu 3
 	reg_mips r11
 	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
 	mov ebx, 0
 	jmp determinarPC
+
 restau:
+	printString restaru, lrestaru
 	alu 3
 	reg_mips r11
 	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
 	mov ebx, 0
 	jmp determinarPC
+
 sw:
+	printString	 storew, lstorew
 	separarI rax
 	sign_ext r11														;Se toma el inmediato y se extiende el signo
 	reg_mips r13
