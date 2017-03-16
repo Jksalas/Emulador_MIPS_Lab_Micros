@@ -221,6 +221,7 @@ finLectura:
 	mov ebx, 0;
 
 inicio:
+	mov eax, [trama+r15]
 	separarJ rax
 	jmp decode
 
@@ -276,6 +277,8 @@ R:
 	separarR rax
 	cmp r9, 0x20  	 		       		          ;compara con op code, en este caso de add
 	je suma     		                        ;salta a la etiqueta correspondiente, en este caso .suma
+	cmp r9, 0x21  	 		       		          ;compara con op code, en este caso de addu
+	je sumau     		                        ;salta a la etiqueta correspondiente, en este caso .sumau
 	cmp r9, 0x24      		              		;compara con and
 	je y                            		    ;salta a .y
 	cmp r9, 0x18  	            		        ;compara con mult
@@ -501,7 +504,7 @@ sltiu:
 sll:
 	reg_mips r12
 	mov r8, rdi
-	shl r8, r10
+	;shl r8, r10
 	reg_mips r11
 	mov [rsi], r8
 	mov ebx, 0
@@ -509,7 +512,7 @@ sll:
 srl:
 	reg_mips r12
 	mov r8, rdi
-	shr r8, r10
+;	shr r8, r10
 	reg_mips r11
 	mov [rsi], r8
 	mov ebx, 0

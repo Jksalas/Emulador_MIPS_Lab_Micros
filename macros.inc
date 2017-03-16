@@ -417,7 +417,7 @@ and rdi, 0x0000000011111111
 
 %macro separarJ 1                   ;Recibe un parametro donde vendrá la instrucción
   mov r14, %1                       ;en r14 está el OP Code.
-  and r14, 0xfc00000000000000
+  and r14, 0x00000000fc000000
 	shr r14, 26												;se corren para dejar solo el opcode
   mov r13, %1                       ;en r13 se tendrá address
   and r13, 0x0000000003ffffff
