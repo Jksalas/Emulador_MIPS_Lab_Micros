@@ -1,6 +1,7 @@
 ;							/* Sección de variables sin inicializar */
 section .bss
 
+	; --------------------  --------------------
 	digitSpace resb 100
 	digitSpacePos resb 8
 	printSpace resb 8
@@ -160,7 +161,7 @@ section .bss
 %endmacro
 
 
-;
+; --------------------  --------------------
 STDIN_FILENO	equ	0
 STDOUT_FILENO	equ	1
 STDERR_FILENO	equ	2
