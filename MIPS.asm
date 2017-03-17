@@ -835,6 +835,7 @@ memoverflow:
 ; -------------------- Error de instruccíon no encontrada --------------------
 instnotfound:
 	printString nfound, lnfound
+	exit
 ;	jmp determinarPC
 
 ; -------------------- Imprimir registros --------------------
