@@ -473,11 +473,12 @@ o:
 ori:
 	mov r14, rax ; Mueve instrucción a r14.
 	printString oricito, loricito ; Imprime mnemonico.
-	separarI r14
 	printVal r12 ; Imprime rt.
+	separarI r14
 	printString comma, lcomma
 	printString dolar, ldolar
-	printVal r13 ; Imprimer rs.
+	separarI r14
+	printVal r13 ; Imprime rs.
 	printString comma, lcomma
 	separarI r14
 	printVal r11 ; Imprime inmediato.
@@ -547,6 +548,7 @@ slti:
 	printVal r12 ; Imprime rt.
 	printString comma, lcomma
 	printString dolar, ldolar
+	separarI r14
 	printVal r13 ; Imprimer rs.
 	printString comma, lcomma
 	separarI r14
@@ -572,6 +574,7 @@ sltiu:
 	printVal r12 ; Imprime rt.
 	printString comma, lcomma
 	printString dolar, ldolar
+	separarI r14
 	printVal r13 ; Imprimer rs.
 	printString comma, lcomma
 	separarI r14
