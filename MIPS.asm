@@ -322,7 +322,7 @@ sumai:
 
 sumaiu:
 	mov r14, rax
-	printString sumari, lsumari
+	printString sumariu, lsumariu
 	separarI r14
 	printVal r12
 	printString comma, lcomma
