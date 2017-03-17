@@ -221,7 +221,8 @@ decode:
 		                                      ;lo informa en pantalla
 
 R:
-	separarR rax
+	mov r14, rax
+	separarR r14
 	cmp r9, 0x20  	 		       		          ;compara con op code, en este caso de add
 	je suma     		                        ;salta a la etiqueta correspondiente, en este caso .suma
 	cmp r9, 0x21  	 		       		          ;compara con op code, en este caso de addu
@@ -253,7 +254,7 @@ R:
 
 ; -------------------- Rutinas correspondientes a cada inst --------------------
 suma:
-	mov r14, rax
+;	mov r14, rax
 	printString sumar, lsumar
 	separarR r14
 	printVal r11
@@ -273,7 +274,7 @@ suma:
 	jmp determinarPC
 
 sumau:
-	mov r14, rax
+;	mov r14, rax
 	printString sumaru, lsumaru
 	separarR r14
 	printVal r11
@@ -299,6 +300,7 @@ sumai:
 	printVal r12
 	printString comma, lcomma
 	printString dolar, ldolar
+	separarI r14
 	printVal r13
 	printString comma, lcomma
 	separarI r14
@@ -338,7 +340,7 @@ sumaiu:
 	jmp determinarPC
 
 y:
-	mov r14, rax
+;	mov r14, rax
 	printString lalaland, lalalaland
 	separarR r14
 	printVal r11
@@ -475,7 +477,7 @@ jandl:
 	jmp determinarPC
 
 jr:
-	mov r14, rax
+;	mov r14, rax
 	printString jumpreg, ljumpreg
 	separarR r14
 	printVal r13
@@ -511,7 +513,7 @@ lw:
 	jmp determinarPC
 
 mult:
-	mov r14, rax ; Mueve la instrucción a r14.
+;	mov r14, rax ; Mueve la instrucción a r14.
 	printString multiplicar, lmultiplicar ; Imprime mnemonico.
 	separarR r14
 	printVal r13 ; Imprime rs.
@@ -521,6 +523,7 @@ mult:
 	printVal r12 ; Imprime rt.
 	printString retorno, lretorno
 	separarR r14
+
 
 	alu 6
 	reg_mips r11
@@ -538,7 +541,7 @@ nor:
 	jmp determinarPC
 
 o:
-	mov r14, rax ; Mueve la instrucción a r14.
+;	mov r14, rax ; Mueve la instrucción a r14.
 	printString orcito, lorcito ; Imprime mnemonico.
 	separarR r14
 	printVal r11 ; Imprime rd.
@@ -563,8 +566,8 @@ o:
 ori:
 	mov r14, rax ; Mueve instrucción a r14.
 	printString oricito, loricito ; Imprime mnemonico.
-	printVal r12 ; Imprime rt.
 	separarI r14
+	printVal r12 ; Imprime rt.
 	printString comma, lcomma
 	printString dolar, ldolar
 	separarI r14
@@ -586,7 +589,7 @@ ori:
 	jmp determinarPC
 
 slt:
-	mov r14, rax ; Mueve la instrucción a r14.
+;	mov r14, rax ; Mueve la instrucción a r14.
 	printString slthan, lslthan ; Imprime mnemonico.
 	separarR r14
 	printVal r11 ; Imprime rd.
@@ -609,7 +612,7 @@ slt:
 	jmp determinarPC
 
 sltu:
-	mov r14, rax ; Mueve la instrucción a r14.
+;	mov r14, rax ; Mueve la instrucción a r14.
 	printString slthanu, lslthanu ; Imprime mnemonico.
 	separarR r14
 	printVal r11 ; Imprime rd.
@@ -684,7 +687,7 @@ sltiu:
 	jmp determinarPC
 
 sll:
-	mov r14, rax ; Mueve la instrucción a r14.
+;	mov r14, rax ; Mueve la instrucción a r14.
 	printString shiftl, lshiftl ; Imprime mnemonico.
 	separarR r14
 	printVal r11 ; Imprime rd.
@@ -693,6 +696,7 @@ sll:
 	separarR r14
 	printVal r12 ; Imprime rt.
 	printString comma, lcomma
+	printString dolar, ldolar
 	separarR r14
 	printVal r10 ; Imprime shamt.
 	printString retorno, lretorno
@@ -709,7 +713,7 @@ sll:
 	jmp determinarPC
 
 srl:
-	mov r14, rax ; Mueve la instrucción a r14.
+;	mov r14, rax ; Mueve la instrucción a r14.
 	printString shiftr, lshiftr ; Imprime mnemonico.
 	separarR r14
 	printVal r11 ; Imprime rd.
@@ -718,6 +722,7 @@ srl:
 	separarR r14
 	printVal r12 ; Imprime rt.
 	printString comma, lcomma
+	printString dolar, ldolar
 	separarR r14
 	printVal r10 ; Imprime shamt.
 	printString retorno, lretorno
@@ -734,7 +739,7 @@ srl:
 	jmp determinarPC
 
 resta:
-	mov r14, rax ; Mueve la instrucción a r14.
+;	mov r14, rax ; Mueve la instrucción a r14.
 	printString restar, lrestar ; Imprime mnemonico.
 	separarR r14
 	printVal r11 ; Imprime rd.
@@ -757,7 +762,7 @@ resta:
 	jmp determinarPC
 
 restau:
-	mov r14, rax ; Mueve la instrucción a r14.
+;	mov r14, rax ; Mueve la instrucción a r14.
 	printString restaru, lrestaru ; Imprime mnemonico.
 	separarR r14
 	printVal r11 ; Imprime rd.
