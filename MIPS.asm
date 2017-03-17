@@ -522,7 +522,6 @@ mult:
 	printString retorno, lretorno
 	separarR r14
 
-
 	alu 6
 	reg_mips r11
 	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
@@ -694,7 +693,6 @@ sll:
 	separarR r14
 	printVal r12 ; Imprime rt.
 	printString comma, lcomma
-	printString dolar, ldolar
 	separarR r14
 	printVal r10 ; Imprime shamt.
 	printString retorno, lretorno
@@ -720,7 +718,6 @@ srl:
 	separarR r14
 	printVal r12 ; Imprime rt.
 	printString comma, lcomma
-	printString dolar, ldolar
 	separarR r14
 	printVal r10 ; Imprime shamt.
 	printString retorno, lretorno
