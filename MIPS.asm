@@ -328,15 +328,16 @@ sumai:
 	printString dolar, ldolar
 	printVal r13
 	printString comma, lcomma
+	separarI r14
 	printVal r11
 	printString retorno, lretorno
+	separarI r14
 	reg_mips r13
 	mov rax, rdi 														; rax es rs en la alu.
 	mov rcx, r11 														; rcx es rt en la alu.
 	alu 2
 	reg_mips r12
 	mov[rsi], rbx
-	printVal rbx
 	mov ebx, 0
 
 	jmp determinarPC
