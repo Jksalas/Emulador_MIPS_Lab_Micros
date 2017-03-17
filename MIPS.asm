@@ -171,6 +171,8 @@ finLectura:
 
 inicio:
 	mov eax, [trama+r15]
+	cmp rax, 0x0000000000000000
+	je instnotfound
 	separarJ rax
 	jmp decode
 
@@ -494,7 +496,21 @@ jr:
 	jmp determinarPC
 
 lw:
-	separarI rax
+	mov r14, rax ; Mueve instrucción a r14.
+	printString storew, lstorew ; Imprime mnemonico.
+	separarI r14
+	printVal r12 ; Imprime rt.
+	printString comma, lcomma
+	separarI r14
+	printVal r11 ; Imprime inmediato.
+	printString parentizq, lparentizq
+	printString dolar, ldolar
+	separarI r14
+	printVal r13 ; Imprime rs.
+	printString parentder, lparentder
+	printString retorno, lretorno
+	separarI r14
+
 	sign_ext r11														;Se toma el inmediato y se extiende el signo
 	reg_mips r13
 	mov r13, rdi														;se utiliza la macro para obtener el valor y dirección de Rs
@@ -816,12 +832,10 @@ sw:
 memoverflow:
 	printString memmax, lmemmax
 
-; -------------------- PC + 4 --------------------
-;nextinst:
-
 
 ; -------------------- Error de instruccíon no encontrada --------------------
 instnotfound:
-							printString nfound, lnfound
+	printString nfound, lnfound
+	jmp determinarPC
 
 ; -------------------- Imprimir registros --------------------
