@@ -2,59 +2,7 @@
 %include "macros.inc"
 
 
-;							/* Sección de variables sin inicializar */
-section .bss
 
-	; --------------------  --------------------
-	digitSpace resb 100
-	digitSpacePos resb 8
-	printSpace resb 8
-
-	; -------------------- LECTURA ROM.TXT --------------------
-	buffer: resb 2048
-	trama: resb 2048
-	pc: resb 2048
-
-	; -------------------- Reservación en memoria para registros MIPS --------------------
-	; De 4 bytes = 32 bits.
-	reg0: resb 4
-	reg1: resb 4
-	reg2: resb 4
-	reg3: resb 4
-	reg4: resb 4
-	reg5: resb 4
-	reg6: resb 4
-	reg7: resb 4
-	reg8: resb 4
-	reg9: resb 4
-	reg10: resb 4
-	reg11: resb 4
-	reg12: resb 4
-	reg13: resb 4
-	reg14: resb 4
-	reg15: resb 4
-	reg16: resb 4
-	reg17: resb 4
-	reg18: resb 4
-	reg19: resb 4
-	reg20: resb 4
-	reg21: resb 4
-	reg22: resb 4
-	reg23: resb 4
-	reg24: resb 4
-	reg25: resb 4
-	reg26: resb 4
-	reg27: resb 4
-	reg28: resb 4
-	reg29: resb 4
-	reg30: resb 4
-	reg31: resb 4
-
-	; -------------------- Reservación en memoria para memoria de datos MIPS --------------------
-	datos: resb 400
-
-	; -------------------- Imprimir registros --------------------
-	text resw 100 ;Reserva un espacio en memoria
 
 
 ;							/* Sección de código principal */
@@ -743,7 +691,7 @@ sltiu:
 	jmp determinarPC
 
 sll:
-;	mov r14, rax ; Mueve la instrucción a r14.
+	mov r14, rax ; Mueve la instrucción a r14.
 	printString shiftl, lshiftl ; Imprime mnemonico.
 	separarR r14
 	printVal r11 ; Imprime rd.
@@ -752,7 +700,6 @@ sll:
 	separarR r14
 	printVal r12 ; Imprime rt.
 	printString comma, lcomma
-	printString dolar, ldolar
 	separarR r14
 	printVal r10 ; Imprime shamt.
 	printString retorno, lretorno
@@ -795,7 +742,7 @@ srl:
 	jmp determinarPC
 
 resta:
-;	mov r14, rax ; Mueve la instrucción a r14.
+	mov r14, rax ; Mueve la instrucción a r14.
 	printString restar, lrestar ; Imprime mnemonico.
 	separarR r14
 	printVal r11 ; Imprime rd.
