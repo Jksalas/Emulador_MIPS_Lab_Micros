@@ -497,7 +497,7 @@ jr:
 
 lw:
 	mov r14, rax ; Mueve instrucción a r14.
-	printString storew, lstorew ; Imprime mnemonico.
+	printString loadw, lloadw ; Imprime mnemonico.
 	separarI r14
 	printVal r12 ; Imprime rt.
 	printString comma, lcomma
@@ -524,7 +524,6 @@ lw:
 	reg_mips r12
 	mov [rsi], rax													;se guarda el valor sacado de memoria de datos al registro destino Rt
 	mov ebx, 0
-	printString loadw, lloadw
 	jmp determinarPC
 
 mult:
