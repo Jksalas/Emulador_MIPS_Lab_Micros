@@ -1,16 +1,68 @@
+;							/* Sección de variables sin inicializar */
 section .bss
+
 	digitSpace resb 100
 	digitSpacePos resb 8
 	printSpace resb 8
 
+	; -------------------- LECTURA ROM.TXT --------------------
+	buffer: resb 2048
+	trama: resb 2048
+	pc: resb 2048
+
+	; -------------------- Reservación en memoria para registros MIPS --------------------
+	; De 4 bytes = 32 bits.
+	reg0: resb 4
+	reg1: resb 4
+	reg2: resb 4
+	reg3: resb 4
+	reg4: resb 4
+	reg5: resb 4
+	reg6: resb 4
+	reg7: resb 4
+	reg8: resb 4
+	reg9: resb 4
+	reg10: resb 4
+	reg11: resb 4
+	reg12: resb 4
+	reg13: resb 4
+	reg14: resb 4
+	reg15: resb 4
+	reg16: resb 4
+	reg17: resb 4
+	reg18: resb 4
+	reg19: resb 4
+	reg20: resb 4
+	reg21: resb 4
+	reg22: resb 4
+	reg23: resb 4
+	reg24: resb 4
+	reg25: resb 4
+	reg26: resb 4
+	reg27: resb 4
+	reg28: resb 4
+	reg29: resb 4
+	reg30: resb 4
+	reg31: resb 4
+
+	; -------------------- Reservación en memoria para memoria de datos MIPS --------------------
+	datos: resb 400
+
+	; -------------------- Imprimir registros --------------------
+	text resw 100 ;Reserva un espacio en memoria
+
+
+; Macro para imprimir strings en pantalla.
 %macro printString 2
-    mov rax, 1
-    mov rdi, 1
-    mov rsi, %1
-    mov rdx, %2
-    syscall
+  mov rax, 1
+  mov rdi, 1
+  mov rsi, %1
+  mov rdx, %2
+  syscall
 %endmacro
 
+
+; Macro para leer de teclado.
 %macro readString 2
 	mov rax,0	        ;sys_read
 	mov rdi,0	        ;std_input
@@ -19,7 +71,8 @@ section .bss
 	syscall
 %endmacro
 
-;Macro para limpiar pantalla
+
+; Macro para limpiar pantalla
 %macro cleanScreen 2 																				;recibe 2 parametros
 	mov rax,1																								  ;sys_write
 	mov rdi,1																									;std_out
@@ -28,6 +81,8 @@ section .bss
 	syscall
 %endmacro
 
+
+;
 %macro print 1
 	mov rax, %1
 	mov [printSpace], rax
@@ -48,9 +103,11 @@ section .bss
 	mov rax, SYS_EXIT
 	mov rdi, 0
 	syscall
-
 %endmacro
 
+
+; Macro para imprimir el valor decimal de
+;lo contenido en un registro.
 %macro printVal 1
 	mov rax, %1
 %%printRAX:
@@ -94,12 +151,16 @@ section .bss
 
 %endmacro
 
+
+; Macro para evitar error de segmentación.
 %macro exit 0
 	mov rax, SYS_EXIT
 	mov rdi, 0
 	syscall
 %endmacro
 
+
+;
 STDIN_FILENO	equ	0
 STDOUT_FILENO	equ	1
 STDERR_FILENO	equ	2

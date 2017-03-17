@@ -1,4 +1,4 @@
-
+;							/* Sección de variables sin inicializar */
 section .data
 
 	; -------------------- Mensajes --------------------
@@ -108,14 +108,16 @@ section .data
 	dolar: db 0x1b, "[38;5;41m","$"
 	ldolar: equ $-dolar
 
-		; -------------------- LECTURA ROM.TXsT --------------------
-		file db "./ROM.txt", 0
-		len equ 2048
-		n db 0
+	; -------------------- LECTURA ROM.TXsT --------------------
+	file db "./ROM.txt", 0
+	len equ 2048
+	n db 0
 
-		; -------------------- Imprimir registros --------------------
-		filename: db "myfile.txt",0
+	; -------------------- Imprimir registros --------------------
+	filename: db "myfile.txt",0
 
+
+; Macro para pasar de ascii a entero.
 %macro ASCIIaENTERO 1
 	and %1, 11111111b ; Guardar solo ultimos 8 bits
 	cmp %1, 96
@@ -127,21 +129,25 @@ section .data
 	%%end:
 %endmacro
 
-%macro HexMemoria 3
 
+;
+%macro HexMemoria 3
 	shl %1, 4
 	add %1, %2
 	mov [trama+%3], %1
-
 %endmacro
-%macro HexPC 3
 
+
+;
+%macro HexPC 3
 	shl %1, 4
 	add %1, %2
 	mov [pc+%3], %1
-
 %endmacro
 
+
+; Macro que simula el comportamiento de la ALU para
+;las instrucciones que interesan.
 %macro alu 1 ; 1 parámetro como "señal de ctrl".
 	mov rdx, %1 ; "OP Code" de ALU. Se guarda en rdx.
 %%and:
@@ -193,10 +199,10 @@ section .data
 %endmacro
 
 
-; Esta macro toma un los registros en los que están las direcciones de los
-; registros mips de la instrucción y le asigna a rsi la dirección correspondiente
-; en memoria de la PC y a rdi el dato contenido en dicha dirección.
-
+; Macro que toma un los registros en los que están las direcciones
+;de los registros mips de la instrucción y le asigna a rsi la
+;dirección correspondiente en memoria de la PC y a rdi el dato
+;contenido en dicha dirección.
 %macro reg_mips 1 ; 1 parámetro: registro donde está la dirección de rt, rs o rd.
 	mov rdx, %1
 	and rdx, 0x000000000000001f ; Aseguro que queden sólo los 5 bit de la dirección.
@@ -391,14 +397,13 @@ section .data
 	jne %%listo
 	mov rsi, reg31 ; Se guarda en rsi la dirección del registro mips.
 	mov rdi, [reg31] ; Se guarda en rdi el dato del reg31 (en memoria).
-
 %%listo:
-and rdi, 0x00000000ffffffff
+and rdi, 0x00000000ffffffff ; Máscara.
 %endmacro
 
 
+; Macro que realiza la extensión de signo y la guarda en r11.
 %macro sign_ext 1
-; realiza la extensión de signo y la guarda en r11.
   mov rdx, %1
   mov rsi, %1
   shr rdx, 15 ; se corre para analizar bit 15.
@@ -406,18 +411,16 @@ and rdi, 0x00000000ffffffff
   jne %%cerillo
   mov rbp, 0x00000000ffff0000 ; Si es 1 el bit 15.
   jmp %%see
-
 %%cerillo:
   mov rbp, 0x0000000000000000 ; Si es 0 el bit 15.
-
 %%see:
   or rbp, rsi ; Se agrega inmediato en la parte baja de rbp.
 	mov r11, rbp
 %endmacro
 
 
+; Macro que calcula branch address y la guarda en r11.
 %macro branch_add 1
-; calcula la branch address y la guarda en r11.
   mov rdx, %1
   mov rsi, %1
   shr rdx, 15 ; se corre para analizar bit 15.
@@ -425,17 +428,15 @@ and rdi, 0x00000000ffffffff
   jne %%cerillo
   mov rbp, 0x00000000fffc0000 ; Si es 1 el bit 15.
   jmp %%see
-
 %%cerillo:
   mov rbp, 0x0000000000000000 ; Si es 0 el bit 15.
-
 %%see:
   shl rsi, 2
   or rbp, rsi ; Se agrega inmediato con dos 0's al final.
 	mov r11, rbp
 %endmacro
 
-
+; Macro que separa la instrucción binaria en las partes del formato R.
 %macro separarR 1                   ;Recibe un parametro donde vendrá la instrucción
   mov r13, %1                       ;en r13 se tendrá el Rs
   mov r12, %1                       ;en r12 se tendrá el Rt
@@ -457,7 +458,7 @@ and rdi, 0x00000000ffffffff
   mov rcx, rdi ; rcx es rt en la alu.
 %endmacro
 
-
+; Macro que separa la instrucción binaria en las partes del formato I.
 %macro separarI 1                   ;Recibe un parametro donde vendrá la instrucción
   mov r13, %1                       ;en r13 se tendrá el Rs
   mov r12, %1                       ;en r12 se tendrá el Rt
@@ -469,7 +470,7 @@ and rdi, 0x00000000ffffffff
   and r11, 0x000000000000ffff       ;Se filtra todo lo que no es immediate
 %endmacro
 
-
+; Macro que separa la instrucción binaria en las partes del formato J.
 %macro separarJ 1                   ;Recibe un parametro donde vendrá la instrucción
   mov r14, %1                       ;en r14 está el OP Code.
   and r14, 0x00000000fc000000
