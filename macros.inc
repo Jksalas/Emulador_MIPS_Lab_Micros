@@ -105,6 +105,12 @@ section .data
 	comma: db 0x1b, "[38;5;41m",", "
 	lcomma: equ $-comma
 
+	parentizq: db 0x1b, "[38;5;41m","("
+	lparentizq: equ $-parentizq
+
+	parentder: db 0x1b, "[38;5;41m",")"
+	lparentder: equ $-parentder
+
 	dolar: db 0x1b, "[38;5;41m","$"
 	ldolar: equ $-dolar
 

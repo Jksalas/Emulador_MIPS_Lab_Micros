@@ -726,27 +726,41 @@ restau:
 	jmp determinarPC
 
 sw:
-	separarI rax
+	mov r14, rax ; Mueve instrucción a r14.
+	printString storew, lstorew ; Imprime mnemonico.
+	separarI r14
+	printVal r12 ; Imprime rt.
+	printString comma, lcomma
+	separarI r14
+	printVal r11 ; Imprime inmediato.
+	printString parentizq, lparentizq
+	printString dolar, ldolar
+	separarI r14
+	printVal r13 ; Imprime rs.
+	printString parentder, lparentder
+	printString retorno, lretorno
+	separarI r14
+
 	sign_ext r11														;Se toma el inmediato y se extiende el signo
-	reg_mips r13
-	mov r13, rdi														;se utiliza la macro para obtener el valor y dirección de Rs
+	reg_mips r13														;se utiliza la macro para obtener el valor y dirección de Rs
+	mov r13, rdi
 	add r13, r11  													;se suman ambos valores para calcular la dirección de memoria
-	cmp r13, 100
-	ja memoverflow
-	mov rax, 4															;se multiplica por 4 ya que la memoria se divide en bytes (palabras de 4*8bits)
-	mul r13
-	add rax, datos 													;se suma a datos ya que es el valor inicial de memoria de datos en el computador real
+	cmp r13, 99
+	ja memoverflow													;si se sobrepasa de las 100 palabras de memoria, imprime mensaje de error.
+	mov rax, 4
+	mul r13																	;se multiplica por 4 ya que la memoria se divide en bytes (palabras de 4*8bits)
+	add rax, datos 													;se suma a datos ya que es el valor inicial de memoria de datos en el computador real.
 	reg_mips r12
 	mov [rax], rdi													;se toma el valor de rt y se guarda en la dirección calculada en rax
 	mov ebx, 0
-	printString	 storew, lstorew
+
 	jmp determinarPC
 ; -------------------- Error de dirección de memoria no encontrada --------------------
 memoverflow:
 	printString memmax, lmemmax
 
 ; -------------------- PC + 4 --------------------
-nextinst:
+;nextinst:
 
 
 ; -------------------- Error de instruccíon no encontrada --------------------
