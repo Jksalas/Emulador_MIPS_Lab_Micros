@@ -1,4 +1,4 @@
-;							/* Sección de variables sin inicializar */
+;							/* Sección de variables iniciaizadas */
 section .data
 
 	; -------------------- Mensajes --------------------
@@ -436,6 +436,7 @@ and rdi, 0x00000000ffffffff ; Máscara.
 	mov r11, rbp
 %endmacro
 
+
 ; Macro que separa la instrucción binaria en las partes del formato R.
 %macro separarR 1                   ;Recibe un parametro donde vendrá la instrucción
   mov r13, %1                       ;en r13 se tendrá el Rs
@@ -458,6 +459,7 @@ and rdi, 0x00000000ffffffff ; Máscara.
   mov rcx, rdi ; rcx es rt en la alu.
 %endmacro
 
+
 ; Macro que separa la instrucción binaria en las partes del formato I.
 %macro separarI 1                   ;Recibe un parametro donde vendrá la instrucción
   mov r13, %1                       ;en r13 se tendrá el Rs
@@ -469,6 +471,7 @@ and rdi, 0x00000000ffffffff ; Máscara.
   shr r12, 16                       ;y se coloca al inicio del registro
   and r11, 0x000000000000ffff       ;Se filtra todo lo que no es immediate
 %endmacro
+
 
 ; Macro que separa la instrucción binaria en las partes del formato J.
 %macro separarJ 1                   ;Recibe un parametro donde vendrá la instrucción

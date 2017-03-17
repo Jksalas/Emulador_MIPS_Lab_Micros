@@ -15,11 +15,9 @@ _start:
 	printString sem, lsem
 	printString buscando, lbuscando
 
-;-----------------------LECTURA ROM.TXT--------------------------------
+; -----------------------LECTURA ROM.TXT--------------------------------
 
-
-
-;----------------ABRIR ROM.TXT---------------------
+; ----------------ABRIR ROM.TXT---------------------
 	mov ebx, file ; name of the file
 	mov eax, 5
 	mov ecx, 0
@@ -31,7 +29,7 @@ _start:
 	mov edx, len
 	int 80h
 
-;-----------PASAR DE ASCII A ENTERO----------------
+; -----------PASAR DE ASCII A ENTERO----------------
 	mov r8, [buffer]
 	mov rax, 0
 	mov rbx, 0
@@ -65,7 +63,8 @@ loop1:
 	mov r15, [buffer+rax]
 	ASCIIaENTERO r15
 	inc rax
-;-------------GUARDAR PC EN MEMORIA------------------
+
+; -------------GUARDAR PC EN MEMORIA------------------
 	HexPC r14,r15,rbx
 	inc rbx
 	HexPC r12,r13,rbx
@@ -102,7 +101,8 @@ loop1:
 	mov r15, [buffer+rax]
 	ASCIIaENTERO r15
 	inc rax
-;-------------GUARDAR EN MEMORIA------------------
+
+; -------------GUARDAR EN MEMORIA------------------
 	HexMemoria r14,r15,rbx
 	inc rbx
 	HexMemoria r12,r13,rbx
@@ -158,7 +158,6 @@ loopDeterminarPC:
 	jmp inicio
 
 loopEsMayor:
-
 
 	add r8d, eax
 	not r8d
