@@ -253,6 +253,19 @@ R:
 
 ; -------------------- Rutinas correspondientes a cada inst --------------------
 suma:
+	mov r14, rax
+	printString sumar, lsumar
+	separarR r14
+	printVal r11
+	printString comma, lcomma
+	printString dolar, ldolar
+	printVal r13
+	printString comma, lcomma
+	printString dolar, ldolar
+	separarR r14
+	printVal r12
+	printString retorno, lretorno
+	separarR r14
 	alu 2
 	reg_mips r11
 	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
@@ -261,6 +274,19 @@ suma:
 	jmp determinarPC
 
 sumau:
+	mov r14, rax
+	printString sumaru, lsumaru
+	separarR r14
+	printVal r11
+	printString comma, lcomma
+	printString dolar, ldolar
+	printVal r13
+	printString comma, lcomma
+	printString dolar, ldolar
+	separarR r14
+	printVal r12
+	printString retorno, lretorno
+	separarR r14
 	alu 2 																	; suma rax y rcx. resultado en rbx.
 	reg_mips r11
 	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
@@ -292,7 +318,18 @@ sumai:
 	jmp determinarPC
 
 sumaiu:
-	separarI rax
+	mov r14, rax
+	printString sumari, lsumari
+	separarI r14
+	printVal r12
+	printString comma, lcomma
+	printString dolar, ldolar
+	printVal r13
+	printString comma, lcomma
+	separarI r14
+	printVal r11
+	printString retorno, lretorno
+	separarI r14
 	reg_mips r13
 	mov rax, rdi													  ; rax es rs en la alu.
 	reg_mips r11
