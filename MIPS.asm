@@ -1,10 +1,6 @@
 %include "linux64.inc"
 %include "macros.inc"
 
-
-
-
-
 ;							/* Sección de código principal */
 
 section .text
@@ -459,7 +455,6 @@ j:
 	and eax,0x03FFFFFF;
 	add ebx,eax
 	shl ebx,2;
-	printString jump, ljump
 	jmp determinarPC
 
 jandl:
@@ -477,7 +472,6 @@ jandl:
 	and eax,0x03FFFFFF;
 	add ebx,eax;
 	shl ebx,2;
-	printString jumpal, ljumpal
 	jmp determinarPC
 
 jr:
@@ -495,7 +489,6 @@ jr:
 	and eax,0x03FFFFFF;
 	add ebx,eax;
 	shl ebx,2;
-	printString jumpreg, ljumpreg
 	jmp determinarPC
 
 lw:
@@ -691,7 +684,7 @@ sltiu:
 	jmp determinarPC
 
 sll:
-	mov r14, rax ; Mueve la instrucción a r14.
+;	mov r14, rax ; Mueve la instrucción a r14.
 	printString shiftl, lshiftl ; Imprime mnemonico.
 	separarR r14
 	printVal r11 ; Imprime rd.
@@ -742,7 +735,7 @@ srl:
 	jmp determinarPC
 
 resta:
-	mov r14, rax ; Mueve la instrucción a r14.
+;	mov r14, rax ; Mueve la instrucción a r14.
 	printString restar, lrestar ; Imprime mnemonico.
 	separarR r14
 	printVal r11 ; Imprime rd.
