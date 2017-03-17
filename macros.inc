@@ -99,6 +99,15 @@ section .data
 	restaru: db 0x1b, "[38;5;41m","      	  Ejecutando subu $"
 	lrestaru: equ $-restaru
 
+	retorno: db 0x1b, "[38;5;41m", 0xa
+	lretorno: equ $-retorno
+
+	comma: db 0x1b, "[38;5;41m",", "
+	lcomma: equ $-comma
+
+	dolar: db 0x1b, "[38;5;41m","$"
+	ldolar: equ $-dolar
+
 		; -------------------- LECTURA ROM.TXsT --------------------
 		file db "./ROM.txt", 0
 		len equ 2048
@@ -384,7 +393,7 @@ section .data
 	mov rdi, [reg31] ; Se guarda en rdi el dato del reg31 (en memoria).
 
 %%listo:
-and rdi, 0x0000000011111111
+and rdi, 0x00000000ffffffff
 %endmacro
 
 

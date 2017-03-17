@@ -198,7 +198,6 @@
 	mov rdi, [reg31] ; Se guarda en rdi el dato del reg31 (en memoria).
 
 %%listo:
-and rdi, 0x0000000011111111
 %endmacro
 
 section .bss
