@@ -199,8 +199,6 @@ decode:
 	je j                		                ;salta a .j
 	cmp r14, 000011b                		    ;compara con jal
 	je jandl                    		        ;salta a .jandl
-	cmp r14, 001000b        		            ;compara con jr
-	je jr               		                ;salta a .jr
 	cmp r14, 100011b 		                    ;compara con lw
 	je lw                             		  ;salta a .lw
 	cmp r14, 001101b              		      ;compara con ori
@@ -232,6 +230,8 @@ R:
 	je y                            		    ;salta a .y
 	cmp r9, 0x18  	            		        ;compara con mult
 	je mult                 		            ;salta a .mult
+	cmp r14, 0x08           		            ;compara con jr
+	je jr               		                ;salta a .jr
 	cmp r9, 0x27	      		                ;compara con nor
 	je nor          		                    ;salta a .nor
 	cmp r9, 0x25 		                        ;compara con or
@@ -246,10 +246,10 @@ R:
 	je resta                          		  ;salta a .resta
 
 	jmp instnotfound                    		;si la instrucción no se
-		                                      ;encuentra en el set que
-		                                      ;maneja el procesador
-		                                      ;se ejecuta una rutina que
-		                                      ;lo informa en pantalla
+		                                  		;encuentra en el set que
+		                                  		;maneja el procesador
+		                                  		;se ejecuta una rutina que
+		                                  		;lo informa en pantalla
 
 ; -------------------- Rutinas correspondientes a cada inst --------------------
 suma:
@@ -270,7 +270,6 @@ suma:
 	reg_mips r11
 	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
 	mov ebx, 0
-	printString sumar, lsumar
 	jmp determinarPC
 
 sumau:
@@ -291,7 +290,6 @@ sumau:
 	reg_mips r11
 	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
 	mov ebx, 0
-	printString sumaru, lsumaru
 	jmp determinarPC
 
 sumai:
@@ -338,19 +336,41 @@ sumaiu:
 	reg_mips r12
 	mov[rsi], rbx
 	mov ebx, 0
-	printString sumariu, lsumariu
 	jmp determinarPC
 
 y:
+	mov r14, rax
+	printString lalaland, lalalaland
+	separarR r14
+	printVal r11
+	printString comma, lcomma
+	printString dolar, ldolar
+	printVal r13
+	printString comma, lcomma
+	printString dolar, ldolar
+	separarR r14
+	printVal r12
+	printString retorno, lretorno
+	separarR r14
 	alu 0
 	reg_mips r11
 	mov [rsi], rbx										 			; Mueve resultado a registro mips rd.
 	mov ebx, 0
-	printString lalaland, lalalaland
 	jmp determinarPC
 
 yi:
-	separarI rax
+	mov r14, rax
+	printString lalalandi, lalalalandi
+	separarI r14
+	printVal r12
+	printString comma, lcomma
+	printString dolar, ldolar
+	printVal r13
+	printString comma, lcomma
+	separarI r14
+	printVal r11
+	printString retorno, lretorno
+	separarI r14
 	reg_mips r13
 	mov rax, rdi 											 			; rax es rs en la alu.
 	reg_mips r11
@@ -359,7 +379,6 @@ yi:
 	reg_mips r12 														; r12 es rt
 	mov [rsi], rbx  									 			; Mueve resultado a registro mips rt
 	mov ebx, 0
-	printString lalalandi, lalalalandi
 	jmp determinarPC
 
 																			 	  ;Compararacion para saber si se cumple el branch
@@ -367,7 +386,16 @@ yi:
 																				  ;branch_new_addr
 beq:
 	mov r14, rax
-	printString 	branchequal, lbranchequal
+	printString branchequal, lbranchequal
+	separarI r14
+	printVal r12
+	printString comma, lcomma
+	printString dolar, ldolar
+	printVal r13
+	printString comma, lcomma
+	separarI r14
+	printVal r11
+	printString retorno, lretorno
 	separarI r14
 	reg_mips r13
 	mov r13, rdi														;Guarda en rax el contenido de rs
@@ -381,6 +409,15 @@ beq:
 bne:
 	mov r14, rax
 	printString branchnequal, lbranchnequal
+	separarI r14
+	printVal r12
+	printString comma, lcomma
+	printString dolar, ldolar
+	printVal r13
+	printString comma, lcomma
+	separarI r14
+	printVal r11
+	printString retorno, lretorno
 	separarI r14
 	reg_mips r13
 	mov r13, rdi													  ;Guarda en rax el contenido de rs
@@ -403,6 +440,12 @@ branch_new_addr:
 	jmp determinarPC
 
 j:
+	mov r14, rax
+	printString jump, ljump
+	separarJ r14
+	printVal r13
+	printString retorno, lretorno
+	separarJ r14
 	mov ebx,0x00000000
 	mov r14, [pc+r15+4]
 	and r14d,0xF0000000;
@@ -415,6 +458,12 @@ j:
 	jmp determinarPC
 
 jandl:
+	mov r14, rax
+	printString jumpal, ljumpal
+	separarJ r14
+	printVal r13
+	printString retorno, lretorno
+	separarJ r14
 	mov ebx,0
 	mov r14, [pc+r15+4]
 	and r14d,0xF0000000;
@@ -427,6 +476,12 @@ jandl:
 	jmp determinarPC
 
 jr:
+	mov r14, rax
+	printString jumpreg, ljumpreg
+	separarR r14
+	printVal r13
+	printString retorno, lretorno
+	separarR r14
 	mov ebx,0
 	mov r14, [pc+r15+4]
 	and r14d,0xF0000000;
@@ -477,6 +532,20 @@ mult:
 	jmp determinarPC
 
 nor:
+	mov r14, rax ; Mueve la instrucción a r14.
+	printString nordico, lnordico ; Imprime mnemonico.
+	separarR r14
+	printVal r11 ; Imprime rd.
+	printString comma, lcomma
+	printString dolar, ldolar
+	separarR r14
+	printVal r13 ; Imprime rs.
+	printString comma, lcomma
+	printString dolar, ldolar
+	separarR r14
+	printVal r12 ; Imprime rt.
+	printString retorno, lretorno
+	separarR r14
 	alu 5
 	reg_mips r11
 	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
@@ -726,41 +795,27 @@ restau:
 	jmp determinarPC
 
 sw:
-	mov r14, rax ; Mueve instrucción a r14.
-	printString storew, lstorew ; Imprime mnemonico.
-	separarI r14
-	printVal r12 ; Imprime rt.
-	printString comma, lcomma
-	separarI r14
-	printVal r11 ; Imprime inmediato.
-	printString parentizq, lparentizq
-	printString dolar, ldolar
-	separarI r14
-	printVal r13 ; Imprime rs.
-	printString parentder, lparentder
-	printString retorno, lretorno
-	separarI r14
-
+	separarI rax
 	sign_ext r11														;Se toma el inmediato y se extiende el signo
-	reg_mips r13														;se utiliza la macro para obtener el valor y dirección de Rs
-	mov r13, rdi
+	reg_mips r13
+	mov r13, rdi														;se utiliza la macro para obtener el valor y dirección de Rs
 	add r13, r11  													;se suman ambos valores para calcular la dirección de memoria
-	cmp r13, 99
-	ja memoverflow													;si se sobrepasa de las 100 palabras de memoria, imprime mensaje de error.
-	mov rax, 4
-	mul r13																	;se multiplica por 4 ya que la memoria se divide en bytes (palabras de 4*8bits)
-	add rax, datos 													;se suma a datos ya que es el valor inicial de memoria de datos en el computador real.
+	cmp r13, 100
+	ja memoverflow
+	mov rax, 4															;se multiplica por 4 ya que la memoria se divide en bytes (palabras de 4*8bits)
+	mul r13
+	add rax, datos 													;se suma a datos ya que es el valor inicial de memoria de datos en el computador real
 	reg_mips r12
 	mov [rax], rdi													;se toma el valor de rt y se guarda en la dirección calculada en rax
 	mov ebx, 0
-
+	printString	 storew, lstorew
 	jmp determinarPC
 ; -------------------- Error de dirección de memoria no encontrada --------------------
 memoverflow:
 	printString memmax, lmemmax
 
 ; -------------------- PC + 4 --------------------
-;nextinst:
+nextinst:
 
 
 ; -------------------- Error de instruccíon no encontrada --------------------
