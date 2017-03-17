@@ -2,7 +2,7 @@ section .bss
 	digitSpace resb 100
 	digitSpacePos resb 8
 	printSpace resb 8
-	
+
 %macro printString 2
     mov rax, 1
     mov rdi, 1
@@ -10,8 +10,24 @@ section .bss
     mov rdx, %2
     syscall
 %endmacro
-	
-	
+
+%macro readString 2
+	mov rax,0	        ;sys_read
+	mov rdi,0	        ;std_input
+	mov rsi,%1	        ;primer parametro: Variable
+	mov rdx,%2	        ;segundo parametro: Tamano
+	syscall
+%endmacro
+
+;Macro para limpiar pantalla
+%macro cleanScreen 2 																				;recibe 2 parametros
+	mov rax,1																								  ;sys_write
+	mov rdi,1																									;std_out
+	mov rsi,%1																								;primer parametro: Caracter de limpieza
+	mov rdx,%2																								;segundo parametro: Tamaño
+	syscall
+%endmacro
+
 %macro print 1
 	mov rax, %1
 	mov [printSpace], rax
@@ -55,7 +71,7 @@ section .bss
 	mov [rcx], dl
 	inc rcx
 	mov [digitSpacePos], rcx
-	
+
 	pop rax
 	cmp rax, 0
 	jne %%printRAXLoop
