@@ -471,11 +471,23 @@ lw:
 	jmp determinarPC
 
 mult:
+	mov r14, rax ; Mueve la instrucción a r14.
+	printString multiplicar, lmultiplicar ; Imprime mnemonico.
+	separarR r14
+	printVal r13 ; Imprime rs.
+	printString comma, lcomma
+	printString dolar, ldolar
+	separarR r14
+	printVal r12 ; Imprime rt.
+	printString retorno, lretorno
+	separarR r14
+
+
 	alu 6
 	reg_mips r11
 	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
 	mov ebx, 0
-	printString multiplicar, lmultiplicar
+
 	jmp determinarPC
 
 nor:
@@ -487,15 +499,42 @@ nor:
 	jmp determinarPC
 
 o:
+	mov r14, rax ; Mueve la instrucción a r14.
+	printString orcito, lorcito ; Imprime mnemonico.
+	separarR r14
+	printVal r11 ; Imprime rd.
+	printString comma, lcomma
+	printString dolar, ldolar
+	separarR r14
+	printVal r13 ; Imprime rs.
+	printString comma, lcomma
+	printString dolar, ldolar
+	separarR r14
+	printVal r12 ; Imprime rt.
+	printString retorno, lretorno
+	separarR r14
+
 	alu 1
 	reg_mips r11
 	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
 	mov ebx, 0
-	printString orcito, lorcito
+
 	jmp determinarPC
 
 ori:
-	separarI rax
+	mov r14, rax ; Mueve instrucción a r14.
+	printString oricito, loricito ; Imprime mnemonico.
+	separarI r14
+	printVal r12 ; Imprime rt.
+	printString comma, lcomma
+	printString dolar, ldolar
+	printVal r13 ; Imprimer rs.
+	printString comma, lcomma
+	separarI r14
+	printVal r11 ; Imprime inmediato.
+	printString retorno, lretorno
+	separarI r14
+
 	reg_mips r13
 	mov rax, rdi 														; rax es rs en la alu.
 	mov rcx, r11 														; rcx es rt en la alu.
@@ -503,27 +542,69 @@ ori:
 	reg_mips r12 														; r12 es rt
 	mov [rsi], rbx 													; Mueve resultado a registro mips rt
 	mov ebx, 0
-	printString oricito, loricito
+
 	jmp determinarPC
 
 slt:
+	mov r14, rax ; Mueve la instrucción a r14.
+	printString slthan, lslthan ; Imprime mnemonico.
+	separarR r14
+	printVal r11 ; Imprime rd.
+	printString comma, lcomma
+	printString dolar, ldolar
+	separarR r14
+	printVal r13 ; Imprime rs.
+	printString comma, lcomma
+	printString dolar, ldolar
+	separarR r14
+	printVal r12 ; Imprime rt.
+	printString retorno, lretorno
+	separarR r14
+
 	alu 4
 	reg_mips r11
 	mov [rsi], rbx												  ; Mueve resultado a registro mips rd.
 	mov ebx, 0
-	printString slthan, lslthan
+
 	jmp determinarPC
 
 sltu:
+	mov r14, rax ; Mueve la instrucción a r14.
+	printString slthanu, lslthanu ; Imprime mnemonico.
+	separarR r14
+	printVal r11 ; Imprime rd.
+	printString comma, lcomma
+	printString dolar, ldolar
+	separarR r14
+	printVal r13 ; Imprime rs.
+	printString comma, lcomma
+	printString dolar, ldolar
+	separarR r14
+	printVal r12 ; Imprime rt.
+	printString retorno, lretorno
+	separarR r14
+
 	alu 4
 	reg_mips r11
 	mov [rsi], rbx 												; Mueve resultado a registro mips rd.
 	mov ebx, 0
-	printString slthanu, lslthanu
+
 	jmp determinarPC
 
 slti:
-	separarI rax
+	mov r14, rax ; Mueve instrucción a r14.
+	printString slthani, lslthani ; Imprime mnemonico.
+	separarI r14
+	printVal r12 ; Imprime rt.
+	printString comma, lcomma
+	printString dolar, ldolar
+	printVal r13 ; Imprimer rs.
+	printString comma, lcomma
+	separarI r14
+	printVal r11 ; Imprime inmediato.
+	printString retorno, lretorno
+	separarI r14
+
 	reg_mips r13
 	mov rax, rdi 														; rax es rs en la alu.
 	reg_mips r11
@@ -532,11 +613,23 @@ slti:
 	reg_mips r11
 	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
 	mov ebx, 0
-	printString slthani, lslthani
+
 	jmp determinarPC
 
 sltiu:
-	separarI rax
+	mov r14, rax ; Mueve instrucción a r14.
+	printString slthaniu, lslthaniu ; Imprime mnemonico.
+	separarI r14
+	printVal r12 ; Imprime rt.
+	printString comma, lcomma
+	printString dolar, ldolar
+	printVal r13 ; Imprimer rs.
+	printString comma, lcomma
+	separarI r14
+	printVal r11 ; Imprime inmediato.
+	printString retorno, lretorno
+	separarI r14
+
 	reg_mips r13
 	mov rax, rdi 														; rax es rs en la alu.
 	reg_mips r11
@@ -545,10 +638,25 @@ sltiu:
 	reg_mips r11
 	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
 	mov ebx, 0
-	printString slthaniu, lslthaniu
+
 	jmp determinarPC
 
 sll:
+	mov r14, rax ; Mueve la instrucción a r14.
+	printString shiftl, lshiftl ; Imprime mnemonico.
+	separarR r14
+	printVal r11 ; Imprime rd.
+	printString comma, lcomma
+	printString dolar, ldolar
+	separarR r14
+	printVal r12 ; Imprime rt.
+	printString comma, lcomma
+	printString dolar, ldolar
+	separarR r14
+	printVal r10 ; Imprime shamt.
+	printString retorno, lretorno
+	separarR r14
+
 	reg_mips r12
 	mov r8, rdi
 	mov rcx, r10
@@ -556,10 +664,25 @@ sll:
 	reg_mips r11
 	mov [rsi], r8
 	mov ebx, 0
-	printString shiftl, lshiftl
+
 	jmp determinarPC
 
 srl:
+	mov r14, rax ; Mueve la instrucción a r14.
+	printString shiftr, lshiftr ; Imprime mnemonico.
+	separarR r14
+	printVal r11 ; Imprime rd.
+	printString comma, lcomma
+	printString dolar, ldolar
+	separarR r14
+	printVal r12 ; Imprime rt.
+	printString comma, lcomma
+	printString dolar, ldolar
+	separarR r14
+	printVal r10 ; Imprime shamt.
+	printString retorno, lretorno
+	separarR r14
+
 	reg_mips r12
 	mov r8, rdi
 	mov rcx, r10
@@ -567,23 +690,53 @@ srl:
 	reg_mips r11
 	mov [rsi], r8
 	mov ebx, 0
-	printString shiftr, lshiftr
+
 	jmp determinarPC
 
 resta:
+	mov r14, rax ; Mueve la instrucción a r14.
+	printString restar, lrestar ; Imprime mnemonico.
+	separarR r14
+	printVal r11 ; Imprime rd.
+	printString comma, lcomma
+	printString dolar, ldolar
+	separarR r14
+	printVal r13 ; Imprime rs.
+	printString comma, lcomma
+	printString dolar, ldolar
+	separarR r14
+	printVal r12 ; Imprime rt.
+	printString retorno, lretorno
+	separarR r14
+
 	alu 3
 	reg_mips r11
 	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
 	mov ebx, 0
-	printString restar, lrestar
+
 	jmp determinarPC
 
 restau:
+	mov r14, rax ; Mueve la instrucción a r14.
+	printString restaru, lrestaru ; Imprime mnemonico.
+	separarR r14
+	printVal r11 ; Imprime rd.
+	printString comma, lcomma
+	printString dolar, ldolar
+	separarR r14
+	printVal r13 ; Imprime rs.
+	printString comma, lcomma
+	printString dolar, ldolar
+	separarR r14
+	printVal r12 ; Imprime rt.
+	printString retorno, lretorno
+	separarR r14
+
 	alu 3
 	reg_mips r11
 	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
 	mov ebx, 0
-	printString restaru, lrestaru
+
 	jmp determinarPC
 
 sw:
