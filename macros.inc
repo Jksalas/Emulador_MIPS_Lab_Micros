@@ -58,9 +58,9 @@ section .data
 	branchnequal: db 0x1b, "[38;5;41m","      	  Ejecutando bne $"
 	lbranchnequal: equ $-branchnequal
 
-	jump: db 0x1b, "[38;5;41m","      	  Ejecutando j $"
+	jump: db 0x1b, "[38;5;41m","      	  Ejecutando j "
 	ljump: equ $-jump
-	jumpal: db 0x1b, "[38;5;41m","      	  Ejecutando jal $"
+	jumpal: db 0x1b, "[38;5;41m","      	  Ejecutando jal "
 	ljumpal: equ $-jumpal
 	jumpreg: db 0x1b, "[38;5;41m","      	  Ejecutando jr $"
 	ljumpreg: equ $-jumpreg

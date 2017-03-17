@@ -114,8 +114,8 @@ section .bss
 	mov rax, %1
 %%printRAX:
 	mov rcx, digitSpace
-;	mov rbx, 10
-;	mov [rcx], rbx
+	mov rbx, 10
+	mov [rcx], rbx
 ;	inc rcx
 	mov [digitSpacePos], rcx
 
@@ -150,6 +150,7 @@ section .bss
 
 	cmp rcx, digitSpace
 	jge %%printRAXLoop2
+;	mov [digitSpacePos], 0x00000000
 
 %endmacro
 

@@ -207,10 +207,6 @@ decode:
 	je slti                       		      ;salta a .slti
 	cmp r14, 001001b          		          ;compara con sltiu
 	je sltiu              		              ;salta a .sltiu
-	cmp r14, 101001b  		                  ;compara con sltu
-	je sltu        		                      ;salta a .sltu
-	cmp r14, 100011b                  		  ;compara con subu
-	je restau                     		      ;salta a .restau
 	cmp r14, 101011b          		          ;compara con sw
 	je sw                 		              ;salta a .sw
 
@@ -239,12 +235,16 @@ R:
 	je o                          		      ;salta a .o
 	cmp r9, 0x2a              		          ;compara con slt
 	je slt                		              ;salta a .slt
+	cmp r14, 0x2b  		  		                ;compara con sltu
+	je sltu        		                      ;salta a .sltu
 	cmp r9, 0x00         	             		  ;compara con sll
 	je sll                            		  ;salta a .sll
 	cmp r9, 0x02                        		;compara con srl
 	je srl                              		;salta a .srl
 	cmp r9, 0x22                        		;compara con sub
 	je resta                          		  ;salta a .resta
+	cmp r14, 0x23                     		  ;compara con subu
+	je restau                     		      ;salta a .restau
 
 	jmp instnotfound                    		;si la instrucción no se
 		                                      ;encuentra en el set que
@@ -294,21 +294,23 @@ sumau:
 	jmp determinarPC
 
 sumai:
-	mov r14, rax
-	printString sumari, lsumari
+	mov r14, rax ; Mueve instrucción a r14.
+	printString sumari, lsumari ; Imprime mnemonico.
 	separarI r14
-	printVal r12
+	printVal r12 ; Imprime rt.
 	printString comma, lcomma
 	printString dolar, ldolar
 	separarI r14
-	printVal r13
+	printVal r13 ; Imprime rs.
 	printString comma, lcomma
 	separarI r14
-	printVal r11
+	printVal r11 ; Imprime inmediato.
 	printString retorno, lretorno
+
 	separarI r14
 	reg_mips r13
 	mov rax, rdi 														; rax es rs en la alu.
+	sign_ext r11
 	mov rcx, r11 														; rcx es rt en la alu.
 	alu 2
 	reg_mips r12
