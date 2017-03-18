@@ -47,6 +47,8 @@ section .bss
 	reg30: resb 4
 	reg31: resb 4
 
+	resmult: resb 8; 64 bits para resultado de multiplicación.
+
 	; -------------------- Reservación en memoria para memoria de datos MIPS --------------------
 	datos: resb 400
 

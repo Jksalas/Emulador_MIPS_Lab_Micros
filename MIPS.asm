@@ -332,8 +332,8 @@ sumaiu:	;Tipo I.
 
 	reg_mips r13
 	mov rax, rdi													  ; rax es rs en la alu.
-	reg_mips r11
-	mov rcx, rdi 														; rcx es rt en la alu.
+	sign_ext r11
+	mov rcx, r11 														; rcx es rt en la alu.
 	alu 2
 	reg_mips r12
 	mov[rsi], rbx
@@ -375,17 +375,13 @@ yi:	;Tipo I.
 
 	reg_mips r13
 	mov rax, rdi 											 			; rax es rs en la alu.
-	reg_mips r11
-	mov rcx, rdi														; rcx es rt en la alu.
+	mov rcx, r11														; rcx es rt en la alu.
 	alu 0 														 			; and rax y rcx
 	reg_mips r12 														; r12 es rt
 	mov [rsi], rbx  									 			; Mueve resultado a registro mips rt
 	mov ebx, 0
 	jmp determinarPC
 
-																					 	  ;Compararacion para saber si se cumple el branch
-																						  ;brinca a calculo de nueva direccion branch
-																						  ;branch_new_addr
 beq:	;Tipo I.
 	mov r14, rax ; Mueve instrucción a r14.
 	printString branchequal, lbranchequal ; Imprime mnemónico.
@@ -433,23 +429,22 @@ bne:	;Tipo I.
 	jne branch_new_addr
 	mov ebx, 0
 	jmp determinarPC
-			;Compararacion para saber si se cumple el branch
-			;brinca a calculo de nueva direccion branch
-			;branch_new_addr:
 
-	branch_new_addr:
-			separarI rax
-			branch_add r11;
-			mov ebx, 0;
-			mov ebx,r11d
-			mov ebx, 0
-			jmp determinarPC
+	;	Si se cumple la condición de alguno de los dos
+	;branches, se dirige acá para calcular el nuevo PC.
+branch_new_addr:
+	separarI rax
+	branch_add r11;
+	mov ebx, 0;
+	mov ebx,r11d
+	mov ebx, 0
+	jmp determinarPC
 
 j:	;Tipo J.
 	mov r14, rax ; Mueve instrucción a r14.
 	printString jump, ljump ; Imprime mnemónico.
 	separarJ r14
-	;---------AQUÍ SE IMPRIME EL JUMP ADDRESS, NO EL ADDRESS -------
+	;---------AQUÍ SE IMPRIME EL JUMP ADDRESS, NO EL ADDRESS. Y EN HEXA. -------
 	printVal r13 ; Imprime address.
 	printString retorno, lretorno
 	separarJ r14 ; Asegurarse de que no se hayan perdido los datos de la instrucción.
@@ -468,19 +463,19 @@ jandl:	;Tipo J.
 	mov r14, rax ; Mueve instrucción a r14.
 	printString jumpal, ljumpal ; Imprime mnemónico.
 	separarJ r14
-	;---------AQUÍ SE IMPRIME EL JUMP ADDRESS, NO EL ADDRESS -------
+	;---------AQUÍ SE IMPRIME EL JUMP ADDRESS, NO EL ADDRESS. Y EN HEXA. -------
 	printVal r13 ; Imprime address.
 	printString retorno, lretorno
 	separarJ r14 ; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	mov ebx,0
 	mov r14, [pc+r15+4]
-	and r14d,0xF0000000;
-	mov ebx,r14d; ebx nuevo PC
-	shl ebx,26; newPC=PC+4[31:28]
-	and eax,0x03FFFFFF;
-	add ebx,eax;
-	shl ebx,2;
+	and r14d, 0xF0000000
+	mov ebx, r14d ; ebx nuevo PC
+	shl ebx, 26 ; newPC=PC+4[31:28]
+	and eax, 0x03FFFFFF
+	add ebx, eax
+	shl ebx, 2
 	jmp determinarPC
 
 jr:	;Tipo R.
@@ -519,7 +514,7 @@ lw:	;Tipo I.
 	reg_mips r13
 	mov r13, rdi														;se utiliza la macro para obtener el valor y dirección de Rs
 	add r13, r11														;se suman ambos valores para calcular la dirección de memoria
-	cmp r13, 100
+	cmp r13, 99
 	ja memoverflow
 	mov rax, 4															;se multiplica por 4 ya que la memoria se divide en bytes (palabras de 4*8bits)
 	mul r13
@@ -541,8 +536,7 @@ mult:	;Tipo R.
 	separarR r14 ; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	alu 6
-	reg_mips r11
-	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
+	mov [resmult], rbx 													; Mueve resultado a registro de 64 bits.
 	mov ebx, 0
 	jmp determinarPC
 
@@ -605,7 +599,6 @@ ori:	;Tipo I.
 	reg_mips r12 														; r12 es rt
 	mov [rsi], rbx 													; Mueve resultado a registro mips rt
 	mov ebx, 0
-
 	jmp determinarPC
 
 slt:	;Tipo R.
@@ -662,13 +655,12 @@ slti:	;Tipo I.
 
 	reg_mips r13
 	mov rax, rdi 														; rax es rs en la alu.
-	reg_mips r11
-	mov rcx, rdi 														; rcx es rt en la alu.
+	sign_ext r11
+	mov rcx, r11 														; rcx es rt en la alu.
 	alu 4
-	reg_mips r11
+	reg_mips r12
 	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
 	mov ebx, 0
-
 	jmp determinarPC
 
 sltiu:	;Tipo I.
@@ -687,13 +679,12 @@ sltiu:	;Tipo I.
 
 	reg_mips r13
 	mov rax, rdi 														; rax es rs en la alu.
-	reg_mips r11
-	mov rcx, rdi 														; rcx es rt en la alu.
+	sign_ext r11
+	mov rcx, r11 														; rcx es rt en la alu.
 	alu 4
-	reg_mips r11
+	reg_mips r12
 	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
 	mov ebx, 0
-
 	jmp determinarPC
 
 sll:	;Tipo R.
@@ -709,11 +700,11 @@ sll:	;Tipo R.
 	separarR r14 ; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	reg_mips r12
-	mov r8, rdi
-	mov rcx, r10
-	shl r8, cl
+	mov r8, rdi	; En r8 dato a correr.
+	mov rcx, r10	; En rcx shamt.
+	shl r8, cl	; Corrimiento según el shamt.
 	reg_mips r11
-	mov [rsi], r8
+	mov [rsi], r8 ; Mueve resultado a rd.
 	mov ebx, 0
 	jmp determinarPC
 
@@ -730,11 +721,11 @@ srl:	;Tipo R.
 	separarR r14 ; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	reg_mips r12
-	mov r8, rdi
-	mov rcx, r10
-	shr r8, cl
+	mov r8, rdi	; En r8 dato a correr.
+	mov rcx, r10	; En rcx shamt.
+	shr r8, cl	; Corrimiento según el shamt.
 	reg_mips r11
-	mov [rsi], r8
+	mov [rsi], r8 ; Mueve resultado a rd.
 	mov ebx, 0
 	jmp determinarPC
 
@@ -803,8 +794,8 @@ sw:	;Tipo I.
 	reg_mips r12
 	mov [rax], rdi													;se toma el valor de rt y se guarda en la dirección calculada en rax
 	mov ebx, 0
-
 	jmp determinarPC
+
 ; -------------------- Error de dirección de memoria no encontrada --------------------
 memoverflow:
 	printString memmax, lmemmax
