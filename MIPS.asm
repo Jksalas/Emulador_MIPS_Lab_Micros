@@ -207,7 +207,7 @@ decode:
 	je ori                    		          ;salta a .ori
 	cmp r14, 001010b                  		  ;compara con slti
 	je slti                       		      ;salta a .slti
-	cmp r14, 001001b          		          ;compara con sltiu
+	cmp r14, 001011b          		          ;compara con sltiu
 	je sltiu              		              ;salta a .sltiu
 	cmp r14, 101011b          		          ;compara con sw
 	je sw                 		              ;salta a .sw
@@ -227,7 +227,7 @@ R:
 	je sumau     		                        ;salta a la etiqueta correspondiente, en este caso .sumau
 	cmp r9, 0x24      		              		;compara con and
 	je y                            		    ;salta a .y
-	cmp r14, 0x08           		            ;compara con jr
+	cmp r9, 0x08           		            	;compara con jr
 	je jr               		                ;salta a .jr
 	cmp r9, 0x18  	            		        ;compara con mult
 	je mult                 		            ;salta a .mult
@@ -237,7 +237,7 @@ R:
 	je o                          		      ;salta a .o
 	cmp r9, 0x2a              		          ;compara con slt
 	je slt                		              ;salta a .slt
-	cmp r14, 0x2b  		  		                ;compara con sltu
+	cmp r9, 0x2b  		  		                ;compara con sltu
 	je sltu        		                      ;salta a .sltu
 	cmp r9, 0x00         	             		  ;compara con sll
 	je sll                            		  ;salta a .sll
@@ -245,7 +245,7 @@ R:
 	je srl                              		;salta a .srl
 	cmp r9, 0x22                        		;compara con sub
 	je resta                          		  ;salta a .resta
-	cmp r14, 0x23                     		  ;compara con subu
+	cmp r9, 0x23                     		  ;compara con subu
 	je restau                     		      ;salta a .restau
 
 	jmp instnotfound                    		;si la instrucción no se
@@ -393,12 +393,14 @@ beq:
 	mov r14, rax
 	printString branchequal, lbranchequal
 	separarI r14
-	printVal r12
-	printString comma, lcomma
-	printString dolar, ldolar
 	printVal r13
 	printString comma, lcomma
+	printString dolar, ldolar
 	separarI r14
+	printVal r12
+	printString comma, lcomma
+	separarI r14
+	branch_add r11
 	printVal r11
 	printString retorno, lretorno
 	separarI r14
@@ -415,12 +417,14 @@ bne:
 	mov r14, rax
 	printString branchnequal, lbranchnequal
 	separarI r14
-	printVal r12
-	printString comma, lcomma
-	printString dolar, ldolar
 	printVal r13
 	printString comma, lcomma
+	printString dolar, ldolar
 	separarI r14
+	printVal r12
+	printString comma, lcomma
+	separarI r14
+	branch_add r11
 	printVal r11
 	printString retorno, lretorno
 	separarI r14
@@ -547,11 +551,25 @@ mult:
 	jmp determinarPC
 
 nor:
+	printString nordico, lnordico ; Imprime mnemonico.
+	separarR r14
+	printVal r11 ; Imprime rd.
+	printString comma, lcomma
+	printString dolar, ldolar
+	separarR r14
+	printVal r13 ; Imprime rs.
+	printString comma, lcomma
+	printString dolar, ldolar
+	separarR r14
+	printVal r12 ; Imprime rt.
+	printString retorno, lretorno
+	separarR r14
+
 	alu 5
 	reg_mips r11
 	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
 	mov ebx, 0
-	printString nordico, lnordico
+
 	jmp determinarPC
 
 o:
@@ -735,7 +753,6 @@ srl:
 	separarR r14
 	printVal r12 ; Imprime rt.
 	printString comma, lcomma
-	printString dolar, ldolar
 	separarR r14
 	printVal r10 ; Imprime shamt.
 	printString retorno, lretorno
