@@ -137,8 +137,7 @@ loop2:
 
 determinarPC:
 
-	; R15 registro PC
-
+	; r15 registro PC
 	cmp ebx, 0
 	ja loopDeterminarPC
 	add r15, 4
@@ -256,7 +255,6 @@ R:
 
 ; -------------------- Rutinas correspondientes a cada inst --------------------
 suma:
-;	mov r14, rax
 	printString sumar, lsumar
 	separarR r14
 	printVal r11
@@ -276,7 +274,6 @@ suma:
 	jmp determinarPC
 
 sumau:
-;	mov r14, rax
 	printString sumaru, lsumaru
 	separarR r14
 	printVal r11
@@ -344,7 +341,6 @@ sumaiu:
 	jmp determinarPC
 
 y:
-;	mov r14, rax
 	printString lalaland, lalalaland
 	separarR r14
 	printVal r11
@@ -440,13 +436,13 @@ bne:
 			;brinca a calculo de nueva direccion branch
 			;branch_new_addr:
 
-branch_new_addr:
-	separarI rax
-	branch_add r11;
-	mov ebx, 0;
-	mov ebx,r11d
-	mov ebx, 0
-	jmp determinarPC
+	branch_new_addr:
+			separarI rax
+			branch_add r11;
+			mov ebx, 0;
+			mov ebx,r11d
+			mov ebx, 0
+			jmp determinarPC
 
 j:
 	mov r14, rax
@@ -483,7 +479,6 @@ jandl:
 	jmp determinarPC
 
 jr:
-;	mov r14, rax
 	printString jumpreg, ljumpreg
 	separarR r14
 	printVal r13
@@ -531,7 +526,6 @@ lw:
 	jmp determinarPC
 
 mult:
-;	mov r14, rax ; Mueve la instrucción a r14.
 	printString multiplicar, lmultiplicar ; Imprime mnemonico.
 	separarR r14
 	printVal r13 ; Imprime rs.
@@ -573,7 +567,6 @@ nor:
 	jmp determinarPC
 
 o:
-;	mov r14, rax ; Mueve la instrucción a r14.
 	printString orcito, lorcito ; Imprime mnemonico.
 	separarR r14
 	printVal r11 ; Imprime rd.
@@ -621,7 +614,6 @@ ori:
 	jmp determinarPC
 
 slt:
-;	mov r14, rax ; Mueve la instrucción a r14.
 	printString slthan, lslthan ; Imprime mnemonico.
 	separarR r14
 	printVal r11 ; Imprime rd.
@@ -644,7 +636,6 @@ slt:
 	jmp determinarPC
 
 sltu:
-;	mov r14, rax ; Mueve la instrucción a r14.
 	printString slthanu, lslthanu ; Imprime mnemonico.
 	separarR r14
 	printVal r11 ; Imprime rd.
@@ -719,7 +710,6 @@ sltiu:
 	jmp determinarPC
 
 sll:
-;	mov r14, rax ; Mueve la instrucción a r14.
 	printString shiftl, lshiftl ; Imprime mnemonico.
 	separarR r14
 	printVal r11 ; Imprime rd.
@@ -744,7 +734,6 @@ sll:
 	jmp determinarPC
 
 srl:
-;	mov r14, rax ; Mueve la instrucción a r14.
 	printString shiftr, lshiftr ; Imprime mnemonico.
 	separarR r14
 	printVal r11 ; Imprime rd.
@@ -769,7 +758,6 @@ srl:
 	jmp determinarPC
 
 resta:
-;	mov r14, rax ; Mueve la instrucción a r14.
 	printString restar, lrestar ; Imprime mnemonico.
 	separarR r14
 	printVal r11 ; Imprime rd.
@@ -792,7 +780,6 @@ resta:
 	jmp determinarPC
 
 restau:
-;	mov r14, rax ; Mueve la instrucción a r14.
 	printString restaru, lrestaru ; Imprime mnemonico.
 	separarR r14
 	printVal r11 ; Imprime rd.
