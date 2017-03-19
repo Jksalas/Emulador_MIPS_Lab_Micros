@@ -151,6 +151,43 @@ section .data
 	mov [pc+%3], %1
 %endmacro
 
+;macro para determinar los argumentos de entrada
+
+%macro DeterminarArgumento 1
+	mov %1, [rax]
+	and %1, 11111111b ; Guardar solo ultimos 8 bits
+	cmp %1, 0
+	je seguir	;si es NULL terminar loop
+	cmp %1, 45
+	jne %%L2
+	mov %1, 0
+	jmp seguir
+%%L2
+	cmp %1, 96	
+	ja %%elseL1
+	sub %1, 48	;si es una numero, restar 48 para pasar de ASCII a decimal
+	jmp %%end
+	%%elseL1:
+	sub %1, 87	;si es una letra, restar 87 para pasar de ASCII a decimal
+	%%end:
+%%L1:
+	mov r14, [rax+r15]
+	and r14, 11111111b ; Guardar solo ultimos 8 bits
+	cmp r14, 0
+	je seguir
+	cmp r14, 96
+	ja %%elseL2
+	sub r14, 48
+	jmp %%end2
+	%%elseL2:
+	sub r14, 87
+	%%end2:
+
+	shl %1, 4
+	add %1, r14
+	inc r15
+	jmp %%L1
+%endmacro
 
 ; Macro que simula el comportamiento de la ALU para
 ;las instrucciones que interesan.
