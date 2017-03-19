@@ -114,6 +114,7 @@ section .data
 	dolar: db 0x1b, "[38;5;41m","$"
 	ldolar: equ $-dolar
 
+	teclado: dq '-'
 	; -------------------- LECTURA ROM.TXsT --------------------
 	file db "./ROM.txt", 0
 	len equ 2048
@@ -163,7 +164,7 @@ section .data
 	mov %1, 0
 	jmp seguir
 %%L2
-	cmp %1, 96	
+	cmp %1, 96
 	ja %%elseL1
 	sub %1, 48	;si es una numero, restar 48 para pasar de ASCII a decimal
 	jmp %%end

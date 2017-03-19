@@ -75,7 +75,6 @@ section .bss
 	syscall
 %endmacro
 
-
 ; Macro para limpiar pantalla
 %macro cleanScreen 2 																				;recibe 2 parametros
 	mov rax,1																								  ;sys_write
