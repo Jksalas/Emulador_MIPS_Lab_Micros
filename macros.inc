@@ -115,6 +115,11 @@ section .data
 	ldolar: equ $-dolar
 
 	teclado: dq '-'
+
+	;cleanS contiene código para limpiar pantalla
+	cleanS:    db 0x1b, "[2J", 0x1b, "[H"
+	cleanS_size: equ $ - cleanS
+	
 	; -------------------- LECTURA ROM.TXsT --------------------
 	file db "./ROM.txt", 0
 	len equ 2048

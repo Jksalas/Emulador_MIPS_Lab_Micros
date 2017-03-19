@@ -52,6 +52,9 @@ section .bss
 	; -------------------- Reservación en memoria para memoria de datos MIPS --------------------
 	datos: resb 400
 
+	; -------------------- Reservación en memoria para info del micro --------------------
+	datosCPU:	resb 48
+
 	; -------------------- Imprimir registros --------------------
 	text resw 100 ;Reserva un espacio en memoria
 
