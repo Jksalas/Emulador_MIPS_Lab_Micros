@@ -449,17 +449,19 @@ j:	;Tipo J.
 	printString retorno, lretorno
 	separarJ r14 													; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
-	mov ebx, 0x00000000
-	mov r14, [pc+r15+4]
+	mov ebx, 0x00000000										; ebx registro utilizado para guardar la nueva direccion del PC
+	mov r14, [pc+r15+4]										;PC_actual=PC+4;
 	and r14d, 0xF0000000
-	mov ebx, r14d													; ebx nuevo PC
+	mov ebx, r14d													; se carga en ebx los bits mas significativos del PC_actual
 	shr ebx, 2														;newPC = PC+4[31:28]
 	and eax, 0x03FFFFFF
 	add ebx, eax
-	shl ebx, 2
+	shl ebx, 2														;Address final luego del cálculo
 	jmp determinarPC
 
-jandl:	;Tipo J.
+;Tipo J.
+
+jandl:
 	mov r14, rax 													; Mueve instrucción a r14.
 	printString jumpal, ljumpal 					; Imprime mnemónico.
 	separarJ r14
@@ -468,14 +470,14 @@ jandl:	;Tipo J.
 	printString retorno, lretorno
 	separarJ r14 													; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
-	mov ebx,0
-	mov r14, [pc+r15+4]
+	mov ebx,0															; ebx registro utilizado para guardar la nueva direccion del PC
+	mov r14, [pc+r15+4]										;PC_actual=PC+4;
 	and r14d, 0xF0000000
-	mov ebx, r14d 												; ebx nuevo PC
+	mov ebx, r14d 												; se carga en ebx los bits mas significativos del PC_actual
 	shl ebx, 26 													; newPC=PC+4[31:28]
 	and eax, 0x03FFFFFF
 	add ebx, eax
-	shl ebx, 2
+	shl ebx, 2														;Address final luego del cálculo
 	jmp determinarPC
 
 jr:	;Tipo R.
