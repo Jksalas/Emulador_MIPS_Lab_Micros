@@ -55,6 +55,10 @@ section .bss
 	; -------------------- Reservación en memoria para info del micro --------------------
 	datosCPU:	resb 48
 
+	; -------------------- Para argumentos --------------------
+	argc resb 8
+	argPos resb 8
+
 	; -------------------- Imprimir registros --------------------
 	text resw 100 ;Reserva un espacio en memoria
 

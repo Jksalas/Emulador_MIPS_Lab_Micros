@@ -9,6 +9,64 @@ section .text
 
 _start:
 
+; -------------------- Recibir argumentos --------------------
+	mov rax, 0
+	mov r14, 0
+	mov [argPos], rax
+
+	pop rax
+	mov [argc], rax
+
+_printArgsLoop:
+	mov r15, 1
+	mov rax, [argPos]
+	inc rax
+	mov [argPos], rax
+	pop rax
+
+	cmp byte[m],0
+	je seguir
+
+loopLecturaArgumento:
+
+	cmp byte[m], 1
+	je argumento1
+	cmp byte[m], 2
+	je argumento2
+	cmp byte[m], 3
+	je argumento3
+	cmp byte[m], 4
+	je argumento4
+	jmp seguir
+
+;---------------ASIGNAR ARGUMENTOS A REGISTROS-------------
+
+argumento1:
+	DeterminarArgumento r8 ; Guardar en r8 el primer argumento
+argumento2:
+	DeterminarArgumento r9 ; Guardar en r9 el segundo argumento
+argumento3:
+	DeterminarArgumento r10; Guardar en r10 el tercer argumento
+argumento4:
+	DeterminarArgumento r11; Guardar en r11 el cuarto argumento
+
+seguir:
+	inc byte[m]
+	mov rax, [argPos]
+	mov rbx, [argc]
+	cmp rax, rbx
+	jne _printArgsLoop
+
+
+	; Se guarda en r8, r9, r10 y r11 los
+	; argumentos de $a0, $a1, $a2 y $a3
+	; respectivamente
+
+	mov [reg4],r8
+	mov [reg5],r9
+	mov [reg6],r10
+	mov [reg7],r11
+
 ; -------------------- Imprimir mensajes de bienvenida --------------------
 	printString bienvenido,lbienvenido ;Llamado al macro
 	printString lab, llab
@@ -170,9 +228,16 @@ finLectura:
 
 inicio:
 	mov eax, [trama+r15]
+	mov ebx, [pc+r15]
 	cmp rax, 0x0000000000000000
-	je instnotfound
+	;je instnotfound
 	separarJ rax
+	;cmp r14, 000000b
+	;jne decode
+	;cmp
+	;je instnop
+	cmp rax, 0
+	je determinarPC
 	jmp decode
 
 _exit:
@@ -246,6 +311,8 @@ R:
 	je resta                          		  ;salta a .resta
 	cmp r9, 0x23                     		    ;compara con subu
 	je restau                     		      ;salta a .restau
+	cmp ebx, 0 ; Si el PC actual es 0, significa línea en blanco. Este será el fin del programa.
+	je gameover ; Fin del programa.
 
 	jmp instnotfound                    		;si la instrucción no se
 		                                      ;encuentra en el set que
@@ -437,7 +504,6 @@ branch_new_addr:
 	branch_add r11;
 	mov ebx, 0;
 	mov ebx,r11d
-	mov ebx, 0
 	jmp determinarPC
 
 j:	;Tipo J.
@@ -472,11 +538,13 @@ jandl:
 
 	mov ebx,0															; ebx registro utilizado para guardar la nueva direccion del PC
 	mov r14, [pc+r15+4]										;PC_actual=PC+4;
+	mov [reg31], r14d
 	and r14d, 0xF0000000
 	mov ebx, r14d 												; se carga en ebx los bits mas significativos del PC_actual
 	shl ebx, 26 													; newPC=PC+4[31:28]
 	and eax, 0x03FFFFFF
 	add ebx, eax
+	shl ebx, 2 ; jumpaddress
 	shl ebx, 2														;Address final luego del cálculo
 	jmp determinarPC
 
@@ -487,14 +555,10 @@ jr:	;Tipo R.
 	printString retorno, lretorno
 	separarR r14 													; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
-	mov ebx,0
-	mov r14, [pc+r15+4]
-	and r14d,0xF0000000;
-	mov ebx,r14d													; ebx nuevo PC
-	shl ebx,26														; newPC=PC+4[31:28]
-	and eax,0x03FFFFFF;
-	add ebx,eax;
-	shl ebx,2;
+	cmp r13, 31
+	jne invaliddir	; Si el reg que se está llamando no es el 31 (return address), hay error.
+	reg_mips r13
+	mov ebx, edi	; Carga en ebx la dirección que está en el registro solicitado.
 	jmp determinarPC
 
 lw:	;Tipo I.
@@ -798,6 +862,15 @@ sw:	;Tipo I.
 	mov ebx, 0
 	jmp determinarPC
 
+; -------------------- Para nop's --------------------
+instnop:	; Si la instrucción es un nop, continúa con la siguiente.
+	jmp determinarPC
+
+; -------------------- Error de dirección inválida para jump register --------------------
+invaliddir:
+	printString invdir, linvdir
+	jmp determinarPC
+
 ; -------------------- Error de dirección de memoria no encontrada --------------------
 memoverflow:
 	printString memmax, lmemmax
@@ -808,6 +881,11 @@ instnotfound:
 	printString nfound, lnfound
 	exit
 ;	jmp determinarPC
+
+; -------------------- Fin del programa --------------------
+gameover:
+	printString theend, ltheend
+	exit
 
 ; -------------------- Imprimir registros --------------------
 

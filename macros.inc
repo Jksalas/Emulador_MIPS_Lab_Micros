@@ -38,6 +38,10 @@ section .data
 	lnfound: equ $-nfound
 	memmax: db 0x1b, "[38;5;41m","	Error: La dirección es mayor a la capacidad de memoria", 0xa
 	lmemmax: equ $-memmax
+	invdir: db 0x1b, "[38;5;41m","	Error: El registro utilizado no contiene una dirección de retorno inválida", 0xa
+	linvdir: equ $-invdir
+	theend: db 0x1b, "[38;5;41m","	Fin del programa", 0xa
+	ltheend: equ $-theend
 
 	sumar: db 0x1b, "[38;5;41m","      	  Ejecutando add $"
 	lsumar: equ $-sumar
@@ -119,7 +123,7 @@ section .data
 	;cleanS contiene código para limpiar pantalla
 	cleanS:    db 0x1b, "[2J", 0x1b, "[H"
 	cleanS_size: equ $ - cleanS
-	
+
 	; -------------------- LECTURA ROM.TXsT --------------------
 	file db "./ROM.txt", 0
 	len equ 2048
@@ -127,6 +131,9 @@ section .data
 
 	; -------------------- Imprimir registros --------------------
 	filename: db "myfile.txt",0
+
+	; -------------------- Para argumentos --------------------
+	m db 0
 
 
 ; Macro para pasar de ascii a entero.
