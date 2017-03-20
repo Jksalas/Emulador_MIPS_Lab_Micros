@@ -61,6 +61,10 @@ seguir:
 ; argumentos de $a0, $a1, $a2 y $a3 
 ; respectivamente
 
+	mov [reg4],r8
+	mov [reg5],r9
+	mov [reg6],r10
+	mov [reg7],r11
 
 _exit:
     mov eax, 1  
