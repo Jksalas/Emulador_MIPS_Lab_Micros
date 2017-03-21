@@ -512,11 +512,11 @@ and rdi, 0x00000000ffffffff ; Máscara.
   reg_mips r13
   mov rax, rdi ; rax es rs en la alu.
 	shl rax, 32
-	shr rax, 32
+	shr rax, 32 ; Cortar dato a 32 bits.
   reg_mips r12
   mov rcx, rdi ; rcx es rt en la alu.
 	shl rcx, 32
-	shr rcx, 32	
+	shr rcx, 32	; Cortar dato a 32 bits.
 %endmacro
 
 

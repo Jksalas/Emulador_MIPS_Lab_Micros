@@ -393,9 +393,13 @@ sumai:	;Tipo I.
 
 	reg_mips r13
 	mov rax, rdi 														; rax es rs en la alu.
+	shl rax, 32
+	shr rax, 32															; Cortar dato a 32 bits.
 	sign_ext r11
 	mov rcx, r11 														; rcx es rt en la alu.
 	alu 2
+	shl rbx, 32
+	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r12
 	mov[rsi], rbx
 	mov ebx, 0
@@ -417,9 +421,13 @@ sumaiu:	;Tipo I.
 
 	reg_mips r13
 	mov rax, rdi													  ; rax es rs en la alu.
+	shl rax, 32
+	shr rax, 32															; Cortar dato a 32 bits.
 	sign_ext r11
 	mov rcx, r11 														; rcx es rt en la alu.
 	alu 2
+	shl rbx, 32
+	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r12
 	mov[rsi], rbx
 	mov ebx, 0
@@ -462,8 +470,12 @@ yi:	;Tipo I.
 
 	reg_mips r13
 	mov rax, rdi 											 		; rax es rs en la alu.
+	shl rax, 32
+	shr rax, 32															; Cortar dato a 32 bits.
 	mov rcx, r11													; rcx es rt en la alu.
 	alu 0 														 		; and rax y rcx
+	shl rbx, 32
+	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r12 													; r12 es rt
 	mov [rsi], rbx  									 		; Mueve resultado a registro mips rt
 	mov ebx, 0
@@ -486,8 +498,12 @@ beq:	;Tipo I.
 
 	reg_mips r13
 	mov r13, rdi													;Guarda en rax el contenido de rs
+	shl r13, 32
+	shr r13, 32															; Cortar dato a 32 bits.
 	reg_mips r12
 	mov r12, rdi 													;Guarda en rcx el contenido de rt
+	shl r12, 32
+	shr r12, 32															; Cortar dato a 32 bits.
 	cmp r13, r12											 		;Compara si rs y rt son iguales
 	je branch_new_addr
 	mov ebx, 0
@@ -510,8 +526,12 @@ bne:	;Tipo I.
 
 	reg_mips r13
 	mov r13, rdi													;Guarda en rax el contenido de rs
+	shl r13, 32
+	shr r13, 32															; Cortar dato a 32 bits.
 	reg_mips r12
 	mov r12, rdi 													;Guarda en rcx el contenido de rt
+	shl r12, 32
+	shr r12, 32															; Cortar dato a 32 bits.
 	cmp r13, r12													;Compara si rs y rt son iguales
 	jne branch_new_addr
 	mov ebx, 0
@@ -597,6 +617,8 @@ lw:	;Tipo I.
 	sign_ext r11													;Se toma el inmediato y se extiende el signo
 	reg_mips r13
 	mov r13, rdi													;se utiliza la macro para obtener el valor y dirección de Rs
+	shl r13, 32
+	shr r13, 32															; Cortar dato a 32 bits.
 	add r13, r11													;se suman ambos valores para calcular la dirección de memoria
 	cmp r13, 99
 	ja memoverflow
@@ -682,8 +704,12 @@ ori:	;Tipo I.
 
 	reg_mips r13
 	mov rax, rdi 													; rax es rs en la alu.
+	shl rax, 32
+	shr rax, 32															; Cortar dato a 32 bits.
 	mov rcx, r11 													; rcx es rt en la alu.
 	alu 1 																; or entre rax y rcx
+	shl rbx, 32
+	shr rbx, 32														; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r12 													; r12 es rt
 	mov [rsi], rbx 												; Mueve resultado a registro mips rt
 	mov ebx, 0
@@ -747,9 +773,13 @@ slti:	;Tipo I.
 
 	reg_mips r13
 	mov rax, rdi 													; rax es rs en la alu.
+	shl rax, 32
+	shr rax, 32															; Cortar dato a 32 bits.
 	sign_ext r11
 	mov rcx, r11													; rcx es rt en la alu.
 	alu 4
+	shl rbx, 32
+	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r12
 	mov [rsi], rbx												; Mueve resultado a registro mips rd.
 	mov ebx, 0
@@ -771,9 +801,13 @@ sltiu:	;Tipo I.
 
 	reg_mips r13
 	mov rax, rdi													; rax es rs en la alu.
+	shl rax, 32
+	shr rax, 32															; Cortar dato a 32 bits.
 	sign_ext r11
 	mov rcx, r11													; rcx es rt en la alu.
 	alu 4
+	shl rbx, 32
+	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r12
 	mov [rsi], rbx												; Mueve resultado a registro mips rd.
 	mov ebx, 0
@@ -879,6 +913,8 @@ sw:	;Tipo I.
 	sign_ext r11												 ;Se toma el inmediato y se extiende el signo
 	reg_mips r13												 ;se utiliza la macro para obtener el valor y dirección de Rs
 	mov r13, rdi
+	shl r13, 32
+	shr r13, 32															; Cortar dato a 32 bits.
 	add r13, r11  											 ;se suman ambos valores para calcular la dirección de memoria
 	cmp r13, 99
 	ja memoverflow											 ;si se sobrepasa de las 100 palabras de memoria, imprime mensaje de error.
@@ -886,6 +922,8 @@ sw:	;Tipo I.
 	mul r13															 ;se multiplica por 4 ya que la memoria se divide en bytes (palabras de 4*8bits)
 	add rax, datos 											 ;se suma a datos ya que es el valor inicial de memoria de datos en el computador real.
 	reg_mips r12
+	shl rdi, 32
+	shr rdi, 32															; Cortar dato a 32 bits.
 	mov [rax], rdi											 ;se toma el valor de rt y se guarda en la dirección calculada en rax
 	mov ebx, 0
 	jmp determinarPC
