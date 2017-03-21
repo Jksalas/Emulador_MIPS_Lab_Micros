@@ -38,7 +38,7 @@ section .data
 	lnfound: equ $-nfound
 	memmax: db 0x1b, "[38;5;41m","	Error: La dirección es mayor a la capacidad de memoria", 0xa
 	lmemmax: equ $-memmax
-	invdir: db 0x1b, "[38;5;41m","	Error: El registro utilizado no contiene una dirección de retorno inválida", 0xa
+	invdir: db 0x1b, "[38;5;41m","	Error: El registro utilizado no contiene una dirección de retorno válida", 0xa
 	linvdir: equ $-invdir
 	theend: db 0x1b, "[38;5;41m","	Fin del programa", 0xa
 	ltheend: equ $-theend

@@ -1,7 +1,7 @@
 %include "linux64.inc"
 %include "macros.inc"
 
-;							/* SecciÃ³n de cÃ³digo principal */
+;							/* Sección de código principal */
 
 section .text
 
@@ -10,6 +10,7 @@ section .text
 _start:
 
 ; -------------------- Recibir argumentos --------------------
+
 	mov rax, 0
 	mov r14, 0
 	mov [argPos], rax
@@ -28,7 +29,6 @@ _printArgsLoop:
 	je seguir
 
 loopLecturaArgumento:
-
 	cmp byte[m], 1
 	je argumento1
 	cmp byte[m], 2
@@ -40,7 +40,6 @@ loopLecturaArgumento:
 	jmp seguir
 
 ;---------------ASIGNAR ARGUMENTOS A REGISTROS-------------
-
 argumento1:
 	DeterminarArgumento r8 ; Guardar en r8 el primer argumento
 argumento2:
@@ -57,7 +56,6 @@ seguir:
 	cmp rax, rbx
 	jne _printArgsLoop
 
-
 	; Se guarda en r8, r9, r10 y r11 los
 	; argumentos de $a0, $a1, $a2 y $a3
 	; respectivamente
@@ -68,15 +66,13 @@ seguir:
 	mov [reg7],r11
 
 ; -------------------- Imprimir mensajes de bienvenida --------------------
+
 	printString bienvenido,lbienvenido ;Llamado al macro
 	printString lab, llab
 	printString sem, lsem
 	printString buscando, lbuscando
 
 ; -----------------------LECTURA ROM.TXT--------------------------------
-
-
-
 
 	mov rax, 0
 	mov rbx, 0
@@ -90,12 +86,6 @@ seguir:
 	mov r13, 0
 	mov r14, 0
 	mov r15, 0
-
-
-
-
-_break8:
-
 
 ; ----------------ABRIR ROM.TXT---------------------
 	mov ebx, file ; name of the file
@@ -116,7 +106,6 @@ _break8:
 	mov r15, 0
 
 loop1:
-
 	inc rax
 
 	mov r8, [buffer+rax]
@@ -193,7 +182,6 @@ loop1:
 	inc rbx
 
 loop2:
-
 	mov r8, [buffer+rax]
 	and r8, 11111111b
 
@@ -205,7 +193,7 @@ loop2:
 	inc rax
 	jmp loop2
 
-	esEnter:
+esEnter:
 	inc rax
 	mov r8, [buffer+rax]
 	and r8, 11111111b
@@ -215,10 +203,7 @@ loop2:
 	je esEnter
 	jmp loop1
 
-
-
 determinarPC:
-
 	; r15 registro PC
 	cmp ebx, 0
 	ja loopDeterminarPC
@@ -227,7 +212,6 @@ determinarPC:
 	jmp inicio
 
 loopDeterminarPC:
-_break0:
 	mov eax, [pc+r15]
 	sub eax, ebx
 
@@ -239,7 +223,6 @@ _break0:
 	jmp inicio
 
 loopEsMayor:
-
 	add r8d, eax
 	not r8d
 	inc r8
@@ -250,14 +233,9 @@ loopEsMayor:
 finLectura:
 	mov ebx, 0;
 	mov r15, 0;
-
 	mov r8, trama
 
-
 inicio:
-
-
-
 	mov eax, [trama+r15]
 
 	mov ebx, [pc+r15]
@@ -266,7 +244,7 @@ inicio:
 	jmp L8
 L7:
 	mov ecx, [pc+r15]
-	cmp ecx, 0	
+	cmp ecx, 0
 	je gameover
 	mov ebx, 0
 	mov ecx,0
@@ -275,16 +253,15 @@ L8:
 	separarJ rax
 	jmp decode
 
-
   mov eax, 1
   mov ebx, 0
   int 80h
 
-; -------------------- DecodificaciÃ³n --------------------
+; -------------------- Decodificación --------------------
+
 decode:
 
-_break2:
-	cmp r14, 000000b                        ;compara con 0 para ver si es una instrucciÃ³n tipo R
+	cmp r14, 000000b                        ;compara con 0 para ver si es una instrucción tipo R
 	je R			                              ;en caso de serlo, salta a R
 
 	cmp r14, 001000b                        ;compara con addi
@@ -312,7 +289,7 @@ _break2:
 	cmp r14, 101011b          		          ;compara con sw
 	je sw                 		              ;salta a .sw
 
-	jmp instnotfound 			                  ;si la instrucciÃ³n no se
+	jmp instnotfound 			                  ;si la instrucción no se
 		                                      ;encuentra en el set que
 		                                      ;maneja el procesador
 		                                      ;se ejecuta una rutina que
@@ -347,18 +324,19 @@ R:
 	je resta                          		  ;salta a .resta
 	cmp r9, 0x23                     		    ;compara con subu
 	je restau                     		      ;salta a .restau
-	cmp ebx, 0 ; Si el PC actual es 0, significa lÃ­nea en blanco. Este serÃ¡ el fin del programa.
+	cmp ebx, 0 ; Si el PC actual es 0, significa lí­nea en blanco. Este será el fin del programa.
 	je gameover ; Fin del programa.
 
-	jmp instnotfound                    		;si la instrucciÃ³n no se
+	jmp instnotfound                    		;si la instrucción no se
 		                                      ;encuentra en el set que
 		                                      ;maneja el procesador
 		                                      ;se ejecuta una rutina que
 		                                      ;lo informa en pantalla
 
 ; -------------------- Rutinas correspondientes a cada inst --------------------
+
 suma:	;Tipo R.
-	printString sumar, lsumar 							; Imprime mnemÃ³nico.
+	printString sumar, lsumar 							; Imprime mnemónico.
 	separarR r14
 	printVal r11 														; Imprime rd.
 	printString comma, lcomma
@@ -368,7 +346,7 @@ suma:	;Tipo R.
 	printString dolar, ldolar
 	printVal r12 														; Imprime rt.
 	printString retorno, lretorno
-	separarR r14 														; Asegurarse de que no se hayan perdido los datos de la instrucciÃ³n.
+	separarR r14 														; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	alu 2
 	reg_mips r11
@@ -377,7 +355,7 @@ suma:	;Tipo R.
 	jmp determinarPC
 
 sumau:	;Tipo R.
-	printString sumaru, lsumaru 						; Imprime mnemÃ³nico.
+	printString sumaru, lsumaru 						; Imprime mnemónico.
 	separarR r14
 	printVal r11 														; Imprime rd.
 	printString comma, lcomma
@@ -387,7 +365,7 @@ sumau:	;Tipo R.
 	printString dolar, ldolar
 	printVal r12 														; Imprime rt.
 	printString retorno, lretorno
-	separarR r14 														; Asegurarse de que no se hayan perdido los datos de la instrucciÃ³n.
+	separarR r14 														; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	alu 2 																	; suma rax y rcx. resultado en rbx.
 	reg_mips r11
@@ -396,7 +374,7 @@ sumau:	;Tipo R.
 	jmp determinarPC
 
 sumai:	;Tipo I.
-	mov r14, rax 														; Mueve instrucciÃ³n a r14.
+	mov r14, rax 														; Mueve instrucción a r14.
 	printString sumari, lsumari 						; Imprime mnemonico.
 	separarI r14
 	printVal r12 														; Imprime rt.
@@ -407,7 +385,7 @@ sumai:	;Tipo I.
 	separarI r14
 	printVal r11														; Imprime inmediato.
 	printString retorno, lretorno
-	separarI r14 														; Asegurarse de que no se hayan perdido los datos de la instrucciÃ³n.
+	separarI r14 														; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	reg_mips r13
 	mov rax, rdi 														; rax es rs en la alu.
@@ -420,8 +398,8 @@ sumai:	;Tipo I.
 	jmp determinarPC
 
 sumaiu:	;Tipo I.
-	mov r14, rax 														; Mueve instrucciÃ³n a r14.
-	printString sumariu, lsumariu 					; Imprime mnemÃ³nico.
+	mov r14, rax 														; Mueve instrucción a r14.
+	printString sumariu, lsumariu 					; Imprime mnemónico.
 	separarI r14
 	printVal r12 														; Imprime rt.
 	printString comma, lcomma
@@ -431,7 +409,7 @@ sumaiu:	;Tipo I.
 	separarI r14
 	printVal r11 														; Imprime inmediato.
 	printString retorno, lretorno
-	separarI r14														; Asegurarse de que no se hayan perdido los datos de la instrucciÃ³n.
+	separarI r14														; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	reg_mips r13
 	mov rax, rdi													  ; rax es rs en la alu.
@@ -444,7 +422,7 @@ sumaiu:	;Tipo I.
 	jmp determinarPC
 
 y:	;Tipo R.
-	printString lalaland, lalalaland 			 ; Imprime mnemÃ³nico.
+	printString lalaland, lalalaland 			 ; Imprime mnemónico.
 	separarR r14
 	printVal r11 													 ; Imprime rd.
 	printString comma, lcomma
@@ -454,7 +432,7 @@ y:	;Tipo R.
 	printString dolar, ldolar
 	printVal r12 													 ; Imprime rt.
 	printString retorno, lretorno
-	separarR r14 													 ; Asegurarse de que no se hayan perdido los datos de la instrucciÃ³n.
+	separarR r14 													 ; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	alu 0
 	reg_mips r11
@@ -463,8 +441,8 @@ y:	;Tipo R.
 	jmp determinarPC
 
 yi:	;Tipo I.
-	mov r14, rax 													; Mueve instrucciÃ³n a r14.
-	printString lalalandi, lalalalandi 		; Imprime mnemÃ³nico.
+	mov r14, rax 													; Mueve instrucción a r14.
+	printString lalalandi, lalalalandi 		; Imprime mnemónico.
 	separarI r14
 	printVal r12 													; Imprime rt.
 	printString comma, lcomma
@@ -474,7 +452,7 @@ yi:	;Tipo I.
 	separarI r14
 	printVal r11 													; Imprime inmediato.
 	printString retorno, lretorno
-	separarI r14 													; Asegurarse de que no se hayan perdido los datos de la instrucciÃ³n.
+	separarI r14 													; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	reg_mips r13
 	mov rax, rdi 											 		; rax es rs en la alu.
@@ -486,8 +464,8 @@ yi:	;Tipo I.
 	jmp determinarPC
 
 beq:	;Tipo I.
-	mov r14, rax 													; Mueve instrucciÃ³n a r14.
-	printString branchequal, lbranchequal ; Imprime mnemÃ³nico.
+	mov r14, rax 													; Mueve instrucción a r14.
+	printString branchequal, lbranchequal ; Imprime mnemónico.
 	separarI r14
 	printVal r13 													; Imprime rs.
 	printString comma, lcomma
@@ -498,7 +476,7 @@ beq:	;Tipo I.
 	branch_add r11
 	printVal r11 													; Imprime branch address.
 	printString retorno, lretorno
-	separarI r14 													; Asegurarse de que no se hayan perdido los datos de la instrucciÃ³n.
+	separarI r14 													; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	reg_mips r13
 	mov r13, rdi													;Guarda en rax el contenido de rs
@@ -510,8 +488,8 @@ beq:	;Tipo I.
 	jmp determinarPC											; si no se cumple, pc+4
 
 bne:	;Tipo I.
-	mov r14, rax 													; Mueve instrucciÃ³n a r14.
-	printString branchnequal, lbranchnequal ; Imprime mnemÃ³nico.
+	mov r14, rax 													; Mueve instrucción a r14.
+	printString branchnequal, lbranchnequal ; Imprime mnemónico.
 	separarI r14
 	printVal r13												  ; Imprime rs.
 	printString comma, lcomma
@@ -522,7 +500,7 @@ bne:	;Tipo I.
 	branch_add r11
 	printVal r11  												; Imprime branch address.
 	printString retorno, lretorno
-	separarI r14 													; Asegurarse de que no se hayan perdido los datos de la instrucciÃ³n.
+	separarI r14 													; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	reg_mips r13
 	mov r13, rdi													;Guarda en rax el contenido de rs
@@ -533,8 +511,8 @@ bne:	;Tipo I.
 	mov ebx, 0
 	jmp determinarPC
 
-	;	Si se cumple la condiciÃ³n de alguno de los dos
-	;branches, se dirige acÃ¡ para calcular el nuevo PC.
+	;	Si se cumple la condición de alguno de los dos
+	;branches, se dirige acá para calcular el nuevo PC.
 branch_new_addr:
 	separarI rax
 	branch_add r11;
@@ -543,13 +521,13 @@ branch_new_addr:
 	jmp determinarPC
 
 j:	;Tipo J.
-	mov r14, rax 													; Mueve instrucciÃ³n a r14.
-	printString jump, ljump 							; Imprime mnemÃ³nico.
+	mov r14, rax 													; Mueve instrucción a r14.
+	printString jump, ljump 							; Imprime mnemónico.
 	separarJ r14
-	;---------AQUÃ SE IMPRIME EL JUMP ADDRESS, NO EL ADDRESS. Y EN HEXA. -------
+	;---------AQUÍ SE IMPRIME EL JUMP ADDRESS, NO EL ADDRESS. Y EN HEXA. -------
 	printVal r13 													; Imprime address.
 	printString retorno, lretorno
-	separarJ r14 													; Asegurarse de que no se hayan perdido los datos de la instrucciÃ³n.
+	separarJ r14 													; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	mov ebx, 0x00000000										; ebx registro utilizado para guardar la nueva direccion del PC
 	mov r14, [pc+r15+4]										;PC_actual=PC+4;
@@ -558,14 +536,10 @@ j:	;Tipo J.
 	shr ebx, 2														;newPC = PC+4[31:28]
 	and eax, 0x03FFFFFF
 	add ebx, eax
-	shl ebx, 2														;Address final luego del cÃ¡lculo
+	shl ebx, 2														;Address final luego del cálculo
 	jmp determinarPC
 
-;Tipo J.
-
-jandl:
-
-
+jandl: ;Tipo J.
 	mov r14, rax 													; Mueve instrucción a r14.
 	printString jumpal, ljumpal 					; Imprime mnemónico.
 	separarJ r14
@@ -586,23 +560,21 @@ jandl:
 	shl ebx, 2														;Address final luego del cálculo
 	jmp determinarPC
 
-
-
 jr:	;Tipo R.
-	printString jumpreg, ljumpreg 				; Imprime mnemÃ³nico.
+	printString jumpreg, ljumpreg 				; Imprime mnemónico.
 	separarR r14
 	printVal r13													; Imprime rs.
 	printString retorno, lretorno
-	separarR r14 													; Asegurarse de que no se hayan perdido los datos de la instrucciÃ³n.
+	separarR r14 													; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	cmp r13, 31
-	jne invaliddir	; Si el reg que se estÃ¡ llamando no es el 31 (return address), hay error.
+	jne invaliddir	; Si el reg que se está llamando no es el 31 (return address), hay error.
 	reg_mips r13
-	mov ebx, edi	; Carga en ebx la direcciÃ³n que estÃ¡ en el registro solicitado.
+	mov ebx, edi	; Carga en ebx la dirección que está en el registro solicitado.
 	jmp determinarPC
 
 lw:	;Tipo I.
-	mov r14, rax												  ; Mueve instrucciÃ³n a r14.
+	mov r14, rax												  ; Mueve instrucción a r14.
 	printString loadw, lloadw 				    ; Imprime mnemonico.
 	separarI r14
 	printVal r12 												  ; Imprime rt.
@@ -614,12 +586,12 @@ lw:	;Tipo I.
 	printVal r13 													; Imprime rs.
 	printString parentder, lparentder
 	printString retorno, lretorno
-	separarI r14 													; Asegurarse de que no se hayan perdido los datos de la instrucciÃ³n.
+	separarI r14 													; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	sign_ext r11													;Se toma el inmediato y se extiende el signo
 	reg_mips r13
-	mov r13, rdi													;se utiliza la macro para obtener el valor y direcciÃ³n de Rs
-	add r13, r11													;se suman ambos valores para calcular la direcciÃ³n de memoria
+	mov r13, rdi													;se utiliza la macro para obtener el valor y dirección de Rs
+	add r13, r11													;se suman ambos valores para calcular la dirección de memoria
 	cmp r13, 99
 	ja memoverflow
 	mov rax, 4														;se multiplica por 4 ya que la memoria se divide en bytes (palabras de 4*8bits)
@@ -639,7 +611,7 @@ mult:	;Tipo R.
 	printString dolar, ldolar
 	printVal r12 													; Imprime rt.
 	printString retorno, lretorno
-	separarR r14 													; Asegurarse de que no se hayan perdido los datos de la instrucciÃ³n.
+	separarR r14 													; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	alu 6
 	mov [resmult], rbx 										; Mueve resultado a registro de 64 bits.
@@ -657,7 +629,7 @@ nor:	;Tipo R.
 	printString dolar, ldolar
 	printVal r12 													; Imprime rt.
 	printString retorno, lretorno
-	separarR r14 													; Asegurarse de que no se hayan perdido los datos de la instrucciÃ³n.
+	separarR r14 													; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	alu 5
 	reg_mips r11
@@ -676,7 +648,7 @@ o:	;Tipo R.
 	printString dolar, ldolar
 	printVal r12 													; Imprime rt.
 	printString retorno, lretorno
-	separarR r14 													; Asegurarse de que no se hayan perdido los datos de la instrucciÃ³n.
+	separarR r14 													; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	alu 1
 	reg_mips r11
@@ -685,8 +657,7 @@ o:	;Tipo R.
 	jmp determinarPC
 
 ori:	;Tipo I.
-_break25:
-	mov r14, rax 													; Mueve instrucciÃ³n a r14.
+	mov r14, rax 													; Mueve instrucción a r14.
 	printString oricito, loricito 				; Imprime mnemonico.
 	separarI r14
 	printVal r12 													; Imprime rt.
@@ -697,7 +668,7 @@ _break25:
 	separarI r14
 	printVal r11 													; Imprime inmediato.
 	printString retorno, lretorno
-	separarI r14 													; Asegurarse de que no se hayan perdido los datos de la instrucciÃ³n.
+	separarI r14 													; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	reg_mips r13
 	mov rax, rdi 													; rax es rs en la alu.
@@ -719,7 +690,7 @@ slt:	;Tipo R.
 	printString dolar, ldolar
 	printVal r12 													; Imprime rt.
 	printString retorno, lretorno
-	separarR r14 													; Asegurarse de que no se hayan perdido los datos de la instrucciÃ³n.
+	separarR r14 													; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	alu 4
 	reg_mips r11
@@ -738,7 +709,7 @@ sltu:	;Tipo R.
 	printString dolar, ldolar
 	printVal r12 													; Imprime rt.
 	printString retorno, lretorno
-	separarR r14													; Asegurarse de que no se hayan perdido los datos de la instrucciÃ³n.
+	separarR r14													; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	alu 4
 	reg_mips r11
@@ -747,7 +718,7 @@ sltu:	;Tipo R.
 	jmp determinarPC
 
 slti:	;Tipo I.
-	mov r14, rax 													; Mueve instrucciÃ³n a r14.
+	mov r14, rax 													; Mueve instrucción a r14.
 	printString slthani, lslthani 				; Imprime mnemonico.
 	separarI r14
 	printVal r12													; Imprime rt.
@@ -758,7 +729,7 @@ slti:	;Tipo I.
 	separarI r14
 	printVal r11 													; Imprime inmediato.
 	printString retorno, lretorno
-	separarI r14 													; Asegurarse de que no se hayan perdido los datos de la instrucciÃ³n.
+	separarI r14 													; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	reg_mips r13
 	mov rax, rdi 													; rax es rs en la alu.
@@ -771,7 +742,7 @@ slti:	;Tipo I.
 	jmp determinarPC
 
 sltiu:	;Tipo I.
-	mov r14, rax 													; Mueve instrucciÃ³n a r14.
+	mov r14, rax 													; Mueve instrucción a r14.
 	printString slthaniu, lslthaniu 			; Imprime mnemonico.
 	separarI r14
 	printVal r12 													; Imprime rt.
@@ -782,7 +753,7 @@ sltiu:	;Tipo I.
 	separarI r14
 	printVal r11 													; Imprime inmediato.
 	printString retorno, lretorno
-	separarI r14 													; Asegurarse de que no se hayan perdido los datos de la instrucciÃ³n.
+	separarI r14 													; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	reg_mips r13
 	mov rax, rdi													; rax es rs en la alu.
@@ -795,7 +766,6 @@ sltiu:	;Tipo I.
 	jmp determinarPC
 
 sll:	;Tipo R.
-_break11:
 	printString shiftl, lshiftl 					; Imprime mnemonico.
 	separarR r14
 	printVal r11 													; Imprime rd.
@@ -805,12 +775,12 @@ _break11:
 	printString comma, lcomma
 	printVal r10 													; Imprime shamt.
 	printString retorno, lretorno
-	separarR r14 													; Asegurarse de que no se hayan perdido los datos de la instrucciÃ³n.
+	separarR r14 													; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	reg_mips r12
 	mov r8, rdi														; En r8 dato a correr.
 	mov rcx, r10													; En rcx shamt.
-	shl r8, cl														; Corrimiento segÃºn el shamt.
+	shl r8, cl														; Corrimiento según el shamt.
 	reg_mips r11
 	mov [rsi], r8													; Mueve resultado a rd.
 	mov ebx, 0
@@ -826,12 +796,12 @@ srl:	;Tipo R.
 	printString comma, lcomma
 	printVal r10 													; Imprime shamt.
 	printString retorno, lretorno
-	separarR r14 													; Asegurarse de que no se hayan perdido los datos de la instrucciÃ³n.
+	separarR r14 													; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	reg_mips r12
 	mov r8, rdi														; En r8 dato a correr.
 	mov rcx, r10													; En rcx shamt.
-	shr r8, cl														; Corrimiento segÃºn el shamt.
+	shr r8, cl														; Corrimiento según el shamt.
 	reg_mips r11
 	mov [rsi], r8 												; Mueve resultado a rd.
 	mov ebx, 0
@@ -848,7 +818,7 @@ resta:	;Tipo R.
 	printString dolar, ldolar
 	printVal r12 													; Imprime rt.
 	printString retorno, lretorno
-	separarR r14 													; Asegurarse de que no se hayan perdido los datos de la instrucciÃ³n.
+	separarR r14 													; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	alu 3
 	reg_mips r11
@@ -867,7 +837,7 @@ restau:	;Tipo R.
 	printString dolar, ldolar
 	printVal r12 													; Imprime rt.
 	printString retorno, lretorno
-	separarR r14 													; Asegurarse de que no se hayan perdido los datos de la instrucciÃ³n.
+	separarR r14 													; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	alu 3
 	reg_mips r11
@@ -876,7 +846,7 @@ restau:	;Tipo R.
 	jmp determinarPC
 
 sw:	;Tipo I.
-	mov r14, rax												 ; Mueve instrucciÃ³n a r14.
+	mov r14, rax												 ; Mueve instrucción a r14.
 	printString storew, lstorew 				 ; Imprime mnemonico.
 	separarI r14
 	printVal r12 												 ; Imprime rt.
@@ -888,47 +858,42 @@ sw:	;Tipo I.
 	printVal r13 												 ; Imprime rs.
 	printString parentder, lparentder
 	printString retorno, lretorno
-	separarI r14 												 ; Asegurarse de que no se hayan perdido los datos de la instrucciÃ³n.
+	separarI r14 												 ; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	sign_ext r11												 ;Se toma el inmediato y se extiende el signo
-	reg_mips r13												 ;se utiliza la macro para obtener el valor y direcciÃ³n de Rs
+	reg_mips r13												 ;se utiliza la macro para obtener el valor y dirección de Rs
 	mov r13, rdi
-	add r13, r11  											 ;se suman ambos valores para calcular la direcciÃ³n de memoria
+	add r13, r11  											 ;se suman ambos valores para calcular la dirección de memoria
 	cmp r13, 99
 	ja memoverflow											 ;si se sobrepasa de las 100 palabras de memoria, imprime mensaje de error.
 	mov rax, 4
 	mul r13															 ;se multiplica por 4 ya que la memoria se divide en bytes (palabras de 4*8bits)
 	add rax, datos 											 ;se suma a datos ya que es el valor inicial de memoria de datos en el computador real.
 	reg_mips r12
-	mov [rax], rdi											 ;se toma el valor de rt y se guarda en la direcciÃ³n calculada en rax
+	mov [rax], rdi											 ;se toma el valor de rt y se guarda en la dirección calculada en rax
 	mov ebx, 0
 	jmp determinarPC
 
-; -------------------- Para nop's --------------------
-instnop:	; Si la instrucciÃ³n es un nop, continÃºa con la siguiente.
-	jmp determinarPC
-
-; -------------------- Error de direcciÃ³n invÃ¡lida para jump register --------------------
+; -------------------- Error de dirección inválida para jump register --------------------
 invaliddir:
 	printString invdir, linvdir
+	mov ebx, 0
 	jmp determinarPC
 
-; -------------------- Error de direcciÃ³n de memoria no encontrada --------------------
+; -------------------- Error de dirección de memoria no encontrada --------------------
 memoverflow:
 	printString memmax, lmemmax
 
 
-; -------------------- Error de instruccÃ­on no encontrada --------------------
+; -------------------- Error de instrucción no encontrada --------------------
 instnotfound:
 	printString nfound, lnfound
-_break10:
 	mov ebx, 0
 	jmp determinarPC
 
 ; -------------------- Fin del programa --------------------
 gameover:
 	printString theend, ltheend
-_exit:
 	exit
 
 ; -------------------- Imprimir registros --------------------
@@ -937,7 +902,7 @@ _exit:
 ; -------------------- Obtener datos del microprocesador --------------------
 datosMicro:
 
- ;Esta secciÃ³n permite obtener informaciÃ³n del fabricante del procesador
+ ;Esta sección permite obtener información del fabricante del procesador
 
 
 	mov eax,80000002h
@@ -947,7 +912,7 @@ datosMicro:
 	mov [datosCPU+8], ecx
 	mov [datosCPU+12], edx
 
-	;Esta secciÃ³n permite obtener informaciÃ³n del micro
+	;Esta sección permite obtener información del micro
 
 	mov eax,80000003h
 	cpuid
@@ -967,7 +932,7 @@ datosMicro:
 	printString datosCPU, 48
 	;printString retorno, lretorno
 
-; -------------------- Lectura de Enter para finalizar la ejecuciÃ³n --------------------
+; -------------------- Lectura de Enter para finalizar la ejecución --------------------
 presionaEnter:
 		readString teclado,1
 		mov r15, [teclado]
