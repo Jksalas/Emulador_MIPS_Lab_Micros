@@ -349,6 +349,8 @@ suma:	;Tipo R.
 	separarR r14 														; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	alu 2
+	shl rbx, 32
+	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r11
 	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
 	mov ebx, 0
@@ -368,6 +370,8 @@ sumau:	;Tipo R.
 	separarR r14 														; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	alu 2 																	; suma rax y rcx. resultado en rbx.
+	shl rbx, 32
+	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r11
 	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
 	mov ebx, 0
@@ -435,6 +439,8 @@ y:	;Tipo R.
 	separarR r14 													 ; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	alu 0
+	shl rbx, 32
+	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r11
 	mov [rsi], rbx										 		 ; Mueve resultado a registro mips rd.
 	mov ebx, 0
@@ -632,6 +638,8 @@ nor:	;Tipo R.
 	separarR r14 													; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	alu 5
+	shl rbx, 32
+	shr rbx, 32														; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r11
 	mov [rsi], rbx 												; Mueve resultado a registro mips rd.
 	mov ebx, 0
@@ -651,6 +659,8 @@ o:	;Tipo R.
 	separarR r14 													; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	alu 1
+	shl rbx, 32
+	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r11
 	mov [rsi], rbx 												; Mueve resultado a registro mips rd.
 	mov ebx, 0
@@ -693,6 +703,8 @@ slt:	;Tipo R.
 	separarR r14 													; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	alu 4
+	shl rbx, 32
+	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r11
 	mov [rsi], rbx												; Mueve resultado a registro mips rd.
 	mov ebx, 0
@@ -712,6 +724,8 @@ sltu:	;Tipo R.
 	separarR r14													; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	alu 4
+	shl rbx, 32
+	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r11
 	mov [rsi], rbx 												; Mueve resultado a registro mips rd.
 	mov ebx, 0
@@ -777,8 +791,7 @@ sll:	;Tipo R.
 	printString retorno, lretorno
 	separarR r14 													; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
-	reg_mips r12
-	mov r8, rdi														; En r8 dato a correr.
+	mov r8, rcx														; En r8 dato a correr.
 	mov rcx, r10													; En rcx shamt.
 	shl r8, cl														; Corrimiento según el shamt.
 	reg_mips r11
@@ -798,8 +811,7 @@ srl:	;Tipo R.
 	printString retorno, lretorno
 	separarR r14 													; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
-	reg_mips r12
-	mov r8, rdi														; En r8 dato a correr.
+	mov r8, rcx														; En r8 dato a correr.
 	mov rcx, r10													; En rcx shamt.
 	shr r8, cl														; Corrimiento según el shamt.
 	reg_mips r11
@@ -821,6 +833,8 @@ resta:	;Tipo R.
 	separarR r14 													; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	alu 3
+	shl rbx, 32
+	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r11
 	mov [rsi], rbx 												; Mueve resultado a registro mips rd.
 	mov ebx, 0
@@ -840,6 +854,8 @@ restau:	;Tipo R.
 	separarR r14 													; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	alu 3
+	shl rbx, 32
+	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r11
 	mov [rsi], rbx 												; Mueve resultado a registro mips rd.
 	mov ebx, 0

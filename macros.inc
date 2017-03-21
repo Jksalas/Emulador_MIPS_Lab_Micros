@@ -511,8 +511,12 @@ and rdi, 0x00000000ffffffff ; Máscara.
   and r9, 0x000000000000003f       ;Se filtra todo lo que no es funct
   reg_mips r13
   mov rax, rdi ; rax es rs en la alu.
+	shl rax, 32
+	shr rax, 32
   reg_mips r12
   mov rcx, rdi ; rcx es rt en la alu.
+	shl rcx, 32
+	shr rcx, 32	
 %endmacro
 
 
