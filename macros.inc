@@ -285,7 +285,7 @@ section .data
 	cmp r9, 29
 	jne %%l34
 	printString reg29s, lreg29s
-	mov eax, [reg29]
+	mov eax, [stackaddress]
 	jmp %%imprimirloop
 
 %%l34:
