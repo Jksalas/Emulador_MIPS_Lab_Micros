@@ -14,7 +14,7 @@ section .data
 	lbuscando: equ $-buscando
 	encuentra: db 0x1b,"[38;5;31m","        Archivo ROM.txt encontrado.", 0xa
 	lencuentra: equ $-encuentra
-	noencuentra: db 0x1b, "[38;5;9m","        Error: Archivo ROM.txt no encontrado.", 0xa
+	noencuentra: db 0x1b, "[38;5;9m","        Error: El archivo ROM.txt no se ha encontrado.", 0xa
 	lnoencuentra: equ $-noencuentra
 	mensajeinicio:  db 0x1b, "[38;5;86m","        Presione la tecla enter para continuar.", 0xa
 	lmensajeinicio: equ $-mensajeinicio
