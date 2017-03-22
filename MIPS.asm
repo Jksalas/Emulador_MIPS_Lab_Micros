@@ -106,6 +106,7 @@ seguir:
 	cmp r8, 0
 	je errorcito
 	printString encuentra, lencuentra															; Imprime msj diciendo que se ha encontrado la ROM
+	printString retorno, lretorno
 	printString mensajeinicio, lmensajeinicio											; Imprime msj presionar enter para continuar la ejecución
 	jmp presionaEnterC
 	holi:
@@ -115,7 +116,7 @@ seguir:
 	jmp loop1
 	errorcito:
 			printString noencuentra, lnoencuentra											; Imprime msj de que no se encontró la ROM
-			printString mensajefinal, lmensajefinal										; Imprime msj presionar enter para terminar ejecución
+			printString theend, ltheend										; Imprime msj presionar enter para terminar ejecución
 			jmp presionaEnter
 
 loop1:
@@ -976,15 +977,19 @@ instnotfound:
 gameover
 	printString retorno, lretorno
 	printString exito, lexito
+	printString retorno, lretorno
 	printString final, lfinal
 	printString juan, ljuan
 	printString joao, ljoao
 	printString andre, landre
 	printString steven, lsteven
 	printString camila, lcamila
+	printString retorno, lretorno
 	jmp datosMicro
 	hastaaqui:
+	printString retorno, lretorno
 	printString theend, ltheend
+	jmp presionaEnter
 	exit
 
 ; -------------------- Imprimir registros --------------------
