@@ -12,7 +12,6 @@
 ;		- Juan José Vásquez Alfaro
 ;########################################################################
 
-
 %include "macros.inc"
 
 ; -------------------- Sección del código principal --------------------
@@ -22,6 +21,13 @@ section .text
 
 _start:
 
+;----------------------Inicializa el stack pointer-----------------------
+	mov r8d, 0;
+	mov r9d, stack1
+	mov [stackaddress], r9d
+	mov [reg29], r8d; stack pointer al tope del stack
+	mov byte[auxstack], 0
+
 ; -------------------------- Recibir argumentos -------------------------
 
 	mov rax, 0
@@ -30,12 +36,6 @@ _start:
 
 	pop rax
 	mov [argc], rax
-
-
-;----------------------Inicializa el stack pointer-----------------------
-
-		mov r8d, [stack1];
-		mov [reg29], r8d;
 
 _printArgsLoop:
 	mov r15, 1
@@ -426,6 +426,10 @@ sumai:	;Tipo I.
 	printString retorno, lretorno
 	separarI r14 														 ; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
+	reg_mips r12 ; Se fija si rt (a modificar) es $sp.
+	cmp rsi, reg29
+	je stackpointer ; Si es se hace distinta la suma.
+
 	reg_mips r13
 	mov rax, rdi 														 ; rax es rs en la alu.
 	shl rax, 32
@@ -440,6 +444,53 @@ sumai:	;Tipo I.
 	ImprimirRegistros												 ; Imprime contenido de los registros ao-a3, vo-v1, s0-s7
 	mov ebx, 0
 	jmp determinarPC
+stackpointer:
+	mov r8, r11
+	shr r8, 15
+	cmp r8, 1
+	jne espositivo
+	sign_ext r11
+	not r11 ; Si el inmediato es negativo, se hace positivo para hacer una suma.
+	add r11, 1 ; Saca complemento a 2 del negativo.
+	shl r11, 32
+	shr r11, 32
+	reg_mips r13
+	mov rax, rdi 														; rax es rs en la alu.
+	shl rax, 32
+	shr rax, 32															; Cortar dato a 32 bits.
+	sign_ext r11
+	mov rcx, r11 														; rcx es rt en la alu.
+	alu 2
+	shl rbx, 32
+	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
+	reg_mips r12
+	mov [rsi], rbx
+	mov r8d, stack1
+	mov r10d, [reg29]
+	add r10d, r8d
+	mov r9d, r10d
+	mov [stackaddress], r9d
+	mov ebx, 0
+	jmp determinarPC
+espositivo: ; Si el inmediato es positivo.
+	reg_mips r13
+	mov rax, rdi 														; rax es rs en la alu.
+	shl rax, 32
+	shr rax, 32															; Cortar dato a 32 bits.
+	sign_ext r11
+	mov rcx, r11
+	alu 3 ; Todo igual pero se hace una resta.
+	shl rbx, 32
+	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
+	reg_mips r12
+	mov [rsi], rbx
+	mov r8d, stack1
+	mov r10d, [reg29]
+	add r10d, r8d
+	mov r9d, r10d
+	mov [stackaddress], r9d
+	mov ebx, 0
+	jmp determinarPC 														; rcx es rt en la alu.
 
 sumaiu:	;Tipo I.
 	mov r14, rax 														 ; Mueve instrucción a r14.
@@ -678,6 +729,7 @@ lw:	;Tipo I.
 
 	sign_ext r11													  ; Se toma el inmediato y se extiende el signo
 	reg_mips r13
+	mov r8, rsi
 	mov r13, rdi													  ; Se utiliza la macro para obtener el valor y dirección de Rs
 	shl r13, 32
 	shr r13, 32															; Cortar dato a 32 bits.
@@ -692,18 +744,19 @@ lw:	;Tipo I.
 	mov [rsi], eax												  ; Se guarda el valor sacado de memoria de datos al registro destino Rt
 	ImprimirRegistros												; Imprime contenido de los registros ao-a3, vo-v1, s0-s7
 	mov r9,rsi
-	cmp rsi, reg29
+	cmp r8, reg29
 	je stackout
-	reg_mips r13
-	cmp rsi, reg29
+	cmp r9, reg29
 	je stackout
 vuelvestack:
 	mov ebx, 0
 	jmp determinarPC
 
 stackout:    ;POP
-	mov r8,[reg29];
-	;mov [r9d],[stack1+r8]; pop de pila
+	sub byte[auxstack],4
+	mov r8, [auxstack];
+	mov r9d,0
+	mov [stack1+r8], r9d; pop de pila, se borran los datos
 	jmp vuelvestack
 
 mult:	;Tipo R.
@@ -999,6 +1052,7 @@ sw:	;Tipo I.
 
 	sign_ext r11												    ; Se toma el inmediato y se extiende el signo
 	reg_mips r13												    ; Se utiliza la macro para obtener el valor y dirección de Rs
+	mov r8, rsi
 	mov r13, rdi
 	shl r13, 32
 	shr r13, 32															; Cortar dato a 32 bits.
@@ -1011,20 +1065,22 @@ sw:	;Tipo I.
 	reg_mips r12
 	shl rdi, 32
 	shr rdi, 32															; Cortar dato a 32 bits.
+	mov r10, rdi
+	mov r9, rsi
 	mov [rax], rdi											    ; Se toma el valor de rt y se guarda en la dirección calculada en rax
 	ImprimirRegistros												; Imprime contenido de los registros ao-a3, vo-v1, s0-s7
-	cmp rsi, reg29
+
+	cmp r9, reg29
 	je stackin
-	reg_mips r13
-	cmp rsi, reg29
+	cmp r8, reg29
 	je stackin
 	mov ebx, 0
 	jmp determinarPC
 
 stackin:		;PUSH
-	mov r8,[reg29];
-	mov [stack1+r8],r9d                     ; Push de pila
-	mov r10, [stack1+r8]
+	mov r8,[auxstack];
+	mov [stack1+r8],r10d; push de pila
+	add byte[auxstack], 4
 	jmp vuelvestack
 
 
