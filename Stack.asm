@@ -9,6 +9,11 @@ section .text
 
 _start:
 
+;----------------------Inicializa el stack pointer------------
+
+	mov r8d, [stack1];
+	mov [reg29], r8d;
+
 ; -------------------- Recibir argumentos --------------------
 
 	mov rax, 0
@@ -17,12 +22,6 @@ _start:
 
 	pop rax
 	mov [argc], rax
-
-
-;----------------------Inicializa el stack pointer------------
-
-	mov r8d, [stack1];
-	mov [reg29], r8d;
 
 _printArgsLoop:
 	mov r15, 1
@@ -105,7 +104,6 @@ seguir:
 	mov ecx, buffer
 	mov edx, len
 	int 80h
-
 
 ; -----------PASAR DE ASCII A ENTERO----------------
 	mov r8, [buffer]
@@ -243,7 +241,6 @@ loopDeterminarPC:
 	jmp inicio
 
 loopEsMayor:
-_break99:
 	mov r8d, eax
 	not r8d
 	inc r8
@@ -591,9 +588,7 @@ _break4545:
 	mov r12, rax 													; Mueve instrucción a r14.
 	printString jumpal, ljumpal 					; Imprime mnemónico.
 	separarJ r12
-
 	;---------AQUÍ SE IMPRIME EL JUMP ADDRESS, NO EL ADDRESS. Y EN HEXA. -------
-
 	printVal r13 													; Imprime address.
 	printString retorno, lretorno
 	separarJ r12 													; Asegurarse de que no se hayan perdido los datos de la instrucción.
@@ -612,7 +607,6 @@ _break4545:
 	jmp determinarPC
 
 jr:	;Tipo R.
-_break100:
 	printString jumpreg, ljumpreg 				; Imprime mnemónico.
 	separarR r14
 	printVal r13													; Imprime rs.
@@ -644,6 +638,9 @@ lw:	;Tipo I.
 
 	sign_ext r11													;Se toma el inmediato y se extiende el signo
 	reg_mips r13
+
+	mov r8, rsi
+
 	mov r13, rdi													;se utiliza la macro para obtener el valor y dirección de Rs
 	shl r13, 32
 	shr r13, 32															; Cortar dato a 32 bits.
@@ -656,23 +653,25 @@ lw:	;Tipo I.
 	mov rax, [rax]												;se toma ese valor de memoria y se guarda de nuevo en rax
 	reg_mips r12
 	mov [rsi], rax												;se guarda el valor sacado de memoria de datos al registro destino Rt
-	mov r9,rsi
-	cmp rsi, reg29
+
+	mov r9, rsi
+
+	cmp r8, reg29
 	je stackout
-	reg_mips r13
-	cmp rsi, reg29
+	cmp r9, reg29
 	je stackout
 
 vuelvestack:
+
 	mov ebx, 0
 	jmp determinarPC
 
-stackout:    ;POP
-		mov r8,[reg29];
-		mov [r9d],[stack+r8]; pop de pila
+stackout:	;POP
+		mov r8, [reg29];
+		mov r10, [stack1+r8]
+		mov dword[stack1+r8], 0; pop de pila
+		mov r10, [stack1+r8]
 		jmp vuelvestack
-
-
 
 mult:	;Tipo R.
 	printString multiplicar, lmultiplicar ; Imprime mnemonico.
@@ -955,6 +954,9 @@ sw:	;Tipo I.
 
 	sign_ext r11												 ;Se toma el inmediato y se extiende el signo
 	reg_mips r13												 ;se utiliza la macro para obtener el valor y dirección de Rs
+
+	mov r8, rsi
+
 	mov r13, rdi
 	shl r13, 32
 	shr r13, 32															; Cortar dato a 32 bits.
@@ -967,20 +969,21 @@ sw:	;Tipo I.
 	reg_mips r12
 	shl rdi, 32
 	shr rdi, 32															; Cortar dato a 32 bits.
-	mov r9,rdi
-	mov [rax], rdi											 ;se toma el valor de rt y se guarda en la dirección calculada en rax
 
-	cmp rsi, reg29
+	mov r10, rdi
+	mov r9, rsi
+
+	mov [rax], rdi											 ;se toma el valor de rt y se guarda en la dirección calculada en rax
+	cmp r9, reg29
 	je stackin
-	reg_mips r13
-	cmp rsi, reg29
+	cmp r8, reg29
 	je stackin
 	mov ebx, 0
 	jmp determinarPC
 
 stackin:		;PUSH
 	mov r8,[reg29];
-	mov [stack1+r8],r9d; push de pila
+	mov [stack1+r8],r10d; push de pila
 	mov r10, [stack1+r8]
 	jmp vuelvestack
 
