@@ -542,8 +542,8 @@ bne:	;Tipo I.
 	;branches, se dirige acá para calcular el nuevo PC.
 branch_new_addr:
 	separarI rax
-	branch_add r11;
-	mov ebx, 0;
+	branch_add r11
+	mov ebx, 0
 	mov ebx,r11d
 	jmp determinarPC
 
@@ -584,7 +584,7 @@ _break4545:
 	shr ebx,2														;newPC = PC+4[31:28]
 	add ebx,r13d
 	shl ebx,2;														;Address final luego del cálculo
-	add r11d, r15d	
+	add r11d, r15d
 	mov eax,[pc+r15+8]											;PC + 8
 	mov [reg31], eax
 	jmp determinarPC
@@ -600,6 +600,8 @@ _break100:
 	cmp r13, 31
 	jne invaliddir	; Si el reg que se está llamando no es el 31 (return address), hay error.
 	reg_mips r13
+	cmp rdi, 0x0000000000000000
+  je invaliddirR
 	mov ebx, edi	; Carga en ebx la dirección que está en el registro solicitado.
 	jmp determinarPC
 
@@ -937,6 +939,12 @@ invaliddir:
 	printString invdir, linvdir
 	mov ebx, 0
 	jmp determinarPC
+
+invaliddirR:
+	printString pointofnoreturn, lpointofnoreturn
+	mov ebx, 0
+	jmp determinarPC
+
 
 ; -------------------- Error de dirección de memoria no encontrada --------------------
 memoverflow:

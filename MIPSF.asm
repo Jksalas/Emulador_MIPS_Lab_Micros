@@ -559,7 +559,7 @@ j:	;Tipo J.
 	add r14d,r15d												;PC_actual=PC+4;
 	and r14d,0xF0000000;
 	mov ebx,r14d;												; se carga en ebx los bits mas significativos del PC_actual
-	shr ebx,2														;newPC = PC+4[31:28]
+;	shr ebx,2														;newPC = PC+4[31:28]
 	add ebx,r13d
 	shl ebx,2;														;Address final luego del cálculo
 	jmp determinarPC
@@ -573,15 +573,13 @@ jandl: ;Tipo J.
 	printString retorno, lretorno
 	separarJ r12 													; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
-	mov ebx,0x00000000									; ebx registro utilizado para guardar la nueva direccion del PC
-	add r14d,r15d												;PC_actual=PC+4;
-	mov r11d, r14d
-	and r14d,0xF0000000;
-	mov ebx,r14d;												; se carga en ebx los bits mas significativos del PC_actual
-	shr ebx,2														;newPC = PC+4[31:28]
-	add ebx,r13d
-	shl ebx,2;														;Address final luego del cálculo
-	add r11d, r15d												;PC + 8
+	mov ebx,0															; ebx registro utilizado para guardar la nueva direccion del PC
+	mov r14, [pc+r15+4]										;PC_actual=PC+4;
+	and r14d, 0xF0000000
+	mov ebx, r14d 												; se carga en ebx los bits mas significativos del PC_actual
+	shl ebx, 26 													; newPC=PC+4[31:28]
+	add ebx, r13d
+	shl ebx, 2
 	mov [reg31], r11d
 	jmp determinarPC
 
@@ -595,7 +593,7 @@ jr:	;Tipo R.
 	cmp r13, 31
 	jne invaliddir	; Si el reg que se está llamando no es el 31 (return address), hay error.
 	reg_mips r13
-	mov ebx, edi	; Carga en ebx la dirección que está en el registro solicitado.
+	mov ebx, [rdi] 	; Carga en ebx la dirección que está en el registro solicitado.
 	jmp determinarPC
 
 lw:	;Tipo I.
