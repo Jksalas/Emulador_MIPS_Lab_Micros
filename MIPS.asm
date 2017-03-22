@@ -10,6 +10,7 @@ section .text
 _start:
 
 ; -------------------- Recibir argumentos --------------------
+
 	mov rax, 0
 	mov r14, 0
 	mov [argPos], rax
@@ -28,7 +29,6 @@ _printArgsLoop:
 	je seguir
 
 loopLecturaArgumento:
-
 	cmp byte[m], 1
 	je argumento1
 	cmp byte[m], 2
@@ -40,7 +40,6 @@ loopLecturaArgumento:
 	jmp seguir
 
 ;---------------ASIGNAR ARGUMENTOS A REGISTROS-------------
-
 argumento1:
 	DeterminarArgumento r8 ; Guardar en r8 el primer argumento
 argumento2:
@@ -57,7 +56,6 @@ seguir:
 	cmp rax, rbx
 	jne _printArgsLoop
 
-
 	; Se guarda en r8, r9, r10 y r11 los
 	; argumentos de $a0, $a1, $a2 y $a3
 	; respectivamente
@@ -68,12 +66,26 @@ seguir:
 	mov [reg7],r11
 
 ; -------------------- Imprimir mensajes de bienvenida --------------------
+
 	printString bienvenido,lbienvenido ;Llamado al macro
 	printString lab, llab
 	printString sem, lsem
 	printString buscando, lbuscando
 
 ; -----------------------LECTURA ROM.TXT--------------------------------
+
+	mov rax, 0
+	mov rbx, 0
+	mov rcx, 0
+	mov edx, 0
+	mov r8, 0
+	mov r9, 0
+	mov r10, 0
+	mov r11, 0
+	mov r12, 0
+	mov r13, 0
+	mov r14, 0
+	mov r15, 0
 
 ; ----------------ABRIR ROM.TXT---------------------
 	mov ebx, file ; name of the file
@@ -94,7 +106,6 @@ seguir:
 	mov r15, 0
 
 loop1:
-
 	inc rax
 
 	mov r8, [buffer+rax]
@@ -171,7 +182,6 @@ loop1:
 	inc rbx
 
 loop2:
-
 	mov r8, [buffer+rax]
 	and r8, 11111111b
 
@@ -183,7 +193,7 @@ loop2:
 	inc rax
 	jmp loop2
 
-	esEnter:
+esEnter:
 	inc rax
 	mov r8, [buffer+rax]
 	and r8, 11111111b
@@ -194,7 +204,6 @@ loop2:
 	jmp loop1
 
 determinarPC:
-
 	; r15 registro PC
 	cmp ebx, 0
 	ja loopDeterminarPC
@@ -203,7 +212,6 @@ determinarPC:
 	jmp inicio
 
 loopDeterminarPC:
-
 	mov eax, [pc+r15]
 	sub eax, ebx
 
@@ -215,8 +223,8 @@ loopDeterminarPC:
 	jmp inicio
 
 loopEsMayor:
-
-	add r8d, eax
+_break99:
+	mov r8d, eax
 	not r8d
 	inc r8
 	add r15, r8
@@ -225,27 +233,33 @@ loopEsMayor:
 
 finLectura:
 	mov ebx, 0;
+	mov r15, 0;
+	mov r8, trama
 
 inicio:
 	mov eax, [trama+r15]
+
 	mov ebx, [pc+r15]
-	cmp rax, 0x0000000000000000
-	;je instnotfound
-	separarJ rax
-	;cmp r14, 000000b
-	;jne decode
-	;cmp
-	;je instnop
 	cmp rax, 0
-	je determinarPC
+	je L7
+	jmp L8
+L7:
+	mov ecx, [pc+r15]
+	cmp ecx, 0
+	je gameover
+	mov ebx, 0
+	mov ecx,0
+	jmp determinarPC
+L8:
+	separarJ rax
 	jmp decode
 
-_exit:
   mov eax, 1
   mov ebx, 0
   int 80h
 
 ; -------------------- Decodificación --------------------
+
 decode:
 
 	cmp r14, 000000b                        ;compara con 0 para ver si es una instrucción tipo R
@@ -311,7 +325,7 @@ R:
 	je resta                          		  ;salta a .resta
 	cmp r9, 0x23                     		    ;compara con subu
 	je restau                     		      ;salta a .restau
-	cmp ebx, 0 ; Si el PC actual es 0, significa línea en blanco. Este será el fin del programa.
+	cmp ebx, 0 ; Si el PC actual es 0, significa lí­nea en blanco. Este será el fin del programa.
 	je gameover ; Fin del programa.
 
 	jmp instnotfound                    		;si la instrucción no se
@@ -321,6 +335,7 @@ R:
 		                                      ;lo informa en pantalla
 
 ; -------------------- Rutinas correspondientes a cada inst --------------------
+
 suma:	;Tipo R.
 	printString sumar, lsumar 							; Imprime mnemónico.
 	separarR r14
@@ -335,6 +350,8 @@ suma:	;Tipo R.
 	separarR r14 														; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	alu 2
+	shl rbx, 32
+	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r11
 	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
 	mov ebx, 0
@@ -354,6 +371,8 @@ sumau:	;Tipo R.
 	separarR r14 														; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	alu 2 																	; suma rax y rcx. resultado en rbx.
+	shl rbx, 32
+	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r11
 	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
 	mov ebx, 0
@@ -375,9 +394,13 @@ sumai:	;Tipo I.
 
 	reg_mips r13
 	mov rax, rdi 														; rax es rs en la alu.
+	shl rax, 32
+	shr rax, 32															; Cortar dato a 32 bits.
 	sign_ext r11
 	mov rcx, r11 														; rcx es rt en la alu.
 	alu 2
+	shl rbx, 32
+	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r12
 	mov[rsi], rbx
 	mov ebx, 0
@@ -399,9 +422,13 @@ sumaiu:	;Tipo I.
 
 	reg_mips r13
 	mov rax, rdi													  ; rax es rs en la alu.
+	shl rax, 32
+	shr rax, 32															; Cortar dato a 32 bits.
 	sign_ext r11
 	mov rcx, r11 														; rcx es rt en la alu.
 	alu 2
+	shl rbx, 32
+	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r12
 	mov[rsi], rbx
 	mov ebx, 0
@@ -421,6 +448,8 @@ y:	;Tipo R.
 	separarR r14 													 ; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	alu 0
+	shl rbx, 32
+	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r11
 	mov [rsi], rbx										 		 ; Mueve resultado a registro mips rd.
 	mov ebx, 0
@@ -442,8 +471,12 @@ yi:	;Tipo I.
 
 	reg_mips r13
 	mov rax, rdi 											 		; rax es rs en la alu.
+	shl rax, 32
+	shr rax, 32															; Cortar dato a 32 bits.
 	mov rcx, r11													; rcx es rt en la alu.
 	alu 0 														 		; and rax y rcx
+	shl rbx, 32
+	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r12 													; r12 es rt
 	mov [rsi], rbx  									 		; Mueve resultado a registro mips rt
 	mov ebx, 0
@@ -466,8 +499,12 @@ beq:	;Tipo I.
 
 	reg_mips r13
 	mov r13, rdi													;Guarda en rax el contenido de rs
+	shl r13, 32
+	shr r13, 32															; Cortar dato a 32 bits.
 	reg_mips r12
 	mov r12, rdi 													;Guarda en rcx el contenido de rt
+	shl r12, 32
+	shr r12, 32															; Cortar dato a 32 bits.
 	cmp r13, r12											 		;Compara si rs y rt son iguales
 	je branch_new_addr
 	mov ebx, 0
@@ -490,8 +527,12 @@ bne:	;Tipo I.
 
 	reg_mips r13
 	mov r13, rdi													;Guarda en rax el contenido de rs
+	shl r13, 32
+	shr r13, 32															; Cortar dato a 32 bits.
 	reg_mips r12
 	mov r12, rdi 													;Guarda en rcx el contenido de rt
+	shl r12, 32
+	shr r12, 32															; Cortar dato a 32 bits.
 	cmp r13, r12													;Compara si rs y rt son iguales
 	jne branch_new_addr
 	mov ebx, 0
@@ -507,47 +548,49 @@ branch_new_addr:
 	jmp determinarPC
 
 j:	;Tipo J.
-	mov r14, rax 													; Mueve instrucción a r14.
+_break1:
+	mov r12, rax 													; Mueve instrucción a r14.
 	printString jump, ljump 							; Imprime mnemónico.
-	separarJ r14
-	;---------AQUÍ SE IMPRIME EL JUMP ADDRESS, NO EL ADDRESS. Y EN HEXA. -------
+	separarJ r12
+	;---------AQUÍ SE IMPRIME EL JUMP ADDRESS, NO EL ADDRESS. Y EN HEXA. -------
 	printVal r13 													; Imprime address.
 	printString retorno, lretorno
-	separarJ r14 													; Asegurarse de que no se hayan perdido los datos de la instrucción.
+	separarJ r12 													; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
-	mov ebx, 0x00000000										; ebx registro utilizado para guardar la nueva direccion del PC
-	mov r14, [pc+r15+4]										;PC_actual=PC+4;
-	and r14d, 0xF0000000
-	mov ebx, r14d													; se carga en ebx los bits mas significativos del PC_actual
-	shr ebx, 2														;newPC = PC+4[31:28]
-	and eax, 0x03FFFFFF
-	add ebx, eax
-	shl ebx, 2														;Address final luego del cálculo
+	mov ebx,0x00000000									; ebx registro utilizado para guardar la nueva direccion del PC
+	add r14d,r15d												;PC_actual=PC+4;
+	and r14d,0xF0000000;
+	mov ebx,r14d;												; se carga en ebx los bits mas significativos del PC_actual
+	shr ebx,2														;newPC = PC+4[31:28]
+	add ebx,r13d
+	shl ebx,2;														;Address final luego del cálculo
 	jmp determinarPC
 
-;Tipo J.
-
-jandl:
-	mov r14, rax 													; Mueve instrucción a r14.
-	printString jumpal, ljumpal 					; Imprime mnemónico.
-	separarJ r14
-	;---------AQUÍ SE IMPRIME EL JUMP ADDRESS, NO EL ADDRESS. Y EN HEXA. -------
+jandl: ;Tipo J.
+_break4545:
+	mov r12, rax 													; Mueve instrucción a r14.
+	printString jumpal, ljumpal 							; Imprime mnemónico.
+	separarJ r12
+	;---------AQUÍ SE IMPRIME EL JUMP ADDRESS, NO EL ADDRESS. Y EN HEXA. -------
 	printVal r13 													; Imprime address.
 	printString retorno, lretorno
-	separarJ r14 													; Asegurarse de que no se hayan perdido los datos de la instrucción.
+	separarJ r12 													; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
-	mov ebx,0															; ebx registro utilizado para guardar la nueva direccion del PC
-	mov r14, [pc+r15+4]										;PC_actual=PC+4;
-	mov [reg31], r14d
-	and r14d, 0xF0000000
-	mov ebx, r14d 												; se carga en ebx los bits mas significativos del PC_actual
-	shl ebx, 26 													; newPC=PC+4[31:28]
-	and eax, 0x03FFFFFF
-	add ebx, eax
-	shl ebx, 2 ; jumpaddress
+	mov ebx,0x00000000									; ebx registro utilizado para guardar la nueva direccion del PC
+	add r14d,r15d												;PC_actual=PC+4;
+	mov r11d, r14d
+	and r14d,0xF0000000;
+	mov ebx,r14d;												; se carga en ebx los bits mas significativos del PC_actual
+	shr ebx,2														;newPC = PC+4[31:28]
+	add ebx,r13d
+	shl ebx,2;														;Address final luego del cálculo
+	add r11d, r15d	
+	mov eax,[pc+r15+8]											;PC + 8
+	mov [reg31], eax
 	jmp determinarPC
 
 jr:	;Tipo R.
+_break100:
 	printString jumpreg, ljumpreg 				; Imprime mnemónico.
 	separarR r14
 	printVal r13													; Imprime rs.
@@ -578,6 +621,8 @@ lw:	;Tipo I.
 	sign_ext r11													;Se toma el inmediato y se extiende el signo
 	reg_mips r13
 	mov r13, rdi													;se utiliza la macro para obtener el valor y dirección de Rs
+	shl r13, 32
+	shr r13, 32															; Cortar dato a 32 bits.
 	add r13, r11													;se suman ambos valores para calcular la dirección de memoria
 	cmp r13, 99
 	ja memoverflow
@@ -619,6 +664,8 @@ nor:	;Tipo R.
 	separarR r14 													; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	alu 5
+	shl rbx, 32
+	shr rbx, 32														; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r11
 	mov [rsi], rbx 												; Mueve resultado a registro mips rd.
 	mov ebx, 0
@@ -638,6 +685,8 @@ o:	;Tipo R.
 	separarR r14 													; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	alu 1
+	shl rbx, 32
+	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r11
 	mov [rsi], rbx 												; Mueve resultado a registro mips rd.
 	mov ebx, 0
@@ -659,8 +708,12 @@ ori:	;Tipo I.
 
 	reg_mips r13
 	mov rax, rdi 													; rax es rs en la alu.
+	shl rax, 32
+	shr rax, 32															; Cortar dato a 32 bits.
 	mov rcx, r11 													; rcx es rt en la alu.
 	alu 1 																; or entre rax y rcx
+	shl rbx, 32
+	shr rbx, 32														; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r12 													; r12 es rt
 	mov [rsi], rbx 												; Mueve resultado a registro mips rt
 	mov ebx, 0
@@ -680,6 +733,8 @@ slt:	;Tipo R.
 	separarR r14 													; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	alu 4
+	shl rbx, 32
+	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r11
 	mov [rsi], rbx												; Mueve resultado a registro mips rd.
 	mov ebx, 0
@@ -699,6 +754,8 @@ sltu:	;Tipo R.
 	separarR r14													; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	alu 4
+	shl rbx, 32
+	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r11
 	mov [rsi], rbx 												; Mueve resultado a registro mips rd.
 	mov ebx, 0
@@ -720,9 +777,13 @@ slti:	;Tipo I.
 
 	reg_mips r13
 	mov rax, rdi 													; rax es rs en la alu.
+	shl rax, 32
+	shr rax, 32															; Cortar dato a 32 bits.
 	sign_ext r11
 	mov rcx, r11													; rcx es rt en la alu.
 	alu 4
+	shl rbx, 32
+	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r12
 	mov [rsi], rbx												; Mueve resultado a registro mips rd.
 	mov ebx, 0
@@ -744,9 +805,13 @@ sltiu:	;Tipo I.
 
 	reg_mips r13
 	mov rax, rdi													; rax es rs en la alu.
+	shl rax, 32
+	shr rax, 32															; Cortar dato a 32 bits.
 	sign_ext r11
 	mov rcx, r11													; rcx es rt en la alu.
 	alu 4
+	shl rbx, 32
+	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r12
 	mov [rsi], rbx												; Mueve resultado a registro mips rd.
 	mov ebx, 0
@@ -764,8 +829,7 @@ sll:	;Tipo R.
 	printString retorno, lretorno
 	separarR r14 													; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
-	reg_mips r12
-	mov r8, rdi														; En r8 dato a correr.
+	mov r8, rcx														; En r8 dato a correr.
 	mov rcx, r10													; En rcx shamt.
 	shl r8, cl														; Corrimiento según el shamt.
 	reg_mips r11
@@ -785,8 +849,7 @@ srl:	;Tipo R.
 	printString retorno, lretorno
 	separarR r14 													; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
-	reg_mips r12
-	mov r8, rdi														; En r8 dato a correr.
+	mov r8, rcx														; En r8 dato a correr.
 	mov rcx, r10													; En rcx shamt.
 	shr r8, cl														; Corrimiento según el shamt.
 	reg_mips r11
@@ -808,6 +871,8 @@ resta:	;Tipo R.
 	separarR r14 													; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	alu 3
+	shl rbx, 32
+	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r11
 	mov [rsi], rbx 												; Mueve resultado a registro mips rd.
 	mov ebx, 0
@@ -827,6 +892,8 @@ restau:	;Tipo R.
 	separarR r14 													; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	alu 3
+	shl rbx, 32
+	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r11
 	mov [rsi], rbx 												; Mueve resultado a registro mips rd.
 	mov ebx, 0
@@ -850,6 +917,8 @@ sw:	;Tipo I.
 	sign_ext r11												 ;Se toma el inmediato y se extiende el signo
 	reg_mips r13												 ;se utiliza la macro para obtener el valor y dirección de Rs
 	mov r13, rdi
+	shl r13, 32
+	shr r13, 32															; Cortar dato a 32 bits.
 	add r13, r11  											 ;se suman ambos valores para calcular la dirección de memoria
 	cmp r13, 99
 	ja memoverflow											 ;si se sobrepasa de las 100 palabras de memoria, imprime mensaje de error.
@@ -857,17 +926,16 @@ sw:	;Tipo I.
 	mul r13															 ;se multiplica por 4 ya que la memoria se divide en bytes (palabras de 4*8bits)
 	add rax, datos 											 ;se suma a datos ya que es el valor inicial de memoria de datos en el computador real.
 	reg_mips r12
+	shl rdi, 32
+	shr rdi, 32															; Cortar dato a 32 bits.
 	mov [rax], rdi											 ;se toma el valor de rt y se guarda en la dirección calculada en rax
 	mov ebx, 0
-	jmp determinarPC
-
-; -------------------- Para nop's --------------------
-instnop:	; Si la instrucción es un nop, continúa con la siguiente.
 	jmp determinarPC
 
 ; -------------------- Error de dirección inválida para jump register --------------------
 invaliddir:
 	printString invdir, linvdir
+	mov ebx, 0
 	jmp determinarPC
 
 ; -------------------- Error de dirección de memoria no encontrada --------------------
@@ -875,11 +943,11 @@ memoverflow:
 	printString memmax, lmemmax
 
 
-; -------------------- Error de instruccíon no encontrada --------------------
+; -------------------- Error de instrucción no encontrada --------------------
 instnotfound:
 	printString nfound, lnfound
-	exit
-;	jmp determinarPC
+	mov ebx, 0
+	jmp determinarPC
 
 ; -------------------- Fin del programa --------------------
 gameover:
