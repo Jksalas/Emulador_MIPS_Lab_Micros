@@ -124,6 +124,7 @@ section .data
 	cleanS:    db 0x1b, "[2J", 0x1b, "[H"
 	cleanS_size: equ $ - cleanS
 	tap: db 9
+	cons_Resultadostxt: db 'Resultados.txt',0
 
 	; -------------------- Lectura ROM.txt ------------------------
 	file db "./ROM.txt", 0
@@ -507,32 +508,32 @@ section .data
 %%trece:
 	cmp rdx, 0x000000000000000d
 	jne %%catorce
-	mov rsi, reg13 ; Se guarda en rsi la dirección del registro mips.
-	mov rdi, [reg13] ; Se guarda en rdi el dato del reg13 (en memoria).
+	mov rsi, reg13 															; Se guarda en rsi la dirección del registro mips.
+	mov rdi, [reg13] 														; Se guarda en rdi el dato del reg13 (en memoria).
 	jmp %%listo
 %%catorce:
 	cmp rdx, 0x000000000000000e
 	jne %%quince
-	mov rsi, reg14 ; Se guarda en rsi la dirección del registro mips.
-	mov rdi, [reg14] ; Se guarda en rdi el dato del reg14 (en memoria).
+	mov rsi, reg14 															; Se guarda en rsi la dirección del registro mips.
+	mov rdi, [reg14] 														; Se guarda en rdi el dato del reg14 (en memoria).
 	jmp %%listo
 %%quince:
 	cmp rdx, 0x000000000000000f
 	jne %%dieciseis
-	mov rsi, reg15 ; Se guarda en rsi la dirección del registro mips.
-	mov rdi, [reg15] ; Se guarda en rdi el dato del reg15 (en memoria).
+	mov rsi, reg15 															; Se guarda en rsi la dirección del registro mips.
+	mov rdi, [reg15] 														; Se guarda en rdi el dato del reg15 (en memoria).
 	jmp %%listo
 %%dieciseis:
 	cmp rdx, 0x0000000000000010
 	jne %%diecisiete
-	mov rsi, reg16 ; Se guarda en rsi la dirección del registro mips.
-	mov rdi, [reg16] ; Se guarda en rdi el dato del reg16 (en memoria).
+	mov rsi, reg16 															; Se guarda en rsi la dirección del registro mips.
+	mov rdi, [reg16] 														; Se guarda en rdi el dato del reg16 (en memoria).
 	jmp %%listo
 %%diecisiete:
 	cmp rdx, 0x0000000000000011
 	jne %%dieciocho
-	mov rsi, reg17 ; Se guarda en rsi la dirección del registro mips.
-	mov rdi, [reg17] ; Se guarda en rdi el dato del reg17 (en memoria).
+	mov rsi, reg17 															; Se guarda en rsi la dirección del registro mips.
+	mov rdi, [reg17] 														; Se guarda en rdi el dato del reg17 (en memoria).
 	jmp %%listo
 %%dieciocho:
 	cmp rdx, 0x0000000000000012

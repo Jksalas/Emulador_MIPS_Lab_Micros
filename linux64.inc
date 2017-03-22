@@ -64,7 +64,7 @@ section .bss
 
 	; -------------------- Imprimir registros --------------------
 	text resw 100 ;Reserva un espacio en memoria
-
+	Resultadostxt resb 8
 
 ; Macro para imprimir strings en pantalla.
 %macro printString 2
@@ -73,6 +73,12 @@ section .bss
   mov rsi, %1
   mov rdx, %2
   syscall
+
+	mov rax,1           ;sys_write
+  mov rdi,[Resultadostxt] ;Salida standard (pantalla)
+  mov rsi,%1          ;mensaje a escribir
+  mov rdx,%2          ;tamaño del mensaje a escribir
+  syscall             ;llama al SO
 %endmacro
 
 

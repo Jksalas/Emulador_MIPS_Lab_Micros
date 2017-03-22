@@ -85,6 +85,14 @@ seguir:
 	mov [reg7],r11
 
 ; -------------------- Imprimir mensajes de bienvenida --------------------
+;Se crea el archivo Resultados.txt
+	mov rax,2                           ;sys_open; en caso de acierto el fd queda en rax
+	mov rdi,cons_Resultadostxt          ;se creara el archivo ROM.txt
+	mov rsi,(2000o+1000o+100o+2o)       ;bandera se creara o se truncara a 0 y se usara en modo append
+	mov rdx,(700o+40o+4o)               ;permisos
+	syscall
+	mov [Resultadostxt],rax		;se respalda el fd del archivo de resultados
+
 	cleanScreen cleanS, cleanS_size
 	printString bienvenido,lbienvenido 														;Bienvenida
 	printString lab, llab																					;Datos del curso
