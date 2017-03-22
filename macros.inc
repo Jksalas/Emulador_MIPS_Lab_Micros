@@ -4,7 +4,7 @@ section .data
 	; -------------------- Mensajes --------------------
 	;NOTA: en caso de querer cambiar el color se modifica el #m.
 	tap: db 9
-	bienvenido: db  0x1b,"[38;5;212m","************************** Bienvenido al Emulador MIPS *************************", 0xa, 0xa
+	bienvenido: db  0x1b,"[38;5;212m","        ****************** Bienvenido al Emulador MIPS *****************", 0xa, 0xa
 	lbienvenido: equ $-bienvenido
 	lab: db 0x1b,"[38;5;212m", "        EL-4313 - Laboratorio Estructura de Microprocesadores",
 	llab: equ $-lab
@@ -44,6 +44,8 @@ section .data
 	ltheend: equ $-theend
 	pointofnoreturn: db 0x1b, "[38;5;9m","	Error: No existe una dirección de retorno.", 0xa
 	lpointofnoreturn: equ $-pointofnoreturn
+	cpuid2: db 0x1b, "[38;5;31m","	CPU ID:", 0xa
+	lcpuid2: equ $-cpuid2
 
 	sumar: db 0x1b, "[38;5;41m","      	  Ejecutando add $"
 	lsumar: equ $-sumar
@@ -133,46 +135,46 @@ section .data
 
 	; -------------------- Imprimir registros --------------------
 	filename: db "myfile.txt",0
-linea: db  0x1b,"[38;5;30m","**********************REGISTROS MIPS**********************", 0xa
+linea: db  0x1b,"[38;5;209m","        ****************** Contenido de registros MIPS ******************", 0xa
 	llinea: equ $-linea
-	linea2: db  0x1b,"[38;5;30m","**********************************************************", 0xa
+	linea2: db  0x1b,"[38;5;209m","        ****************************************************************", 0xa
 	llinea2: equ $-linea2
 	nuevaLinea: db 10
 	tab: db 9
-	reg2s: db  0x1b,"[38;5;35m","$v0	"
+	reg2s: db  0x1b,"[38;5;35m","				$v0	"
 	lreg2s: equ $-reg2s
-	reg3s: db  0x1b,"[38;5;35m","$v1	"
-	lreg3s: equ $-reg3s	
-	reg4s: db  0x1b,"[38;5;35m","$a0	"
+	reg3s: db  0x1b,"[38;5;35m","				$v1	"
+	lreg3s: equ $-reg3s
+	reg4s: db  0x1b,"[38;5;35m","				$a0	"
 	lreg4s: equ $-reg4s
-	reg5s: db  0x1b,"[38;5;35m","$a1	"
+	reg5s: db  0x1b,"[38;5;35m","				$a1	"
 	lreg5s: equ $-reg5s
-	reg6s: db  0x1b,"[38;5;35m","$a2	"
+	reg6s: db  0x1b,"[38;5;35m","				$a2	"
 	lreg6s: equ $-reg6s
-	reg7s: db  0x1b,"[38;5;35m","$a3	"
+	reg7s: db  0x1b,"[38;5;35m","				$a3	"
 	lreg7s: equ $-reg7s
-	reg16s: db  0x1b,"[38;5;35m","$s0	"
+	reg16s: db  0x1b,"[38;5;35m","				$s0	"
 	lreg16s: equ $-reg16s
-	reg17s: db  0x1b,"[38;5;35m","$s1	"
+	reg17s: db  0x1b,"[38;5;35m","				$s1	"
 	lreg17s: equ $-reg17s
-	reg18s: db  0x1b,"[38;5;35m","$s2	"
+	reg18s: db  0x1b,"[38;5;35m","				$s2	"
 	lreg18s: equ $-reg18s
-	reg19s: db  0x1b,"[38;5;35m","$s3	"
+	reg19s: db  0x1b,"[38;5;35m","				$s3	"
 	lreg19s: equ $-reg19s
-	reg20s: db  0x1b,"[38;5;35m","$s4	"
+	reg20s: db  0x1b,"[38;5;35m","				$s4	"
 	lreg20s: equ $-reg20s
-	reg21s: db  0x1b,"[38;5;35m","$s5	"
+	reg21s: db  0x1b,"[38;5;35m","				$s5	"
 	lreg21s: equ $-reg21s
-	reg22s: db  0x1b,"[38;5;35m","$s6	"
+	reg22s: db  0x1b,"[38;5;35m","				$s6	"
 	lreg22s: equ $-reg22s
-	reg23s: db  0x1b,"[38;5;35m","$s7	"
+	reg23s: db  0x1b,"[38;5;35m","				$s7	"
 	lreg23s: equ $-reg23s
-	reg29s: db  0x1b,"[38;5;35m","$sp	"
+	reg29s: db  0x1b,"[38;5;35m","				$sp	"
 	lreg29s: equ $-reg29s
 	; -------------------- Para argumentos --------------------
 	m db 0
 %macro ImprimirRegistros 0
-	
+
 	printString linea, llinea
 	mov r9, 0
 %%L90:

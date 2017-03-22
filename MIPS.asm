@@ -1047,6 +1047,8 @@ gameover
 	printString steven, lsteven
 	printString camila, lcamila
 	printString retorno, lretorno
+	printString cpuid2, lcpuid2
+	printString tap, 1
 	jmp datosMicro
 	hastaaqui:
 	printString retorno, lretorno
