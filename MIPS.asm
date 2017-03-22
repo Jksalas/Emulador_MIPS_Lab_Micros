@@ -70,6 +70,7 @@ seguir:
 	printString bienvenido,lbienvenido ;Llamado al macro
 	printString lab, llab
 	printString sem, lsem
+	printString retorno, lretorno
 	printString buscando, lbuscando
 
 ; -----------------------LECTURA ROM.TXT--------------------------------
