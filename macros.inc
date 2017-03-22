@@ -3,7 +3,7 @@ section .data
 
 	; -------------------- Mensajes --------------------
 	;NOTA: en caso de querer cambiar el color se modifica el #m.
-
+	tap: db 9
 	bienvenido: db  0x1b,"[38;5;183m","************************** Bienvenido al Emulador MIPS *************************", 0xa, 0xa
 	lbienvenido: equ $-bienvenido
 	lab: db 0x1b,"[38;5;183m", "        EL-4313 - Laboratorio Estructura de Microprocesadores",
@@ -24,17 +24,17 @@ section .data
 	lexito: equ $-exito
 	fallo: db 0x1b, "[38;5;9m","        Ejecución fallida", 0xa
 	lfallo: equ $-fallo
-	final: db 0x1b, "[38;5;86m","        Realizado por:", 0xa
+	final: db 0x1b, "[38;5;38m","        Realizado por:", 0xa
 	lfinal: equ $-final
-	juan: db 0x1b, "[38;5;86m","      	  Juan José Vásquez 2014098487", 0xa
+	juan: db 0x1b, "[38;5;38m","      	  Juan José Vásquez 2014098487", 0xa
 	ljuan: equ $-juan
-	joao: db 0x1b, "[38;5;86m","     	  Joao Salas Ramirez 2014096609", 0xa
+	joao: db 0x1b, "[38;5;38m","     	  Joao Salas Ramirez 2014096609", 0xa
 	ljoao: equ $-joao
-	steven: db 0x1b, "[38;5;86m","      	  Steven León Domínguez 2014138025", 0xa
+	steven: db 0x1b, "[38;5;38m","      	  Steven León Domínguez 2014138025", 0xa
 	lsteven: equ $-steven
-	andre: db 0x1b, "[38;5;86m","     	  André Martínez Arana 2014068625", 0xa
+	andre: db 0x1b, "[38;5;38m","     	  André Martínez Arana 2014068625", 0xa
 	landre: equ $-andre
-	camila: db 0x1b, "[38;5;86m","     	  Camila Gómez Molina 2014089559", 0xa
+	camila: db 0x1b, "[38;5;38m","     	  Camila Gómez Molina 2014089559", 0xa
 	lcamila: equ $-camila
 	nfound: db 0x1b, "[38;5;9m","	Error: La instrucción no ha sido reconocida", 0xa
 	lnfound: equ $-nfound
@@ -42,7 +42,7 @@ section .data
 	lmemmax: equ $-memmax
 	invdir: db 0x1b, "[38;5;9m","	Error: El registro utilizado no contiene una dirección de retorno válida", 0xa
 	linvdir: equ $-invdir
-	theend: db 0x1b, "[38;5;183m","	Fin del programa. Presione enter para salir", 0xa
+	theend: db 0x1b, "[38;5;183m","	Presione enter para salir", 0xa
 	ltheend: equ $-theend
 	pointofnoreturn: db 0x1b, "[38;5;9m","	Error: No existe una dirección de retorno", 0xa
 	lpointofnoreturn: equ $-pointofnoreturn
@@ -431,8 +431,8 @@ section .data
 %%ventisiete:
 	cmp rdx, 0x000000000000001b
 	jne %%ventiocho
-	mov rdi, [reg27] ; Se guarda en rdi el dato del reg27 (en memoria).
-	mov rsi, reg27 ; Se guarda en rsi la dirección del registro mips.
+	mov rdi, [reg] ; Se guarda en rdi el dato del reg (en memoria).
+	mov rsi, reg ; Se guarda en rsi la dirección del registro mips.
 	jmp %%listo
 %%ventiocho:
 	cmp rdx, 0x000000000000001c

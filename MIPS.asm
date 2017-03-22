@@ -41,13 +41,13 @@ loopLecturaArgumento:
 
 ;---------------ASIGNAR ARGUMENTOS A REGISTROS-------------
 argumento1:
-	DeterminarArgumento r8 ; Guardar en r8 el primer argumento
+	DeterminarArgumento r8 															; Guardar en r8 el primer argumento
 argumento2:
-	DeterminarArgumento r9 ; Guardar en r9 el segundo argumento
+	DeterminarArgumento r9 															; Guardar en r9 el segundo argumento
 argumento3:
-	DeterminarArgumento r10; Guardar en r10 el tercer argumento
+	DeterminarArgumento r10															; Guardar en r10 el tercer argumento
 argumento4:
-	DeterminarArgumento r11; Guardar en r11 el cuarto argumento
+	DeterminarArgumento r11															; Guardar en r11 el cuarto argumento
 
 seguir:
 	inc byte[m]
@@ -67,7 +67,7 @@ seguir:
 
 ; -------------------- Imprimir mensajes de bienvenida --------------------
 
-	printString bienvenido,lbienvenido ;Llamado al macro
+	printString bienvenido,lbienvenido 							;Llamado al macro
 	printString lab, llab
 	printString sem, lsem
 	printString retorno, lretorno
@@ -89,7 +89,7 @@ seguir:
 	mov r15, 0
 
 ; ----------------ABRIR ROM.TXT---------------------
-	mov ebx, file ; name of the file
+	mov ebx, file 																	; name of the file
 	mov eax, 5
 	mov ecx, 0
 	int 80h
@@ -100,11 +100,23 @@ seguir:
 	mov edx, len
 	int 80h
 
+
 ; -----------PASAR DE ASCII A ENTERO----------------
 	mov r8, [buffer]
+	cmp r8, 0
+	je errorcito
+	printString encuentra, lencuentra															; Imprime msj diciendo que se ha encontrado la ROM
+	printString mensajeinicio, lmensajeinicio											; Imprime msj presionar enter para continuar la ejecución
+	jmp presionaEnterC
+	holi:
 	mov rax, 0
 	mov rbx, 0
 	mov r15, 0
+	jmp loop1
+	errorcito:
+			printString noencuentra, lnoencuentra											; Imprime msj de que no se encontró la ROM
+			printString mensajefinal, lmensajefinal										; Imprime msj presionar enter para terminar ejecución
+			jmp presionaEnter
 
 loop1:
 	inc rax
@@ -529,11 +541,11 @@ bne:	;Tipo I.
 	reg_mips r13
 	mov r13, rdi													;Guarda en rax el contenido de rs
 	shl r13, 32
-	shr r13, 32															; Cortar dato a 32 bits.
+	shr r13, 32														; Cortar dato a 32 bits.
 	reg_mips r12
 	mov r12, rdi 													;Guarda en rcx el contenido de rt
 	shl r12, 32
-	shr r12, 32															; Cortar dato a 32 bits.
+	shr r12, 32														; Cortar dato a 32 bits.
 	cmp r13, r12													;Compara si rs y rt son iguales
 	jne branch_new_addr
 	mov ebx, 0
@@ -558,11 +570,11 @@ _break1:
 	printString retorno, lretorno
 	separarJ r12 													; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
-	mov ebx,0x00000000									; ebx registro utilizado para guardar la nueva direccion del PC
-	add r14d,r15d												;PC_actual=PC+4;
+	mov ebx,0x00000000								    ; ebx registro utilizado para guardar la nueva direccion del PC
+	add r14d,r15d											  	;PC_actual=PC+4;
 	and r14d,0xF0000000;
-	mov ebx,r14d;												; se carga en ebx los bits mas significativos del PC_actual
-	shr ebx,2														;newPC = PC+4[31:28]
+	mov ebx,r14d;											  	; se carga en ebx los bits mas significativos del PC_actual
+	shr ebx,2													  	;newPC = PC+4[31:28]
 	add ebx,r13d
 	shl ebx,2;														;Address final luego del cálculo
 	jmp determinarPC
@@ -570,9 +582,11 @@ _break1:
 jandl: ;Tipo J.
 _break4545:
 	mov r12, rax 													; Mueve instrucción a r14.
-	printString jumpal, ljumpal 							; Imprime mnemónico.
+	printString jumpal, ljumpal 					; Imprime mnemónico.
 	separarJ r12
+
 	;---------AQUÍ SE IMPRIME EL JUMP ADDRESS, NO EL ADDRESS. Y EN HEXA. -------
+
 	printVal r13 													; Imprime address.
 	printString retorno, lretorno
 	separarJ r12 													; Asegurarse de que no se hayan perdido los datos de la instrucción.
@@ -959,7 +973,17 @@ instnotfound:
 	jmp determinarPC
 
 ; -------------------- Fin del programa --------------------
-gameover:
+gameover
+	printString retorno, lretorno
+	printString exito, lexito
+	printString final, lfinal
+	printString juan, ljuan
+	printString joao, ljoao
+	printString andre, landre
+	printString steven, lsteven
+	printString camila, lcamila
+	jmp datosMicro
+	hastaaqui:
 	printString theend, ltheend
 	exit
 
@@ -970,7 +994,6 @@ gameover:
 datosMicro:
 
  ;Esta sección permite obtener información del fabricante del procesador
-
 
 	mov eax,80000002h
 	cpuid
@@ -996,12 +1019,22 @@ datosMicro:
 	mov [datosCPU+40], ecx
 	mov [datosCPU+44], edx
 
+	printString tap, 1
 	printString datosCPU, 48
-	;printString retorno, lretorno
+	printString retorno, lretorno
+	jmp hastaaqui
+; -------------------- Lectura de Enter para continuar la ejecución --------------------
+	presionaEnterC:
+			readString teclado,1
+			mov r15, [teclado]
+			cmp r15, 0xa
+			jne presionaEnterC
+			jmp holi
 
-; -------------------- Lectura de Enter para finalizar la ejecución --------------------
+; -------------------- Lectura de Enter para salir la ejecución --------------------
 presionaEnter:
 		readString teclado,1
 		mov r15, [teclado]
 		cmp r15, 0xa
 		jne presionaEnter
+		exit
