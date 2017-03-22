@@ -9,8 +9,7 @@
 ;		- Steven León Domínguez
 ;		- André Martínez Arana
 ;		- Joao Salas Ramírez
-;		- Juan José Vásquez
-;
+;		- Juan José Vásquez Alfaro
 ;########################################################################
 
 
@@ -84,6 +83,33 @@ seguir:
 	mov [reg6],r10
 	mov [reg7],r11
 
+	; --------------------------- Lectura de ROM.txt ---------------------------
+
+		mov rax, 0
+		mov rbx, 0
+		mov rcx, 0
+		mov edx, 0
+		mov r8, 0
+		mov r9, 0
+		mov r10, 0
+		mov r11, 0
+		mov r12, 0
+		mov r13, 0
+		mov r14, 0
+		mov r15, 0
+
+	; ----------------------------- Abrir ROM.txt ------------------------------
+		mov ebx, file 																								; nombre del archivo
+		mov eax, 5
+		mov ecx, 0
+		int 80h
+
+		mov eax, 3
+		mov ebx, eax
+		mov ecx, buffer
+		mov edx, len
+		int 80h
+
 ; -------------------- Imprimir mensajes de bienvenida --------------------
 ;Se crea el archivo Resultados.txt
 	mov rax,2                           ;sys_open; en caso de acierto el fd queda en rax
@@ -99,33 +125,6 @@ seguir:
 	printString sem, lsem																					;Semestre
 	printString retorno, lretorno
 	printString buscando, lbuscando																;Msj buscando ROM.txt
-
-; --------------------------- Lectura de ROM.txt ---------------------------
-
-	mov rax, 0
-	mov rbx, 0
-	mov rcx, 0
-	mov edx, 0
-	mov r8, 0
-	mov r9, 0
-	mov r10, 0
-	mov r11, 0
-	mov r12, 0
-	mov r13, 0
-	mov r14, 0
-	mov r15, 0
-
-; ----------------------------- Abrir ROM.txt ------------------------------
-	mov ebx, file 																								; nombre del archivo
-	mov eax, 5
-	mov ecx, 0
-	int 80h
-
-	mov eax, 3
-	mov ebx, eax
-	mov ecx, buffer
-	mov edx, len
-	int 80h
 
 
 ; ------------------------- Pasar de Ascii a entero -----------------------

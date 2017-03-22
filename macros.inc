@@ -22,15 +22,15 @@ section .data
 	;Información de los miembros del equipo
 	final: db 0x1b, "[38;5;68m","        Realizado por:", 0xa
 	lfinal: equ $-final
-	juan: db 0x1b, "[38;5;68m","      	  Juan José Vásquez      2014098487", 0xa
+	juan: db 0x1b, "[38;5;68m","      	  Juan José Vásquez Alfaro  2014098487", 0xa
 	ljuan: equ $-juan
-	joao: db 0x1b, "[38;5;68m","     	  Joao Salas Ramirez     2014096609", 0xa
+	joao: db 0x1b, "[38;5;68m","     	  Joao Salas Ramirez        2014096609", 0xa
 	ljoao: equ $-joao
-	steven: db 0x1b, "[38;5;68m","      	  Steven León Domínguez  2014138025", 0xa
+	steven: db 0x1b, "[38;5;68m","      	  Steven León Domínguez     2014138025", 0xa
 	lsteven: equ $-steven
-	andre: db 0x1b, "[38;5;68m","     	  André Martínez Arana   2014068625", 0xa
+	andre: db 0x1b, "[38;5;68m","     	  André Martínez Arana      2014068625", 0xa
 	landre: equ $-andre
-	camila: db 0x1b, "[38;5;68m","     	  Camila Gómez Molina    2014089559", 0xa
+	camila: db 0x1b, "[38;5;68m","     	  Camila Gómez Molina       2014089559", 0xa
 	lcamila: equ $-camila
 
 	;Mensajes finales
@@ -127,6 +127,7 @@ section .data
 	cons_Resultadostxt: db 'Resultados.txt',0
 
 	; -------------------- Lectura ROM.txt ------------------------
+	;AQUIMODIFIQUE
 	file db "./ROM.txt", 0
 	len equ 2048
 	n db 0
