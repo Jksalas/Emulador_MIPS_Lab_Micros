@@ -47,7 +47,7 @@ section .data
 	pointofnoreturn: db 0x1b, "[38;5;9m","	Error: No existe una dirección de retorno", 0xa
 	lpointofnoreturn: equ $-pointofnoreturn
 
-	sumar: db 0x1b, "[38;5;41m","      	  Ejecutando add $", 0xa
+	sumar: db 0x1b, "[38;5;41m","      	  Ejecutando add $"
 	lsumar: equ $-sumar
 	sumaru: db 0x1b, "[38;5;41m","      	  Ejecutando addu $"
 	lsumaru: equ $-sumaru
