@@ -47,7 +47,7 @@ section .bss
 	reg30: resb 4
 	reg31: resb 4
 
-	stack: resw 100
+	stack1: resw 100
 
 	resmult: resb 8; 64 bits para resultado de multiplicación.
 

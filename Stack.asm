@@ -10,7 +10,8 @@ section .text
 _start:
 
 ; -------------------- Recibir argumentos --------------------
-
+	mov r8d,dword[stack1];
+	mov dword [reg29], r8d;
 	mov rax, 0
 	mov r14, 0
 	mov [argPos], rax
