@@ -18,6 +18,11 @@ _start:
 	pop rax
 	mov [argc], rax
 
+
+;----------------------Inicializa el stack pointer------------
+		mov r8d,dword[stack1];
+		mov dword [reg29], r8d;
+
 _printArgsLoop:
 	mov r15, 1
 	mov rax, [argPos]
