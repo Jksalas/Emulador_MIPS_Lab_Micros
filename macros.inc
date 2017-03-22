@@ -42,6 +42,8 @@ section .data
 	linvdir: equ $-invdir
 	theend: db 0x1b, "[38;5;41m","	Fin del programa", 0xa
 	ltheend: equ $-theend
+	pointofnoreturn: db 0x1b, "[38;5;196m","      	  No existe una dirección de retorno", 0xa
+	lpointofnoreturn: equ $-pointofnoreturn
 
 	sumar: db 0x1b, "[38;5;41m","      	  Ejecutando add $"
 	lsumar: equ $-sumar
