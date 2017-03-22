@@ -509,9 +509,8 @@ yi:	;Tipo I.
 	jmp determinarPC
 
 beq:	;Tipo I.
-_break17:
-
 	mov r14, rax 													; Mueve instrucción a r14.
+	mov r8, rbx
 	printString branchequal, lbranchequal ; Imprime mnemónico.
 	separarI r14
 	printVal r13 													; Imprime rs.
@@ -541,6 +540,7 @@ _break17:
 
 bne:	;Tipo I.
 	mov r14, rax 													; Mueve instrucción a r14.
+	mov r8, rbx
 	printString branchnequal, lbranchnequal ; Imprime mnemónico.
 	separarI r14
 	printVal r13												  ; Imprime rs.
@@ -562,23 +562,20 @@ bne:	;Tipo I.
 	mov r12, rdi 													;Guarda en rcx el contenido de rt
 	shl r12, 32
 	shr r12, 32														; Cortar dato a 32 bits.
-	cmp r13, r12
-	mov r8d, ebx													;Compara si rs y rt son iguales
+	cmp r13, r12													;Compara si rs y rt son iguales
 	jne branch_new_addr
-
-	;mov ebx, r8d
+	ImprimirRegistros
 	mov ebx, 0
 	jmp determinarPC
 
 	;	Si se cumple la condición de alguno de los dos
 	;branches, se dirige acá para calcular el nuevo PC.
 branch_new_addr:
-	separarI rax
+	separarI r14
 	branch_add r11
-	mov r8d, ebx
-	;mov sbx,r11d
-	ImprimirRegistros
-	mov ebx, [pc+r15+4+r11]
+	add r11, r8
+	mov ebx, 0
+	mov ebx,r11d
 	jmp determinarPC
 
 j:	;Tipo J.
