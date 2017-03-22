@@ -1,3 +1,4 @@
+%include "linux64.inc"
 ;							/* Sección de variables iniciaizadas */
 section .data
 
