@@ -1,4 +1,3 @@
-%include "linux64.inc"
 %include "macros.inc"
 
 ;							/* Sección de código principal */
