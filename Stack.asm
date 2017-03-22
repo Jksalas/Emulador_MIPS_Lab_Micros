@@ -982,7 +982,10 @@ sw:	;Tipo I.
 	jmp determinarPC
 
 stackin:		;PUSH
-	mov r8,[reg29];
+	mov byte[auxstack],0xc8; Actualiza el puntero al tope del stack 
+	mov r8d,[reg29];
+	sub [auxstack],r8d
+	mov r8d,[auxstack]
 	mov [stack1+r8],r10d; push de pila
 	mov r10, [stack1+r8]
 	jmp vuelvestack
