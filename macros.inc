@@ -177,8 +177,8 @@ section .data
 
 	printString linea, llinea
 	mov r9, 0
-%%L90:
 
+%%L90:
 	cmp r9, 31
 	ja %%endloop90
 
@@ -188,13 +188,14 @@ section .data
 	printString reg2s, lreg2s
 	mov eax, [reg2]
 	jmp %%imprimirloop
-%%l20:
 
+%%l20:
 	cmp r9, 3
 	jne %%l21
 	printString reg3s, lreg3s
 	mov eax, [reg3]
 	jmp %%imprimirloop
+
 %%l21:
 ;-----------------a0 a1 a2 a3-----------------
 	cmp r9, 4
@@ -202,99 +203,98 @@ section .data
 	printString reg4s, lreg4s
 	mov eax, [reg4]
 	jmp %%imprimirloop
-%%l22:
 
+%%l22:
 	cmp r9, 5
 	jne %%l23
 	printString reg5s, lreg5s
 	mov eax, [reg5]
 	jmp %%imprimirloop
-%%l23:
 
+%%l23:
 	cmp r9, 6
 	jne %%l24
 	printString reg6s, lreg6s
 	mov eax, [reg6]
 	jmp %%imprimirloop
-%%l24:
 
+%%l24:
 	cmp r9, 7
 	jne %%l25
 	printString reg7s, lreg7s
 	mov eax, [reg7]
 	jmp %%imprimirloop
+
 %%l25:
-
 ;---------------------------------------
-
 	cmp r9, 16
 	jne %%l26
 	printString reg16s, lreg16s
 	mov eax, [reg16]
 	jmp %%imprimirloop
-%%l26:
 
+%%l26:
 	cmp r9, 17
 	jne %%l27
 	printString reg17s, lreg17s
 	mov eax, [reg17]
 	jmp %%imprimirloop
-%%l27:
 
+%%l27:
 	cmp r9, 18
 	jne %%l28
 	printString reg18s, lreg18s
 	mov eax, [reg18]
 	jmp %%imprimirloop
-%%l28:
 
+%%l28:
 	cmp r9, 19
 	jne %%l29
 	printString reg19s, lreg19s
 	mov eax, [reg19]
 	jmp %%imprimirloop
-%%l29:
 
+%%l29:
 	cmp r9, 20
 	jne %%l30
 	printString reg20s, lreg20s
 	mov eax, [reg20]
 	jmp %%imprimirloop
-%%l30:
 
+%%l30:
 	cmp r9, 21
 	jne %%l31
 	printString reg21s, lreg21s
 	mov eax, [reg21]
 	jmp %%imprimirloop
-%%l31:
 
+%%l31:
 	cmp r9, 22
 	jne %%l32
 	printString reg22s, lreg22s
 	mov eax, [reg22]
 	jmp %%imprimirloop
-%%l32:
 
+%%l32:
 	cmp r9, 23
 	jne %%l33
 	printString reg23s, lreg23s
 	mov eax, [reg23]
 	jmp %%imprimirloop
+
 %%l33:
 	cmp r9, 29
 	jne %%l34
 	printString reg29s, lreg29s
 	mov eax, [reg29]
 	jmp %%imprimirloop
-%%l34:
 
+%%l34:
 	inc r9
 	jmp %%L90
 
 
 %%imprimirloop:
-
 	printVal rax
 	printString nuevaLinea, 1
 	inc r9
@@ -302,7 +302,7 @@ section .data
 %%endloop90:
 
 	printString linea2, llinea2
-
+	printString retorno, lretorno
 %endmacro
 
 %macro printString 2
