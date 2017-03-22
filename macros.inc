@@ -135,7 +135,7 @@ section .data
 
 	; -------------------- Imprimir registros --------------------
 	filename: db "myfile.txt",0
-linea: db  0x1b,"[38;5;209m","        ****************** Contenido de registros MIPS ******************", 0xa
+	linea: db  0x1b,"[38;5;209m","        ****************** Contenido de registros MIPS ******************", 0xa
 	llinea: equ $-linea
 	linea2: db  0x1b,"[38;5;209m","        ****************************************************************", 0xa
 	llinea2: equ $-linea2
