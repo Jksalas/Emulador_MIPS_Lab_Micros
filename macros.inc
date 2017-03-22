@@ -1,10 +1,11 @@
 %include "linux64.inc"
-;							/* Sección de variables iniciaizadas */
+;							 Sección de variables iniciaizadas
 section .data
 
 	; -------------------- Mensajes --------------------
 	;NOTA: en caso de querer cambiar el color se modifica el #m.
-	tap: db 9
+
+	;Mensajes de inicio
 	bienvenido: db  0x1b,"[38;5;212m","        ****************** Bienvenido al Emulador MIPS *****************", 0xa, 0xa
 	lbienvenido: equ $-bienvenido
 	lab: db 0x1b,"[38;5;212m", "        EL-4313 - Laboratorio Estructura de Microprocesadores",
@@ -15,14 +16,10 @@ section .data
 	lbuscando: equ $-buscando
 	encuentra: db 0x1b,"[38;5;31m","        Archivo ROM.txt encontrado.", 0xa
 	lencuentra: equ $-encuentra
-	noencuentra: db 0x1b, "[38;5;9m","        Error: El archivo ROM.txt no ha sido localizado.", 0xa
-	lnoencuentra: equ $-noencuentra
 	mensajeinicio:  db 0x1b, "[38;5;86m","        Presione la tecla enter para continuar.", 0xa
 	lmensajeinicio: equ $-mensajeinicio
-	exito: db 0x1b, "[38;5;86m","        Ejecución exitosa.", 0xa
-	lexito: equ $-exito
-	fallo: db 0x1b, "[38;5;9m","        Ejecución fallida.", 0xa
-	lfallo: equ $-fallo
+
+	;Información de los miembros del equipo
 	final: db 0x1b, "[38;5;68m","        Realizado por:", 0xa
 	lfinal: equ $-final
 	juan: db 0x1b, "[38;5;68m","      	  Juan José Vásquez      2014098487", 0xa
@@ -35,19 +32,32 @@ section .data
 	landre: equ $-andre
 	camila: db 0x1b, "[38;5;68m","     	  Camila Gómez Molina    2014089559", 0xa
 	lcamila: equ $-camila
+
+	;Mensajes finales
+	exito: db 0x1b, "[38;5;86m","        Ejecución exitosa.", 0xa
+	lexito: equ $-exito
+	theend: db 0x1b, "[38;5;86m","	Presione la tecla enter para finalizar.", 0xa
+	ltheend: equ $-theend
+
+	;Posibles errores
+	noencuentra: db 0x1b, "[38;5;9m","        Error: El archivo ROM.txt no ha sido localizado.", 0xa
+	lnoencuentra: equ $-noencuentra
 	nfound: db 0x1b, "[38;5;9m","	Error: La instrucción no ha sido reconocida.", 0xa
 	lnfound: equ $-nfound
 	memmax: db 0x1b, "[38;5;9m","	Error: La dirección es mayor a la capacidad de memoria.", 0xa
 	lmemmax: equ $-memmax
 	invdir: db 0x1b, "[38;5;9m","	Error: El registro utilizado no contiene una dirección de retorno válida.", 0xa
 	linvdir: equ $-invdir
-	theend: db 0x1b, "[38;5;86m","	Presione la tecla enter para finalizar.", 0xa
-	ltheend: equ $-theend
 	pointofnoreturn: db 0x1b, "[38;5;9m","	Error: No existe una dirección de retorno.", 0xa
 	lpointofnoreturn: equ $-pointofnoreturn
+	fallo: db 0x1b, "[38;5;9m","        Ejecución fallida.", 0xa
+	lfallo: equ $-fallo
+
+	;Info del cpu
 	cpuid2: db 0x1b, "[38;5;31m","	CPU ID:", 0xa
 	lcpuid2: equ $-cpuid2
 
+	;Instrucciones
 	sumar: db 0x1b, "[38;5;41m","      	  Ejecutando add $"
 	lsumar: equ $-sumar
 	sumaru: db 0x1b, "[38;5;41m","      	  Ejecutando addu $"
@@ -56,39 +66,32 @@ section .data
 	lsumari: equ $-sumari
 	sumariu: db 0x1b, "[38;5;41m","      	  Ejecutando addiu $"
 	lsumariu: equ $-sumariu
-
 	lalaland: db 0x1b, "[38;5;41m","      	  Ejecutando and $"
 	lalalaland: equ $-lalaland
 	lalalandi: db 0x1b, "[38;5;41m","      	  Ejecutando andi $"
 	lalalalandi: equ $-lalalandi
-
 	branchequal: db 0x1b, "[38;5;41m","      	  Ejecutando beq $"
 	lbranchequal: equ $-branchequal
 	branchnequal: db 0x1b, "[38;5;41m","      	  Ejecutando bne $"
 	lbranchnequal: equ $-branchnequal
-
 	jump: db 0x1b, "[38;5;41m","      	  Ejecutando j "
 	ljump: equ $-jump
 	jumpal: db 0x1b, "[38;5;41m","      	  Ejecutando jal "
 	ljumpal: equ $-jumpal
 	jumpreg: db 0x1b, "[38;5;41m","      	  Ejecutando jr $"
 	ljumpreg: equ $-jumpreg
-
 	storew: db 0x1b, "[38;5;41m","      	  Ejecutando sw $"
 	lstorew: equ $-storew
 	loadw: db 0x1b, "[38;5;41m","      	  Ejecutando lw $"
 	lloadw: equ $-loadw
-
 	multiplicar: db 0x1b, "[38;5;41m","      	  Ejecutando mult $"
 	lmultiplicar: equ $-multiplicar
-
 	nordico: db 0x1b, "[38;5;41m","      	  Ejecutando nor $"
 	lnordico: equ $-nordico
 	orcito: db 0x1b, "[38;5;41m","      	  Ejecutando or $"
 	lorcito: equ $-orcito
 	oricito: db 0x1b, "[38;5;41m","      	  Ejecutando ori $"
 	loricito: equ $-oricito
-
 	slthan: db 0x1b, "[38;5;41m","      	  Ejecutando slt $"
 	lslthan: equ $-slthan
 	slthani: db 0x1b, "[38;5;41m","      	  Ejecutando slti $"
@@ -97,39 +100,32 @@ section .data
 	lslthanu: equ $-slthanu
 	slthaniu: db 0x1b, "[38;5;41m","      	  Ejecutando sltiu $"
 	lslthaniu: equ $-slthaniu
-
 	shiftl: db 0x1b, "[38;5;41m","      	  Ejecutando sll $"
 	lshiftl: equ $-shiftl
 	shiftr: db 0x1b, "[38;5;41m","      	  Ejecutando srl $"
 	lshiftr: equ $-shiftr
-
 	restar: db 0x1b, "[38;5;41m","      	  Ejecutando sub $"
 	lrestar: equ $-restar
 	restaru: db 0x1b, "[38;5;41m","      	  Ejecutando subu $"
 	lrestaru: equ $-restaru
 
+	; Comodines
 	retorno: db 0x1b, "[38;5;41m", 0xa
 	lretorno: equ $-retorno
-
 	comma: db 0x1b, "[38;5;41m",", "
 	lcomma: equ $-comma
-
 	parentizq: db 0x1b, "[38;5;41m","("
 	lparentizq: equ $-parentizq
-
 	parentder: db 0x1b, "[38;5;41m",")"
 	lparentder: equ $-parentder
-
 	dolar: db 0x1b, "[38;5;41m","$"
 	ldolar: equ $-dolar
-
 	teclado: dq '-'
-
-	;cleanS contiene código para limpiar pantalla
 	cleanS:    db 0x1b, "[2J", 0x1b, "[H"
 	cleanS_size: equ $ - cleanS
+	tap: db 9
 
-	; -------------------- LECTURA ROM.TXsT --------------------
+	; -------------------- Lectura ROM.txt ------------------------
 	file db "./ROM.txt", 0
 	len equ 2048
 	n db 0
@@ -172,18 +168,18 @@ section .data
 	lreg23s: equ $-reg23s
 	reg29s: db  0x1b,"[38;5;35m","				$sp	"
 	lreg29s: equ $-reg29s
+
 	; -------------------- Para argumentos --------------------
 	m db 0
-%macro ImprimirRegistros 0
 
+%macro ImprimirRegistros 0
 	printString linea, llinea
 	mov r9, 0
 
+;----------------------------- v0 v1 ------------------------
 %%L90:
 	cmp r9, 31
 	ja %%endloop90
-
-;--------------------v0 v1----------------------
 	cmp r9, 2
 	jne %%l20
 	printString reg2s, lreg2s
@@ -197,8 +193,8 @@ section .data
 	mov eax, [reg3]
 	jmp %%imprimirloop
 
+;-------------------------- a0 a1 a2 a3 ----------------------
 %%l21:
-;-----------------a0 a1 a2 a3-----------------
 	cmp r9, 4
 	jne %%l22
 	printString reg4s, lreg4s
@@ -226,8 +222,8 @@ section .data
 	mov eax, [reg7]
 	jmp %%imprimirloop
 
+;-------------------------- s0 s1 s2 s3 s4 s5 s6 s7 ---------------------
 %%l25:
-;---------------------------------------
 	cmp r9, 16
 	jne %%l26
 	printString reg16s, lreg16s
@@ -294,7 +290,6 @@ section .data
 	inc r9
 	jmp %%L90
 
-
 %%imprimirloop:
 	printVal rax
 	printString nuevaLinea, 1
@@ -306,9 +301,10 @@ section .data
 	printString retorno, lretorno
 %endmacro
 
-; Macro para pasar de ascii a entero.
+;--------------- Macro para pasar de ascii a entero --------------
+
 %macro ASCIIaENTERO 1
-	and %1, 11111111b ; Guardar solo ultimos 8 bits
+	and %1, 11111111b																 ; Guardar solo ultimos 8 bits
 	cmp %1, 96
 	ja %%elseL1
 	sub %1, 48
@@ -318,29 +314,25 @@ section .data
 	%%end:
 %endmacro
 
-
-;
 %macro HexMemoria 3
 	shl %1, 4
 	add %1, %2
 	mov [trama+%3], %1
 %endmacro
 
-
-;
 %macro HexPC 3
 	shl %1, 4
 	add %1, %2
 	mov [pc+%3], %1
 %endmacro
 
-;macro para determinar los argumentos de entrada
+;---------- Macro para determinar los argumentos de entrada ------------
 
 %macro DeterminarArgumento 1
 	mov %1, [rax]
-	and %1, 11111111b ; Guardar solo ultimos 8 bits
+	and %1, 11111111b 																; Guardar solo ultimos 8 bits
 	cmp %1, 0
-	je seguir	;si es NULL terminar loop
+	je seguir																					; Si es NULL terminar loop
 	cmp %1, 45
 	jne %%L2
 	mov %1, 0
@@ -348,14 +340,14 @@ section .data
 %%L2
 	cmp %1, 96
 	ja %%elseL1
-	sub %1, 48	;si es una numero, restar 48 para pasar de ASCII a decimal
+	sub %1, 48																				; Si es una numero, restar 48 para pasar de ASCII a decimal
 	jmp %%end
 	%%elseL1:
-	sub %1, 87	;si es una letra, restar 87 para pasar de ASCII a decimal
+	sub %1, 87																				; Si es una letra, restar 87 para pasar de ASCII a decimal
 	%%end:
 %%L1:
 	mov r14, [rax+r15]
-	and r14, 11111111b ; Guardar solo ultimos 8 bits
+	and r14, 11111111b															  ; Guardar solo ultimos 8 bits
 	cmp r14, 0
 	je seguir
 	cmp r14, 96
@@ -372,143 +364,145 @@ section .data
 	jmp %%L1
 %endmacro
 
-; Macro que simula el comportamiento de la ALU para
-;las instrucciones que interesan.
+
+; Macro que simula el comportamiento de la ALU para las instrucciones que interesan
+
 %macro alu 1 ; 1 parámetro como "señal de ctrl".
-	mov rdx, %1 ; "OP Code" de ALU. Se guarda en rdx.
+	mov rdx, %1 																; "OP Code" de ALU. Se guarda en rdx.
 %%and:
-	cmp rdx, 0 ; 0 = AND.
-	jne %%or ; Si no es, pasa a siguiente opción.
-	and rax, rcx ; rax (rs) AND rcx (rt).
-	jmp %%result ; Concluida la operación, pasa a resultado.
+	cmp rdx, 0 																	; 0 = AND.
+	jne %%or 																		; Si no es, pasa a siguiente opción.
+	and rax, rcx 																; rax (rs) AND rcx (rt).
+	jmp %%result 																; Concluida la operación, pasa a resultado.
 %%or:
-	cmp rdx, 1 ; 1 = OR.
-	jne %%add ; Si no es, pasa a siguiente opción.
-	or rax, rcx ; rax (rs) OR rcx (rt).
-	jmp %%result ; Concluida la operación, pasa a resultado.
+	cmp rdx, 1 																	; 1 = OR.
+	jne %%add 																	; Si no es, pasa a siguiente opción.
+	or rax, rcx																  ; rax (rs) OR rcx (rt).
+	jmp %%result 																; Concluida la operación, pasa a resultado.
 %%add:
-	cmp rdx, 2 ; 2 = ADD.
-	jne %%substract ; Si no es, pasa a siguiente opción.
-	add rax, rcx ; rax (rs) + rcx (rt).
-	jmp %%result ; Concluida la operación, pasa a resultado.
+	cmp rdx, 2 																	; 2 = ADD.
+	jne %%substract 														; Si no es, pasa a siguiente opción.
+	add rax, rcx 																; rax (rs) + rcx (rt).
+	jmp %%result 																; Concluida la operación, pasa a resultado.
 %%substract:
-	cmp rdx, 3; 3 = SUB.
-	jne %%set_on_less_than ; Si no es, pasa a siguiente opción.
-	sub rax, rcx ; rax (rs) - rcx (rt).
-	jmp %%result ; Concluida la operación, pasa a resultado.
+	cmp rdx, 3																	; 3 = SUB.
+	jne %%set_on_less_than 											; Si no es, pasa a siguiente opción.
+	sub rax, rcx 																; rax (rs) - rcx (rt).
+	jmp %%result 																; Concluida la operación, pasa a resultado.
 %%set_on_less_than:
-	cmp rdx, 4; 4 = SLTU.
-	jne %%nor ; Si no es, pasa a siguiente opción.
+	cmp rdx, 4																	; 4 = SLTU.
+	jne %%nor 																	; Si no es, pasa a siguiente opción.
 	cmp rcx, rax
-	jg %%true  ; Si rcx (rt) > rax(rs).
-	jmp %%false ; Si no.
+	jg %%true  																	; Si rcx (rt) > rax(rs).
+	jmp %%false 																; Si no.
 	%%true:
-		mov rbx, 1b ; Un 1 en rbx (rd).
-		jmp %%end ; Se pasa a fin porque ya resultado está en rd.
+		mov rbx, 1b 															; Un 1 en rbx (rd).
+		jmp %%end 																; Se pasa a fin porque ya resultado está en rd.
 	%%false:
-		mov rbx, 0b ; Un 0 en rbx (rd).
-		jmp %%end ; Se pasa a fin porque ya resultado está en rd.
+		mov rbx, 0b 															; Un 0 en rbx (rd).
+		jmp %%end																	; Se pasa a fin porque ya resultado está en rd.
 %%nor:
-	cmp rdx, 5; 5 = NOR.
-	jne %%multiply ; Si no es, pasa a siguiente opción.
-	or rax, rcx ; rax (rs) OR rcx (rt).
-	not rax ; NOT rax (rs).
-	jmp %%result ; Concluida la operación, pasa a resultado.
+	cmp rdx, 5																	; 5 = NOR.
+	jne %%multiply 															; Si no es, pasa a siguiente opción.
+	or rax, rcx 																; rax (rs) OR rcx (rt).
+	not rax 																		; NOT rax (rs).
+	jmp %%result 																; Concluida la operación, pasa a resultado.
 %%multiply:
-	cmp rdx, 6 ; 6 = MULT.
-	jne %%end ; Si no es, pasa a resultal sin hacer nada.
-	mul rcx ; rax (rs) * rcx (rt).
-	jmp %%result ; Concluida la operación, pasa a resultado.
-%%result: ; Las operaciones realizadas ponen su resultado en rax.
-	mov rbx, rax ; Mueve resultado de operación a rbx (rd).
-%%end: ; Etiqueta para casos de no hacer nada.
+	cmp rdx, 6 																	; 6 = MULT.
+	jne %%end 																	; Si no es, pasa a resultal sin hacer nada.
+	mul rcx 																		; rax (rs) * rcx (rt).
+	jmp %%result 																; Concluida la operación, pasa a resultado.
+%%result: 																		; Las operaciones realizadas ponen su resultado en rax.
+	mov rbx, rax 																; Mueve resultado de operación a rbx (rd).
+%%end: 																				; Etiqueta para casos de no hacer nada.
 %endmacro
 
 
 ; Macro que toma un los registros en los que están las direcciones
-;de los registros mips de la instrucción y le asigna a rsi la
+;de los registros MIPS de la instrucción y le asigna a rsi la
 ;dirección correspondiente en memoria de la PC y a rdi el dato
 ;contenido en dicha dirección.
+
 %macro reg_mips 1 ; 1 parámetro: registro donde está la dirección de rt, rs o rd.
 	mov rdx, %1
-	and rdx, 0x000000000000001f ; Aseguro que queden sólo los 5 bit de la dirección.
+	and rdx, 0x000000000000001f 								; Aseguro que queden sólo los 5 bit de la dirección.
 %%cero:
 	cmp rdx, 0x0000000000000000
 	jne %%uno
-	mov rsi, reg0 ; Se guarda en rsi la dirección del registro mips.
-	mov rdi, [reg0] ; Se guarda en rdi el dato del reg0 (en memoria).
+	mov rsi, reg0																; Se guarda en rsi la dirección del registro mips.
+	mov rdi, [reg0] 														; Se guarda en rdi el dato del reg0 (en memoria).
 	jmp %%listo
 %%uno:
 	cmp rdx, 0x0000000000000001
 	jne %%dos
-	mov rsi, reg1 ; Se guarda en rsi la dirección del registro mips.
-	mov rdi, [reg1] ; Se guarda en rdi el dato del reg1 (en memoria).
+	mov rsi, reg1 															; Se guarda en rsi la dirección del registro mips.
+	mov rdi, [reg1] 														; Se guarda en rdi el dato del reg1 (en memoria).
 	jmp %%listo
 %%dos:
 	cmp rdx, 0x0000000000000002
 	jne %%tres
-	mov rsi, reg2 ; Se guarda en rsi la dirección del registro mips.
-	mov rdi, [reg2] ; Se guarda en rdi el dato del reg2 (en memoria).
+	mov rsi, reg2 															; Se guarda en rsi la dirección del registro mips.
+	mov rdi, [reg2] 														; Se guarda en rdi el dato del reg2 (en memoria).
 	jmp %%listo
 %%tres:
 	cmp rdx, 0x0000000000000003
 	jne %%cuatro
-	mov rsi, reg3 ; Se guarda en rsi la dirección del registro mips.
-	mov rdi, [reg3] ; Se guarda en rdi el dato del reg3 (en memoria).
+	mov rsi, reg3 															; Se guarda en rsi la dirección del registro mips.
+	mov rdi, [reg3] 														; Se guarda en rdi el dato del reg3 (en memoria).
 	jmp %%listo
 %%cuatro:
 	cmp rdx, 0x0000000000000004
 	jne %%cinco
-	mov rsi, reg4 ; Se guarda en rsi la dirección del registro mips.
-	mov rdi, [reg4] ; Se guarda en rdi el dato del reg4 (en memoria).
+	mov rsi, reg4 															; Se guarda en rsi la dirección del registro mips.
+	mov rdi, [reg4] 														; Se guarda en rdi el dato del reg4 (en memoria).
 	jmp %%listo
 %%cinco:
 	cmp rdx, 0x0000000000000005
 	jne %%seis
-	mov rsi, reg5 ; Se guarda en rsi la dirección del registro mips.
-	mov rdi, [reg5] ; Se guarda en rdi el dato del reg5 (en memoria).
+	mov rsi, reg5 															; Se guarda en rsi la dirección del registro mips.
+	mov rdi, [reg5] 														; Se guarda en rdi el dato del reg5 (en memoria).
 	jmp %%listo
 %%seis:
 	cmp rdx, 0x0000000000000006
 	jne %%siete
-	mov rsi, reg6 ; Se guarda en rsi la dirección del registro mips.
-	mov rdi, [reg6] ; Se guarda en rdi el dato del reg6 (en memoria).
+	mov rsi, reg6 															; Se guarda en rsi la dirección del registro mips.
+	mov rdi, [reg6] 														; Se guarda en rdi el dato del reg6 (en memoria).
 	jmp %%listo
 %%siete:
 	cmp rdx, 0x0000000000000007
 	jne %%ocho
-	mov rsi, reg7 ; Se guarda en rsi la dirección del registro mips.
-	mov rdi, [reg7] ; Se guarda en rdi el dato del reg7 (en memoria).
+	mov rsi, reg7 															; Se guarda en rsi la dirección del registro mips.
+	mov rdi, [reg7] 														; Se guarda en rdi el dato del reg7 (en memoria).
 	jmp %%listo
 %%ocho:
 	cmp rdx, 0x0000000000000008
 	jne %%nueve
-	mov rsi, reg8 ; Se guarda en rsi la dirección del registro mips.
-	mov rdi, [reg8] ; Se guarda en rdi el dato del reg8 (en memoria).
+	mov rsi, reg8 															; Se guarda en rsi la dirección del registro mips.
+	mov rdi, [reg8] 														; Se guarda en rdi el dato del reg8 (en memoria).
 	jmp %%listo
 %%nueve:
 	cmp rdx, 0x0000000000000009
 	jne %%diez
-	mov rsi, reg9 ; Se guarda en rsi la dirección del registro mips.
-	mov rdi, [reg9] ; Se guarda en rdi el dato del reg9 (en memoria).
+	mov rsi, reg9 															; Se guarda en rsi la dirección del registro mips.
+	mov rdi, [reg9] 														; Se guarda en rdi el dato del reg9 (en memoria).
 	jmp %%listo
 %%diez:
 	cmp rdx, 0x000000000000000a
 	jne %%once
-	mov rsi, reg10 ; Se guarda en rsi la dirección del registro mips.
-	mov rdi, [reg10] ; Se guarda en rdi el dato del reg10 (en memoria).
+	mov rsi, reg10 															; Se guarda en rsi la dirección del registro mips.
+	mov rdi, [reg10] 														; Se guarda en rdi el dato del reg10 (en memoria).
 	jmp %%listo
 %%once:
 	cmp rdx, 0x000000000000000b
 	jne %%doce
-	mov rdi, [reg11] ; Se guarda en rdi el dato del reg11 (en memoria).
-	mov rsi, reg11 ; Se guarda en rsi la dirección del registro mips.
+	mov rdi, [reg11] 														; Se guarda en rdi el dato del reg11 (en memoria).
+	mov rsi, reg11 															; Se guarda en rsi la dirección del registro mips.
 	jmp %%listo
 %%doce:
 	cmp rdx, 0x000000000000000c
 	jne %%trece
-	mov rsi, reg12 ; Se guarda en rsi la dirección del registro mips.
-	mov rdi, [reg12] ; Se guarda en rdi el dato del reg12 (en memoria).
+	mov rsi, reg12 															; Se guarda en rsi la dirección del registro mips.
+	mov rdi, [reg12]														; Se guarda en rdi el dato del reg12 (en memoria).
 	jmp %%listo
 %%trece:
 	cmp rdx, 0x000000000000000d
