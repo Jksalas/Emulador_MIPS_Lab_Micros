@@ -20,8 +20,13 @@ _start:
 
 
 ;----------------------Inicializa el stack pointer------------
-		mov r8d,dword[stack1];
-		mov dword [reg29], r8d;
+
+		mov r8d, [stack1];
+		mov [reg29], r8d;
+		;;;;;
+		mov r8, [stack1]
+		mov r9, [reg29]
+		;;;;
 
 _printArgsLoop:
 	mov r15, 1
@@ -421,7 +426,10 @@ sumai:	;Tipo I.
 	shl rbx, 32
 	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r12
-	mov[rsi], rbx
+	mov [rsi], rbx
+	cmp [rsi], [reg29]
+	je stackmemory
+vuelvestack1:
 	mov ebx, 0
 	jmp determinarPC
 
@@ -655,6 +663,9 @@ lw:	;Tipo I.
 	mov rax, [rax]												;se toma ese valor de memoria y se guarda de nuevo en rax
 	reg_mips r12
 	mov [rsi], rax												;se guarda el valor sacado de memoria de datos al registro destino Rt
+	cmp [rsi], [reg29]
+	je stackmemory
+vuelvestack2:
 	mov ebx, 0
 	jmp determinarPC
 
@@ -952,6 +963,10 @@ sw:	;Tipo I.
 	shl rdi, 32
 	shr rdi, 32															; Cortar dato a 32 bits.
 	mov [rax], rdi											 ;se toma el valor de rt y se guarda en la dirección calculada en rax
+	;;;;;
+	mov r8, [stack1]
+	mov r9, [reg29]
+	;;;;
 	mov ebx, 0
 	jmp determinarPC
 
@@ -970,6 +985,7 @@ invaliddirR:
 ; -------------------- Error de dirección de memoria no encontrada --------------------
 memoverflow:
 	printString memmax, lmemmax
+	exit
 
 
 ; -------------------- Error de instrucción no encontrada --------------------
