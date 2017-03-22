@@ -85,7 +85,7 @@ seguir:
 	mov [reg7],r11
 
 ; -------------------- Imprimir mensajes de bienvenida --------------------
-
+	cleanScreen cleanS, cleanS_size
 	printString bienvenido,lbienvenido 														;Bienvenida
 	printString lab, llab																					;Datos del curso
 	printString sem, lsem																					;Semestre
