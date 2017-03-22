@@ -11,7 +11,7 @@ _start:
 
 ;----------------------Inicializa el stack pointer------------
 
-	mov r8d, [stack1];
+	mov r8d, [stack1+200];
 	mov [reg29], r8d;
 
 ; -------------------- Recibir argumentos --------------------
@@ -982,7 +982,7 @@ sw:	;Tipo I.
 	jmp determinarPC
 
 stackin:		;PUSH
-	mov byte[auxstack],0xc8; Actualiza el puntero al tope del stack 
+	mov byte[auxstack],0xc8; Actualiza el puntero al tope del stack
 	mov r8d,[reg29];
 	sub [auxstack],r8d
 	mov r8d,[auxstack]
