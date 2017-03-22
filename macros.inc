@@ -10,39 +10,39 @@ section .data
 	llab: equ $-lab
 	sem: db 0x1b,"[38;5;212m", " IS - 2017", 0xa, 0xa
 	lsem: equ $-sem
-	buscando: db 0x1b,"[38;5;31m","        Buscando archivo ROM.txt", 0xa
+	buscando: db 0x1b,"[38;5;31m","        Buscando archivo ROM.txt.", 0xa
 	lbuscando: equ $-buscando
-	encuentra: db 0x1b,"[38;5;31m","        Archivo ROM.txt encontrado", 0xa
+	encuentra: db 0x1b,"[38;5;31m","        Archivo ROM.txt encontrado.", 0xa
 	lencuentra: equ $-encuentra
-	noencuentra: db 0x1b, "[38;5;9m","        Error: Archivo ROM.txt no encontrado", 0xa
+	noencuentra: db 0x1b, "[38;5;9m","        Error: Archivo ROM.txt no encontrado.", 0xa
 	lnoencuentra: equ $-noencuentra
-	mensajeinicio:  db 0x1b, "[38;5;86m","        Presione la tecla enter para continuar", 0xa
+	mensajeinicio:  db 0x1b, "[38;5;86m","        Presione la tecla enter para continuar.", 0xa
 	lmensajeinicio: equ $-mensajeinicio
-	exito: db 0x1b, "[38;5;86m","        Ejecución exitosa", 0xa
+	exito: db 0x1b, "[38;5;86m","        Ejecución exitosa.", 0xa
 	lexito: equ $-exito
-	fallo: db 0x1b, "[38;5;9m","        Ejecución fallida", 0xa
+	fallo: db 0x1b, "[38;5;9m","        Ejecución fallida.", 0xa
 	lfallo: equ $-fallo
 	final: db 0x1b, "[38;5;68m","        Realizado por:", 0xa
 	lfinal: equ $-final
-	juan: db 0x1b, "[38;5;68m","      	  Juan José Vásquez 2014098487", 0xa
+	juan: db 0x1b, "[38;5;68m","      	  Juan José Vásquez      2014098487", 0xa
 	ljuan: equ $-juan
-	joao: db 0x1b, "[38;5;68m","     	  Joao Salas Ramirez 2014096609", 0xa
+	joao: db 0x1b, "[38;5;68m","     	  Joao Salas Ramirez     2014096609", 0xa
 	ljoao: equ $-joao
-	steven: db 0x1b, "[38;5;68m","      	  Steven León Domínguez 2014138025", 0xa
+	steven: db 0x1b, "[38;5;68m","      	  Steven León Domínguez  2014138025", 0xa
 	lsteven: equ $-steven
-	andre: db 0x1b, "[38;5;68m","     	  André Martínez Arana 2014068625", 0xa
+	andre: db 0x1b, "[38;5;68m","     	  André Martínez Arana   2014068625", 0xa
 	landre: equ $-andre
-	camila: db 0x1b, "[38;5;68m","     	  Camila Gómez Molina 2014089559", 0xa
+	camila: db 0x1b, "[38;5;68m","     	  Camila Gómez Molina    2014089559", 0xa
 	lcamila: equ $-camila
-	nfound: db 0x1b, "[38;5;9m","	Error: La instrucción no ha sido reconocida", 0xa
+	nfound: db 0x1b, "[38;5;9m","	Error: La instrucción no ha sido reconocida.", 0xa
 	lnfound: equ $-nfound
-	memmax: db 0x1b, "[38;5;9m","	Error: La dirección es mayor a la capacidad de memoria", 0xa
+	memmax: db 0x1b, "[38;5;9m","	Error: La dirección es mayor a la capacidad de memoria.", 0xa
 	lmemmax: equ $-memmax
-	invdir: db 0x1b, "[38;5;9m","	Error: El registro utilizado no contiene una dirección de retorno válida", 0xa
+	invdir: db 0x1b, "[38;5;9m","	Error: El registro utilizado no contiene una dirección de retorno válida.", 0xa
 	linvdir: equ $-invdir
-	theend: db 0x1b, "[38;5;86m","	Presione la tecla enter para finalizar", 0xa
+	theend: db 0x1b, "[38;5;86m","	Presione la tecla enter para finalizar.", 0xa
 	ltheend: equ $-theend
-	pointofnoreturn: db 0x1b, "[38;5;9m","	Error: No existe una dirección de retorno", 0xa
+	pointofnoreturn: db 0x1b, "[38;5;9m","	Error: No existe una dirección de retorno.", 0xa
 	lpointofnoreturn: equ $-pointofnoreturn
 
 	sumar: db 0x1b, "[38;5;41m","      	  Ejecutando add $"
