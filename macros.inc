@@ -14,7 +14,7 @@ section .data
 	lsem: equ $-sem
 	buscando: db 0x1b,"[38;5;31m","        Buscando archivo ROM.txt.", 0xa
 	lbuscando: equ $-buscando
-	encuentra: db 0x1b,"[38;5;31m","        Archivo ROM.txt encontrado.", 0xa
+	encuentra: db "        Archivo ROM.txt encontrado.", 0xa
 	lencuentra: equ $-encuentra
 	mensajeinicio:  db 0x1b, "[38;5;86m","        Presione la tecla enter para continuar.", 0xa
 	lmensajeinicio: equ $-mensajeinicio
@@ -22,15 +22,15 @@ section .data
 	;Información de los miembros del equipo
 	final: db 0x1b, "[38;5;68m","        Realizado por:", 0xa
 	lfinal: equ $-final
-	juan: db 0x1b, "[38;5;68m","      	  Juan José Vásquez Alfaro  2014098487", 0xa
+	juan: db  "      	  Juan José Vásquez Alfaro  2014098487", 0xa
 	ljuan: equ $-juan
-	joao: db 0x1b, "[38;5;68m","     	  Joao Salas Ramirez        2014096609", 0xa
+	joao: db  "     	  Joao Salas Ramirez        2014096609", 0xa
 	ljoao: equ $-joao
-	steven: db 0x1b, "[38;5;68m","      	  Steven León Domínguez     2014138025", 0xa
+	steven: db  "      	  Steven León Domínguez     2014138025", 0xa
 	lsteven: equ $-steven
-	andre: db 0x1b, "[38;5;68m","     	  André Martínez Arana      2014068625", 0xa
+	andre: db  "     	  André Martínez Arana      2014068625", 0xa
 	landre: equ $-andre
-	camila: db 0x1b, "[38;5;68m","     	  Camila Gómez Molina       2014089559", 0xa
+	camila: db  "     	  Camila Gómez Molina       2014089559", 0xa
 	lcamila: equ $-camila
 
 	;Mensajes finales
@@ -110,15 +110,15 @@ section .data
 	lrestaru: equ $-restaru
 
 	; Comodines
-	retorno: db 0x1b, "[38;5;41m", 0xa
+	retorno: db 0xa
 	lretorno: equ $-retorno
-	comma: db 0x1b, "[38;5;41m",", "
+	comma: db ", "
 	lcomma: equ $-comma
-	parentizq: db 0x1b, "[38;5;41m","("
+	parentizq: db  "("
 	lparentizq: equ $-parentizq
-	parentder: db 0x1b, "[38;5;41m",")"
+	parentder: db  ")"
 	lparentder: equ $-parentder
-	dolar: db 0x1b, "[38;5;41m","$"
+	dolar: db  "$"
 	ldolar: equ $-dolar
 	teclado: dq '-'
 	cleanS:    db 0x1b, "[2J", 0x1b, "[H"
@@ -142,33 +142,33 @@ section .data
 	tab: db 9
 	reg2s: db  0x1b,"[38;5;35m","				$v0	"
 	lreg2s: equ $-reg2s
-	reg3s: db  0x1b,"[38;5;35m","				$v1	"
+	reg3s: db   "				$v1	"
 	lreg3s: equ $-reg3s
-	reg4s: db  0x1b,"[38;5;35m","				$a0	"
+	reg4s: db   "				$a0	"
 	lreg4s: equ $-reg4s
-	reg5s: db  0x1b,"[38;5;35m","				$a1	"
+	reg5s: db   "				$a1	"
 	lreg5s: equ $-reg5s
-	reg6s: db  0x1b,"[38;5;35m","				$a2	"
+	reg6s: db   "				$a2	"
 	lreg6s: equ $-reg6s
-	reg7s: db  0x1b,"[38;5;35m","				$a3	"
+	reg7s: db   "				$a3	"
 	lreg7s: equ $-reg7s
-	reg16s: db  0x1b,"[38;5;35m","				$s0	"
+	reg16s: db   "				$s0	"
 	lreg16s: equ $-reg16s
-	reg17s: db  0x1b,"[38;5;35m","				$s1	"
+	reg17s: db   "				$s1	"
 	lreg17s: equ $-reg17s
-	reg18s: db  0x1b,"[38;5;35m","				$s2	"
+	reg18s: db   "				$s2	"
 	lreg18s: equ $-reg18s
-	reg19s: db  0x1b,"[38;5;35m","				$s3	"
+	reg19s: db   "				$s3	"
 	lreg19s: equ $-reg19s
-	reg20s: db  0x1b,"[38;5;35m","				$s4	"
+	reg20s: db   "				$s4	"
 	lreg20s: equ $-reg20s
-	reg21s: db  0x1b,"[38;5;35m","				$s5	"
+	reg21s: db   "				$s5	"
 	lreg21s: equ $-reg21s
-	reg22s: db  0x1b,"[38;5;35m","				$s6	"
+	reg22s: db   "				$s6	"
 	lreg22s: equ $-reg22s
-	reg23s: db  0x1b,"[38;5;35m","				$s7	"
+	reg23s: db   "				$s7	"
 	lreg23s: equ $-reg23s
-	reg29s: db  0x1b,"[38;5;35m","				$sp	"
+	reg29s: db   "				$sp	"
 	lreg29s: equ $-reg29s
 
 	; -------------------- Para argumentos --------------------

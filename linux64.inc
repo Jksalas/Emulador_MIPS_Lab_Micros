@@ -74,18 +74,17 @@ section .bss
   mov rdx, %2
   syscall
 
-	mov rax,1           ;sys_write
-  mov rdi,[Resultadostxt] ;Salida standard (pantalla)
-  mov rsi,%1          ;mensaje a escribir
-  mov rdx,%2          ;tamaño del mensaje a escribir
-  syscall             ;llama al SO
+	mov rax,1
+  mov rdi,[logfd]
+  mov rsi,%1
+  mov rdx,%2
+  syscall
 %endmacro
-
 
 ; Macro para leer de teclado.
 %macro readString 2
-	mov rax,0	        ;sys_read
-	mov rdi,0	        ;std_input
+	mov rax,0	          ;sys_read
+	mov rdi,0	          ;std_input
 	mov rsi,%1	        ;primer parametro: Variable
 	mov rdx,%2	        ;segundo parametro: Tamano
 	syscall
@@ -159,6 +158,14 @@ section .bss
 	mov rdi, 1
 	mov rsi, rcx
 	mov rdx, 1
+	syscall
+
+	mov rcx, [digitSpacePos]
+
+	mov rax,1
+	mov rdi,[logfd]
+	mov rsi,rcx
+	mov rdx,1
 	syscall
 
 	mov rcx, [digitSpacePos]
