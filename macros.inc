@@ -124,7 +124,7 @@ section .data
 	cleanS:    db 0x1b, "[2J", 0x1b, "[H"
 	cleanS_size: equ $ - cleanS
 	tap: db 9
-	cons_Resultadostxt: db 'Resultados.txt',0
+	log: db 'Resultados.txt',0
 
 	; -------------------- Lectura ROM.txt ------------------------
 	;AQUIMODIFIQUE

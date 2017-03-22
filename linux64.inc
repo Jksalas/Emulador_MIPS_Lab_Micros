@@ -54,7 +54,7 @@ section .bss
 
 	; -------------------- Reservación en memoria para memoria de datos MIPS --------------------
 	datos: resb 400
-	Resultadostxt: resb 8
+	logfd: resb 8
 	; -------------------- Reservación en memoria para info del micro --------------------
 	datosCPU:	resb 48
 
