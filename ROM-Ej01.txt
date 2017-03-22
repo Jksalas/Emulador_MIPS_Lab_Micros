@@ -1,45 +1,5 @@
-[00400000] 8fa40000; 	lw $4, 0($29)			 183: lw $a0 0($sp) # argc 
-[00400004] 27a50004; 	addiu $5, $29, 4		 184: addiu $a1 $sp 4 # argv 
-[00400008] 24a60004; 	addiu $6, $5, 4			 185: addiu $a2 $a1 4 # envp 
-[0040000c] 00041080; 	sll $2, $4, 2			 186: sll $v0 $a0 2 
-[00400010] 00c23021; 	addu $6, $6, $2			 187: addu $a2 $a2 $v0 
-[00400014] 0c100009; 	jal 0x00400024 [main]	 188: jal main 
-[00400018] 00000000; 	nop; 					 189: nop 
-[0040001c] 3402000a; 	ori $2, $0, 10			 191: li $v0 10 
-[00400020] 0000000c; 	syscall					 192: syscall # syscall 10 (exit) - A partir de la siguiente linea inicia el programa
-[00400024] 3c011001; 	lui $1, 4097			12: lw $t0,wnum1 
-[00400028] 8c280000; 	lw $8, 0($1)
-[0040002c] 3c011001; 	lui $1, 4097			13: lw $t1,wnum2 
-[00400030] 8c290004; 	lw $9, 4($1)
-[00400034] 01095020; 	add $10, $8, $9			14: add $t2, $t0,$t1 #el resultado se guarda en $t2 temporalmente. No se escribe a memoria 
-[00400038] 3c011001; 	lui $1, 4097			17: lw $t0,wnum1 
-[0040003c] 8c280000; 	lw $8, 0($1)			
-[00400040] 3c011001; 	lui $1, 4097			18: lw $t1,wnum2 
-[00400044] 8c290004; 	lw $9, 4($1)
-[00400048] 01095022; 	sub $10, $8, $9			19: sub $t2, $t0,$t1 #el resultado se guarda en $t2 temporalmente. No se escribe a memoria 
-[0040004c] 3c011001; 	lui $1, 4097			22: lw $t0,wnum1 
-[00400050] 8c280000; 	lw $8, 0($1)
-[00400054] 3c011001; 	lui $1, 4097			23: lw $t1,wnum2 
-[00400058] 8c290004; 	lw $9, 4($1)
-[0040005c] 01090018; 	mult $8, $9				24: mulo $t2, $t0,$t1 #el resultado se guarda en $t2 temporalmente. No se escribe a memoria 
-[00400060] 00000810; 	mfhi $1
-[00400064] 00005012; 	mflo $10
-[00400068] 000a57c3; 	sra $10, $10, 31
-[0040006c] 102a0002; 	beq $1, $10, 8
-[00400070] 0000000d; 	break
-[00400074] 00005012; 	mflo $10
-[00400078] 3c011001; 	lui $1, 4097			27: lw $t0,wnum1 
-[0040007c] 8c280000; 	lw $8, 0($1)
-[00400080] 3c011001; 	lui $1, 4097			28: lw $t1,wnum2 
-[00400084] 8c290004; 	lw $9, 4($1)
-[00400088] 15200002; 	bne $9, $0, 8			29: div $t2, $t0,$t1 #el resultado se guarda en $t2 temporalmente. No se escribe a memoria 
-[0040008c] 0000000d; 	break
-[00400090] 0109001a; 	div $8, $9
-[00400094] 00005012; 	mflo $10
-[00400098] 3402000a; 	ori $2, $0, 10			32: li $v0, 10 
-[0040009c] 0000000c; 	syscall					33: syscall 
-
-
-[10000000] 00000000;	Memoria sin contenido
-[10010000] 000001f4;	wnum1 = 500d (0x1f4)
-[10010004] 000001c2;  	wnum1 = 450d (0x1c2)
+[0040005c] 23bd0004  addi $29, $29, 4         ; 1: addi $sp, $sp, 4 
+[00400060] 200f0047  addi $15, $0, 71         ; 2: addi $15, $0, 0x47
+[00400064] afaf0000  sw $15, 0($29)           ; 3: sw $15, 0($sp)
+[00400068] 8faf0000  lw $15, 0($29)           ; 4: lw $15, 0($sp)
+[0040006c] 23bdfffc  addi $29, $29, -4        ; 5: addi $sp, $sp, -4
