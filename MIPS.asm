@@ -545,7 +545,6 @@ jandl:
 	and eax, 0x03FFFFFF
 	add ebx, eax
 	shl ebx, 2 ; jumpaddress
-	shl ebx, 2														;Address final luego del cálculo
 	jmp determinarPC
 
 jr:	;Tipo R.
