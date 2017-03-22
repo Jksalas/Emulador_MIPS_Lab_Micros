@@ -373,7 +373,7 @@ suma:	;Tipo R.
 	shl rbx, 32
 	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r11
-	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
+	mov [rsi], ebx 													; Mueve resultado a registro mips rd.
 	ImprimirRegistros
 	mov ebx, 0
 	jmp determinarPC
@@ -395,7 +395,7 @@ sumau:	;Tipo R.
 	shl rbx, 32
 	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r11
-	mov [rsi], rbx 													; Mueve resultado a registro mips rd.
+	mov [rsi], ebx 													; Mueve resultado a registro mips rd.
 	ImprimirRegistros
 	mov ebx, 0
 	jmp determinarPC
@@ -424,7 +424,7 @@ sumai:	;Tipo I.
 	shl rbx, 32
 	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r12
-	mov [rsi], rbx
+	mov [rsi], ebx
 	ImprimirRegistros
 	mov ebx, 0
 	jmp determinarPC
@@ -453,7 +453,7 @@ sumaiu:	;Tipo I.
 	shl rbx, 32
 	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r12
-	mov[rsi], rbx
+	mov[rsi], ebx
 	ImprimirRegistros
 	mov ebx, 0
 	jmp determinarPC
@@ -475,7 +475,7 @@ y:	;Tipo R.
 	shl rbx, 32
 	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r11
-	mov [rsi], rbx										 		 ; Mueve resultado a registro mips rd.
+	mov [rsi], ebx										 		 ; Mueve resultado a registro mips rd.
 	ImprimirRegistros
 	mov ebx, 0
 	jmp determinarPC
@@ -503,7 +503,7 @@ yi:	;Tipo I.
 	shl rbx, 32
 	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r12 													; r12 es rt
-	mov [rsi], rbx  									 		; Mueve resultado a registro mips rt
+	mov [rsi], ebx  									 		; Mueve resultado a registro mips rt
 	ImprimirRegistros
 	mov ebx, 0
 	jmp determinarPC
@@ -576,6 +576,9 @@ branch_new_addr:
 	add r11, r8
 	mov ebx, 0
 	mov ebx,r11d
+	mov r8d, ebx
+	ImprimirRegistros
+	mov ebx,r8d
 	jmp determinarPC
 
 j:	;Tipo J.
@@ -675,7 +678,7 @@ lw:	;Tipo I.
 	add rax, datos 												;se suma a datos ya que es el valor inicial de memoria de datos en el computador real
 	mov rax, [rax]												;se toma ese valor de memoria y se guarda de nuevo en rax
 	reg_mips r12
-	mov [rsi], rax												;se guarda el valor sacado de memoria de datos al registro destino Rt
+	mov [rsi], eax												;se guarda el valor sacado de memoria de datos al registro destino Rt
 	ImprimirRegistros
 	mov r9,rsi
 	cmp rsi, reg29
@@ -725,7 +728,7 @@ nor:	;Tipo R.
 	shl rbx, 32
 	shr rbx, 32														; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r11
-	mov [rsi], rbx 												; Mueve resultado a registro mips rd.
+	mov [rsi], ebx 												; Mueve resultado a registro mips rd.
 	ImprimirRegistros
 	mov ebx, 0
 	jmp determinarPC
@@ -747,7 +750,7 @@ o:	;Tipo R.
 	shl rbx, 32
 	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r11
-	mov [rsi], rbx 												; Mueve resultado a registro mips rd.
+	mov [rsi], ebx 												; Mueve resultado a registro mips rd.
 	ImprimirRegistros
 	mov ebx, 0
 	jmp determinarPC
@@ -775,7 +778,7 @@ ori:	;Tipo I.
 	shl rbx, 32
 	shr rbx, 32														; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r12 													; r12 es rt
-	mov [rsi], rbx 												; Mueve resultado a registro mips rt
+	mov [rsi], ebx 												; Mueve resultado a registro mips rt
 	ImprimirRegistros
 	mov ebx, 0
 	jmp determinarPC
@@ -797,7 +800,7 @@ slt:	;Tipo R.
 	shl rbx, 32
 	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r11
-	mov [rsi], rbx												; Mueve resultado a registro mips rd.
+	mov [rsi], ebx												; Mueve resultado a registro mips rd.
 	ImprimirRegistros
 	mov ebx, 0
 	jmp determinarPC
@@ -819,7 +822,7 @@ sltu:	;Tipo R.
 	shl rbx, 32
 	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r11
-	mov [rsi], rbx 												; Mueve resultado a registro mips rd.
+	mov [rsi], ebx 												; Mueve resultado a registro mips rd.
 	ImprimirRegistros
 	mov ebx, 0
 	jmp determinarPC
@@ -848,7 +851,7 @@ slti:	;Tipo I.
 	shl rbx, 32
 	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r12
-	mov [rsi], rbx												; Mueve resultado a registro mips rd.
+	mov [rsi], ebx												; Mueve resultado a registro mips rd.
 	ImprimirRegistros
 	mov ebx, 0
 	jmp determinarPC
@@ -877,7 +880,7 @@ sltiu:	;Tipo I.
 	shl rbx, 32
 	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r12
-	mov [rsi], rbx												; Mueve resultado a registro mips rd.
+	mov [rsi], ebx												; Mueve resultado a registro mips rd.
 	ImprimirRegistros
 	mov ebx, 0
 	jmp determinarPC
@@ -898,7 +901,7 @@ sll:	;Tipo R.
 	mov rcx, r10													; En rcx shamt.
 	shl r8, cl														; Corrimiento según el shamt.
 	reg_mips r11
-	mov [rsi], r8													; Mueve resultado a rd.
+	mov [rsi], r8d													; Mueve resultado a rd.
 	ImprimirRegistros
 	mov ebx, 0
 	jmp determinarPC
@@ -919,7 +922,7 @@ srl:	;Tipo R.
 	mov rcx, r10													; En rcx shamt.
 	shr r8, cl														; Corrimiento según el shamt.
 	reg_mips r11
-	mov [rsi], r8 												; Mueve resultado a rd.
+	mov [rsi], r8d 												; Mueve resultado a rd.
 	ImprimirRegistros
 	mov ebx, 0
 	jmp determinarPC
@@ -941,7 +944,7 @@ resta:	;Tipo R.
 	shl rbx, 32
 	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r11
-	mov [rsi], rbx 												; Mueve resultado a registro mips rd.
+	mov [rsi], ebx 												; Mueve resultado a registro mips rd.
 	ImprimirRegistros
 	mov ebx, 0
 	jmp determinarPC
@@ -963,7 +966,7 @@ restau:	;Tipo R.
 	shl rbx, 32
 	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r11
-	mov [rsi], rbx 												; Mueve resultado a registro mips rd.
+	mov [rsi], ebx 												; Mueve resultado a registro mips rd.
 	ImprimirRegistros
 	mov ebx, 0
 	jmp determinarPC
