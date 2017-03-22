@@ -21,8 +21,8 @@ _start:
 
 ;----------------------Inicializa el stack pointer------------
 
-		mov r8d, [stack1];
-		mov [reg29], r8d;
+	mov r8d, [stack1];
+	mov [reg29], r8d;
 
 _printArgsLoop:
 	mov r15, 1
@@ -980,7 +980,8 @@ sw:	;Tipo I.
 
 stackin:		;PUSH
 	mov r8,[reg29];
-	mov [stack+r8],r9d; push de pila
+	mov [stack1+r8],r9d; push de pila
+	mov r10, [stack1+r8]
 	jmp vuelvestack
 
 

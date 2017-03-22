@@ -657,14 +657,20 @@ lw:	;Tipo I.
 	reg_mips r12
 	mov [rsi], rax												;se guarda el valor sacado de memoria de datos al registro destino Rt
 
+	mov r9,rsi
 	cmp rsi, reg29
-	je stackmemory
+	je stackout
 	reg_mips r13
 	cmp rsi, reg29
-	je stackmemory
+	je stackout
 vuelvestack:
 	mov ebx, 0
 	jmp determinarPC
+
+stackout:    ;POP
+	mov r8,[reg29];
+	mov [r9d],[stack1+r8]; pop de pila
+	jmp vuelvestack
 
 mult:	;Tipo R.
 	printString multiplicar, lmultiplicar ; Imprime mnemonico.
@@ -962,12 +968,19 @@ sw:	;Tipo I.
 	mov [rax], rdi											 ;se toma el valor de rt y se guarda en la dirección calculada en rax
 
 	cmp rsi, reg29
-	je stackmemory
+	je stackin
 	reg_mips r13
 	cmp rsi, reg29
-	je stackmemory
+	je stackin
 	mov ebx, 0
 	jmp determinarPC
+
+stackin:		;PUSH
+	mov r8,[reg29];
+	mov [stack1+r8],r9d; push de pila
+	mov r10, [stack1+r8]
+	jmp vuelvestack
+
 
 ; -------------------- Error de dirección inválida para jump register --------------------
 invaliddir:
