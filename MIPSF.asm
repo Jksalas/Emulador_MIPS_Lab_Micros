@@ -324,8 +324,8 @@ R:
 	je resta                          		  ;salta a .resta
 	cmp r9, 0x23                     		    ;compara con subu
 	je restau                     		      ;salta a .restau
-	cmp ebx, 0 ; Si el PC actual es 0, significa lí­nea en blanco. Este será el fin del programa.
-	je gameover ; Fin del programa.
+	cmp ebx, 0 															; Si el PC actual es 0, significa lí­nea en blanco. Este será el fin del programa.
+	je gameover 														; Fin del programa.
 
 	jmp instnotfound                    		;si la instrucción no se
 		                                      ;encuentra en el set que
@@ -434,21 +434,21 @@ sumaiu:	;Tipo I.
 	jmp determinarPC
 
 y:	;Tipo R.
-	printString lalaland, lalalaland 			 ; Imprime mnemónico.
+	printString lalaland, lalalaland 			  ; Imprime mnemónico.
 	separarR r14
-	printVal r11 													 ; Imprime rd.
+	printVal r11 													  ; Imprime rd.
 	printString comma, lcomma
 	printString dolar, ldolar
-	printVal r13 													 ; Imprime rs.
+	printVal r13 													  ; Imprime rs.
 	printString comma, lcomma
 	printString dolar, ldolar
-	printVal r12 													 ; Imprime rt.
+	printVal r12 						   						 ; Imprime rt.
 	printString retorno, lretorno
 	separarR r14 													 ; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
 	alu 0
 	shl rbx, 32
-	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
+	shr rbx, 32														; Asegurarse que el resultado sea de 32 bits.
 	reg_mips r11
 	mov [rsi], rbx										 		 ; Mueve resultado a registro mips rd.
 	mov ebx, 0
@@ -540,7 +540,7 @@ bne:	;Tipo I.
 	;	Si se cumple la condición de alguno de los dos
 	;branches, se dirige acá para calcular el nuevo PC.
 branch_new_addr:
-	separarI rax
+	separarI r14
 	branch_add r11;
 	mov ebx, 0;
 	mov ebx,r11d

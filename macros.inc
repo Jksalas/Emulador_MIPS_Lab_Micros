@@ -34,7 +34,7 @@ section .data
 	landre: equ $-andre
 	camila: db 0x1b, "[38;5;86m","     	  Camila Gómez Molina 2014089559", 0xa
 	lcamila: equ $-camila
-	nfound: db 0x1b, "[38;5;86m","	La instrucción no ha sido encontrada", 0xa
+	nfound: db 0x1b, "[38;5;183m","     	  La instrucción no ha sido encontrada", 0xa
 	lnfound: equ $-nfound
 	memmax: db 0x1b, "[38;5;41m","	Error: La dirección es mayor a la capacidad de memoria", 0xa
 	lmemmax: equ $-memmax
