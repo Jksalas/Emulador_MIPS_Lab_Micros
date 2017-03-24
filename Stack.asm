@@ -11,8 +11,13 @@ _start:
 
 ;----------------------Inicializa el stack pointer------------
 
-	mov r8d, [stack1+200];
-	mov [reg29], r8d;
+	mov r8d, 0;
+	mov r9d, stack1
+	mov [stackaddress],r9d
+	mov [reg29],r8d; stack pointer al tope del stack
+	mov byte[auxstack],0
+	mov r12, [reg29]
+	mov r13, [stackaddress]
 
 ; -------------------- Recibir argumentos --------------------
 
@@ -409,6 +414,10 @@ sumai:	;Tipo I.
 	printString retorno, lretorno
 	separarI r14 														; Asegurarse de que no se hayan perdido los datos de la instrucción.
 
+	reg_mips r12 ; Se fija si rt (a modificar) es $sp.
+	cmp rsi, reg29
+	je stackpointer ; Si es se hace distinta la suma.
+
 	reg_mips r13
 	mov rax, rdi 														; rax es rs en la alu.
 	shl rax, 32
@@ -422,6 +431,56 @@ sumai:	;Tipo I.
 	mov [rsi], rbx
 	mov ebx, 0
 	jmp determinarPC
+
+stackpointer:
+	mov r8, r11
+	shr r8, 15
+	cmp r8, 1
+	jne espositivo
+	sign_ext r11
+	not r11 ; Si el inmediato es negativo, se hace positivo para hacer una suma.
+	add r11, 1 ; Saca complemento a 2 del negativo.
+	shl r11, 32
+	shr r11, 32
+	reg_mips r13
+	mov rax, rdi 														; rax es rs en la alu.
+	shl rax, 32
+	shr rax, 32															; Cortar dato a 32 bits.
+	sign_ext r11
+	mov rcx, r11 														; rcx es rt en la alu.
+	alu 2
+	shl rbx, 32
+	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
+	reg_mips r12
+	mov [rsi], rbx
+	mov r8d, stack1
+	mov r10d, [reg29]
+	add r10d, r8d
+	mov r9d, r10d
+	mov [stackaddress], r9d
+	mov r13d, [stackaddress]
+	mov ebx, 0
+	jmp determinarPC
+espositivo: ; Si el inmediato es positivo.
+	reg_mips r13
+	mov rax, rdi 														; rax es rs en la alu.
+	shl rax, 32
+	shr rax, 32															; Cortar dato a 32 bits.
+	sign_ext r11
+	mov rcx, r11
+	alu 3 ; Todo igual pero se hace una resta.
+	shl rbx, 32
+	shr rbx, 32															; Asegurarse que el resultado sea de 32 bits.
+	reg_mips r12
+	mov [rsi], rbx
+	mov r8d, stack1
+	mov r10d, [reg29]
+	add r10d, r8d
+	mov r9d, r10d
+	mov [stackaddress], r9d
+	mov r13d, [stackaddress]
+	mov ebx, 0
+	jmp determinarPC 														; rcx es rt en la alu.
 
 sumaiu:	;Tipo I.
 	mov r14, rax 														; Mueve instrucción a r14.
@@ -667,11 +726,14 @@ vuelvestack:
 	jmp determinarPC
 
 stackout:	;POP
-		mov r8, [reg29];
-		mov r10, [stack1+r8]
-		mov dword[stack1+r8], 0; pop de pila
-		mov r10, [stack1+r8]
-		jmp vuelvestack
+	mov r12, [reg29]
+	sub byte[auxstack],4
+	mov r8, [auxstack];
+	mov r9d,0
+	mov [stack1+r8], r9d; pop de pila, se borran los datos
+	mov r11, [stack1+r8];para debugger
+	mov r14, [stack1]
+	jmp vuelvestack
 
 mult:	;Tipo R.
 	printString multiplicar, lmultiplicar ; Imprime mnemonico.
@@ -982,12 +1044,11 @@ sw:	;Tipo I.
 	jmp determinarPC
 
 stackin:		;PUSH
-	mov byte[auxstack],0xc8; Actualiza el puntero al tope del stack
-	mov r8d,[reg29];
-	sub [auxstack],r8d
-	mov r8d,[auxstack]
+	mov r12, [reg29]
+	mov r8,[auxstack];
 	mov [stack1+r8],r10d; push de pila
-	mov r10, [stack1+r8]
+	mov r11,[stack1+r8];para debugger
+	add byte[auxstack],4
 	jmp vuelvestack
 
 
